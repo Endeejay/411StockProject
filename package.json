@@ -1,0 +1,25 @@
+{
+  "name": "411stock",
+  "version": "1.0.0",
+  "main": "main.js",
+  "dependencies": {
+    "pretty-bytes": "^2.0.1"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^0.35.2"
+  },
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LanceGisclair/411StockProject.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LanceGisclair/411StockProject/issues"
+  },
+  "homepage": "https://github.com/LanceGisclair/411StockProject#readme",
+  "description": ""
+}
