@@ -8,8 +8,7 @@
   <script type="text/javascript">
     var request = require('request');
     var autoRefresh = setInterval (function(){
-
-      request("https://finance.google.com/finance/info?client=lg&q=goog", function(error, response, body){
+	    request("https://finance.google.com/finance/info?client=lg&q=goog", function(error, response, body){
         body = body.slice(3);
         body = JSON.parse(body);
         console.log(body);
