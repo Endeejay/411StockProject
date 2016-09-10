@@ -21,7 +21,7 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow({width: 1000, height: 625});
 
   // and load the index.html of the app.
-  mainWindow.loadURL('file://' + __dirname + '/Pages/SelectLiveOrHistoricData.html');
+  mainWindow.loadURL('file://' + __dirname + '/html/index.html');
   mainWindow.openDevTools();
 
   // Emitted when the window is closed.
