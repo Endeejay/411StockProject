@@ -1,26 +1,32 @@
 <html ng-app ="stockApp">
 
 <head>
-  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
-  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css"/>
-
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
   <script src="../js/routing.js"></script>
+  <script src="../css/navbar.css"></script>
 </head>
 
 <body ng-controller="mainController">
-  <nav class="navbar navbar-default">
-    <div class="container">
-
-      <ul class="nav navbar-nav navbar-right">
         <div ng-show="isSelectPage">
-        <li><a href="#home" ng-click="isSelectPage=false">Historic Data</a></li>
-        <li><a href="#home" ng-click="isSelectPage=false">Live Data</a></li>
+          <div>
+            <a href="#home" ng-click="isSelectPage=false" class="btn btn-primary">Historic Data</a>
+          </div>
+          <div>
+            <a href="#home" ng-click="isSelectPage=false" class="btn btn-primary">Live Data</a>
+          </div>
         </div>
-      </ul>
-    </div>
-  </nav>
+
+        <div ng-hide="isSelectPage">
+          <ul>
+            <!-- The switch element goes back to Selection page -->
+            <li><a href="#" ng-click="isSelectPage=true">Switch</a></li>
+            <li><a href="#user">User</a></li>
+            <li><a href="#buy_sell">Buy/Sell</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#watch">Watch</a></li>
+          </ul>
+        </div>
 
   <div id="main">
     <!-- this is where content will be injected -->
@@ -28,5 +34,4 @@
   </div>
 
 </body>
-
 </html>

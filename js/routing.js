@@ -8,12 +8,26 @@ stockApp.config(function($routeProvider) {
          templateUrl : 'SelectLiveOrHistoricData.html',
          controller : 'mainController'
     })
-
     .when('/home', {
          templateUrl : 'home.html',
-         controller : 'homeController',
+         controller : 'homeController'
     })
-
+    .when('/user', {
+         templateUrl : 'user.html',
+         controller : 'homeController'
+    })
+    .when('/buy_sell', {
+         templateUrl : 'buy_sell.html',
+         controller : 'homeController'
+    })
+    .when('/portfolio', {
+         templateUrl : 'portfolio.html',
+         controller : 'homeController'
+    })
+    .when('/watch', {
+         templateUrl : 'watch.html',
+         controller : 'homeController'
+    })
 });
 
 stockApp.controller('mainController', function($scope) {
