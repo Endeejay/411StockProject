@@ -1,19 +1,15 @@
+<link rel="stylesheet" type="text/css" href="../css/navbar.css">
 <html ng-app ="stockApp">
 
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
-  <script src="../js/routing.js"></script>
-  <script src="../css/navbar.css"></script>
+
 </head>
 
 <body ng-controller="mainController">
         <div ng-show="isSelectPage">
+              <button id ="myBtn" class="btn btn-primary" >Historic Data</button>
           <div>
-            <a href="#home" ng-click="isSelectPage=false" class="btn btn-primary">Historic Data</a>
-          </div>
-          <div>
-            <a href="#home" ng-click="isSelectPage=false" class="btn btn-primary">Live Data</a>
+            <button href="#home" ng-click="isSelectPage=false" class="btn btn-primary">Live Data</button>
           </div>
         </div>
 
@@ -28,10 +24,28 @@
           </ul>
         </div>
 
+        <div id="myModal" class="modal">
+          <!-- Modal content -->
+          <div class="modal-content">
+            <!--put date here and save it somewhere -->
+            <span class="go" ng-click="isSelectPage=false"> Go </span>
+            <span class="close"> Close </span>
+            <p> </p>
+
+          </div>
+
+        </div>
+
   <div id="main">
     <!-- this is where content will be injected -->
     <div ng-view></div>
   </div>
 
+
 </body>
 </html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
+<script src="../js/routing.js"></script>
+<script src="../js/modal.js"></script>
