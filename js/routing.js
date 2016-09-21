@@ -18,7 +18,7 @@ stockApp.config(function($routeProvider) {
     })
     .when('/buy_sell', {
          templateUrl : 'buy_sell.html',
-         controller : 'homeController'
+         controller : 'BuySellController'
     })
     .when('/portfolio', {
          templateUrl : 'portfolio.html',
