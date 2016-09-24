@@ -6,9 +6,9 @@
 </head>
 
 <body ng-controller="mainController">
-        <div ng-show="isSelectPage">
-            <button id ="myBtn" class="btn btn-primary" >Historic Data</button>
-          <div>
+        <div id="historicData" ng-show="isSelectPage">
+            <button id="myBtn" class="btn btn-primary" >Historic Data</button>
+          <div id="liveData">
             <button href="#home" ng-click="isSelectPage=false" class="btn btn-primary">Live Data</button>
           </div>
         </div>
@@ -28,10 +28,12 @@
           <!-- Modal content -->
           <div class="modal-content">
             <!--put date here and save it somewhere -->
+            <!-- <p>
+              Please select a date range:
+            </p> -->
             <span class="go" ng-click="isSelectPage=false"> Go </span>
+            Please select a date range:
             <span class="close"> Close </span>
-            <p> </p>
-
           </div>
 
         </div>
