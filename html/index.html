@@ -1,55 +1,67 @@
-<link rel="stylesheet" type="text/css" href="../css/navbar.css">
+<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="../css/style.css"/>
+<link type="text/css" rel="stylesheet" href="../css/materialize.css"  media="screen,projection"/>
 <html ng-app ="stockApp">
 
-<head>
 
-</head>
-
+<!-- Main screen with two selection options for testing -->
 <body ng-controller="mainController">
-        <div id="historicData" ng-show="isSelectPage">
-            <button id="myBtn" class="btn btn-primary" >Historic Data</button>
-          <div id="liveData">
-            <button href="#home" ng-click="isSelectPage=false" class="btn btn-primary">Live Data</button>
-          </div>
-        </div>
+  <div class="centered">
+        <div id="historicData" ng-show="isSelectPage" style="text-align:center" class="selectScreen">
+          <p style="text-transform:uppercase">Welcome to Stock Simulator 2016</p>
+          <h1 class="grey-text text-lighten-5">Select a testing strategy</h1>
+              <a id="histBtn"class="waves-effect wwaves-light btn green accent-4 btn-large z-depth-3">Historic Data</a>
+              <td>
+              </td>
+          <div id="liveData" class="selectScreen">
+              <a id="liveBtn"href="#home" ng-click="isSelectPage=false" class="green accent-4 btn-large z-depth-3">
+              Live Data</a>
+           </div>
+         </div>
+  </div>
 
+<!--modal - will appear if user selects Historic Data, prompting them to select date range -->
+         <div id="myModal" class="modal z-depth-5">
+           <!-- Modal content -->
+           <div class="modal-content">
+             <h4>Select a date range:</h4>
+             <!--whatever date picker we use will go here -->
+           </div>
+           <div class="modal-footer">
+               <span class="go">
+               <button ng-click="isSelectPage=false" class="waves-effect waves-green btn green modal-action modal-close z-depth-2">Go</button>
+               </span>
+               <span class="close">
+                 <button class="waves-effect waves-red btn red modal-action modal-close z-depth-2">Return</button>
+               </span>
+           </div>
+         </div>
+
+  <!-- fixed navbar - will only appear once user has selected strategy -->
         <div ng-hide="isSelectPage">
-          <ul>
-            <!-- The switch element goes back to Selection page -->
-            <li><a href="#" ng-click="isSelectPage=true">Switch</a></li>
-            <li><a href="#user">User</a></li>
-            <li><a href="#buy_sell">Buy/Sell</a></li>
-            <li><a href="#portfolio">Portfolio</a></li>
-            <li><a href="#watch">Watch</a></li>
+          <ul id="slide-out" class="side-nav fixed">
+            <li><a href="#" ng-click="isSelectPage=true" class="navItem">Switch</a></li>
+            <li><a href="#user" class="navItem">User</a></li>
+            <li><a href="#buy_sell" class="navItem">Buy/Sell</a></li>
+            <li><a href="#portfolio" class="navItem">Portfolio</a></li>
+            <li><a href="#watch" class="navItem">Watch</a></li>
           </ul>
         </div>
 
-        <div id="myModal" class="modal">
-          <!-- Modal content -->
-          <div class="modal-content">
-            <!--put date here and save it somewhere -->
-            <!-- <p>
-              Please select a date range:
-            </p> -->
-            <span class="go" ng-click="isSelectPage=false"> Go </span>
-            Please select a date range:
-            <span class="close"> Close </span>
-          </div>
-
-        </div>
-
   <div id="main">
-    <!-- this is where content will be injected -->
+    <!-- whatever will go on the home landing page goes here -->
     <div ng-view></div>
   </div>
 
-
-</body>
-</html>
-
+<!-- loading angular, jquery, materialize, and custom scripts -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../js/materialize.js"></script>
+<script src="../js/modal.js"></script>
 <script src="../js/routing.js"></script>
 <script src="../js/BuySellService.js"></script>
 <script src="../js/BuySellController.js"></script>
-<script src="../js/modal.js"></script>
+
+</body>
+</html>
