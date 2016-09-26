@@ -16,7 +16,7 @@ stockApp.config(function($routeProvider) {
     })
     .when('/user', {
          templateUrl : 'user.html',
-         controller : 'homeController'
+         controller : 'UserController'
     })
     .when('/buy_sell', {
          templateUrl : 'buy_sell.html',
@@ -24,11 +24,11 @@ stockApp.config(function($routeProvider) {
     })
     .when('/portfolio', {
          templateUrl : 'portfolio.html',
-         controller : 'homeController'
+         controller : 'PortfolioController'
     })
     .when('/watch', {
          templateUrl : 'watch.html',
-         controller : 'homeController'
+         controller : 'WatchController'
     })
 });
 
@@ -41,7 +41,7 @@ stockApp.controller('homeController', function($scope) {
   $scope.message = "Home Data page";
 });
 
-//the following script will highlight the current tab in the sidebar 
+//the following script will highlight the current tab in the sidebar
 $(selector).on('click', function(){
     $(selector).removeClass('active');
     $(this).addClass('active');

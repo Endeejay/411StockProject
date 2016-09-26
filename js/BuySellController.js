@@ -7,6 +7,8 @@ stockApp.controller('BuySellController', ['$scope', 'BuySellService', function B
     $scope.ExchangeName = currentVal.ExchangeName;
     $scope.Open = currentVal.Open;
     $scope.Close = currentVal.Last;
-    $scope.DiffenceBetweenOpenAndClose =  currentVal.Last - currentVal.Open;
-  });
+    $scope.DiffenceBetweenOpenAndClose = currentVal.Open - currentVal.Last;
+
+  })
+
 }]);
