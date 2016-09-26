@@ -204,6 +204,10 @@ textarea {
   transform: translate(-50%, -50%);
 }
 
+.centered a {
+  margin: 10px;
+}
+
 span a {
   margin: 10px;
 }
