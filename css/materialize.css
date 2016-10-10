@@ -7007,7 +7007,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 .side-nav .collapsible-body li.active,
 .side-nav.fixed .collapsible-body li.active {
-  background-color: #00c853;
+  background-color: #009688;
 }
 
 .side-nav .collapsible-body li.active a,
@@ -7016,7 +7016,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .side-nav li.active {
-  background-color: #00c853;
+  background-color: #009688;
 }
 
 .side-nav li.active a {

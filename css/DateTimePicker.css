@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------------- 
+/* -----------------------------------------------------------------------------
 
   jQuery DateTimePicker - Responsive flat design jQuery DateTime Picker plugin for Web & Mobile
   Version 0.1.35
@@ -7,7 +7,7 @@
   https://github.com/CuriousSolutions/DateTimePicker
 
  ----------------------------------------------------------------------------- */
- 
+
 .dtpicker-overlay
 {
 	z-index: 2000;
@@ -35,7 +35,7 @@
 	height: 100%;
 }
 
-.dtpicker-overlay * 
+.dtpicker-overlay *
 {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -55,7 +55,7 @@
 
 .dtpicker-cont
 {
-	border: 1px solid #ECF0F1;
+	border: 1px solid #263238;
 }
 
 .dtpicker-mobile .dtpicker-cont
@@ -79,7 +79,7 @@
 
 	max-width: 500px;
 
-	background: #fff;
+	background: #263238;
 }
 
 .dtpicker-mobile .dtpicker-content
@@ -99,7 +99,7 @@
 
 .dtpicker-header .dtpicker-title
 {
-	color: #2980B9;
+	color: #00c853;
 	text-align: center;
 	font-size: 1.1em;
 }
@@ -109,24 +109,24 @@
 	position: absolute;
 	top: -0.7em;
 	right: 0.3em;
-	
+
 	padding: 0.5em 0.5em 1em 1em;
-	
-	color: #FF3B30;
+
+	color: #009688;
 	font-size: 1.5em;
-	
+
 	cursor: pointer;
 }
 
 .dtpicker-header .dtpicker-close:hover
 {
-	color: #FF3B30;
+	color: #009688;
 }
 
 .dtpicker-header .dtpicker-value
 {
 	padding:  0.8em 0.2em 0.2em 0.2em;
-	color: #FF3B30;
+	color: #009688;
 	text-align: center;
 
 	font-size: 1.4em;
@@ -136,7 +136,7 @@
 {
 	overflow: hidden;
 	margin: 1em 1em;
-	
+
 	font-size: 1.3em;
 }
 
@@ -193,7 +193,7 @@
 	display: block;
 	height: 30px;
 
-	color: #2980B9;
+	color: #00c853;
 
 	text-align: center;
 	line-height: 30px;
@@ -201,7 +201,7 @@
 
 .dtpicker-components .dtpicker-comp > *:hover
 {
-	color: #2980B9;
+	color: #00c853;
 }
 
 .dtpicker-components .dtpicker-compButtonEnable
@@ -216,7 +216,7 @@
 
 .dtpicker-components .dtpicker-compButton
 {
-	background: #FFFFFF;
+	background: #263238;
 	font-size: 140%;
 
 	cursor: pointer;
@@ -227,7 +227,7 @@
 	margin: 0.4em 0;
 	width: 100%;
 	border: none;
-	background: #FFFFFF;
+	background: #263238;
 
 	font-size: 100%;
 
@@ -238,7 +238,7 @@
 .dtpicker-overlay .dtpicker-compValue:focus
 {
 	outline: none;
-	background: #F2FCFF;
+	background: #263238;
 }
 
 .dtpicker-buttonCont
@@ -252,8 +252,8 @@
 	display: block;
 	padding: 0.6em 0;
 	width: 47%;
-	background: #FF3B30;
-	color: #FFFFFF;
+	background: #009688;
+	color: white;
 	text-align: center;
 	font-size: 1.3em;
 
@@ -262,7 +262,7 @@
 
 .dtpicker-buttonCont .dtpicker-button:hover
 {
-	color: #FFFFFF;
+	color: #263238;
 }
 
 .dtpicker-singleButton .dtpicker-button

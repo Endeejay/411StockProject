@@ -26,6 +26,5 @@ window.onclick = function(event) {
 
 $(document).ready(function()
 {
-    debugger;
     $("#dtBox").DateTimePicker();
 });

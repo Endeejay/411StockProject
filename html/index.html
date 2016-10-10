@@ -1,7 +1,6 @@
 <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="../css/style.css" />
 <link type="text/css" rel="stylesheet" href="../css/materialize.css" media="screen,projection" />
-<link rel="stylesheet" type="text/css" href="../css/DateTimePicker.css" />
 <html data-ng-app="stockApp" class="no-js">
 
 
@@ -10,13 +9,13 @@
 <body ng-controller="MainController">
     <div class="centered">
         <div id="historicData" ng-show="isSelectPage" style="text-align:center" class="selectScreen">
-            <p>Welcome to Electron Trader</p>
-            <h1 class="grey-text text-lighten-5">Select a testing strategy:</h1>
-            <a id="histBtn" class="waves-effect waves-light btn green accent-4 btn-large z-depth-3">Historic Data</a>
+            <h1><img src="../images/electrontrader.png" /></h1>
+            <!-- <h1 class="grey-text text-lighten-5">Select a testing strategy:</h1> -->
+            <a id="histBtn" class="waves-effect waves-light btn-large z-depth-3" style="font-weight: bold">Historic Data</a>
             <td>
             </td>
             <div id="liveData" class="selectScreen">
-                <a id="liveBtn" href="#home" ng-click="isSelectPage=false" class="green accent-4 btn-large z-depth-3">Live Data</a>
+                <a id="liveBtn" href="#home" ng-click="isSelectPage=false" class="waves-effect waves-light btn-large z-depth-3" style="font-weight: bold">Live Data</a>
             </div>
         </div>
     </div>
@@ -24,28 +23,13 @@
     <!--modal - will appear if user selects Historic Data, prompting them to select date range -->
         <div id="myModal" class="modal z-depth-5">
           <!-- Modal content: invoking partial view  -->
-          <!-- <div ng-include src="'./partialviews/selectorModal.html'"></div> -->
-          <div class="modal-content">
-              <h4>Select a date range:</h4>
-              <!--whatever date picker we use will go here -->
-              <!--  Date Input  -->
-              <p>Start Date : </p>
-              <input type="text" data-field="date" readonly>
-
-              <!--  Time Input  -->
-              <p>End Date : </p>
-              <input type="text" data-field="date" readonly>
-
-
-          <div id="dtBox"></div>
-          </div>
-
+          <div ng-include src="'./partialviews/selectorModal.html'"></div>
           <div class="modal-footer">
               <span class="go">
-                <button ng-click="isSelectPage=false" class="waves-effect waves-green btn green modal-action modal-close z-depth-2">Go</button>
+                <button ng-click="isSelectPage=false" class="waves-effect waves-green btn z-depth-2">Go</button>
               </span>
               <span class="close">
-                <button class="waves-effect waves-red btn red modal-action modal-close z-depth-2">Return</button>
+                <button class="waves-effect waves-red btn z-depth-2" style="right: 30px">Return</button>
               </span>
           </div>
         </div>
@@ -66,13 +50,15 @@
         <div ui-view></div>
     </div>
 
-    <!-- loading angular, jquery, materialize, and custom scripts -->
+    <!-- loading angular, jquery, materialize, etc -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="https://unpkg.com/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
     <script type="text/javascript" src="../js/materialize.js"></script>
     <script type="text/javascript" src="../js/DateTimePicker.js"></script>
+
+    <!-- custom scripts -->
     <script src="../js/routing.js"></script>
     <script src="../db/Database.js"></script>
     <script src="../js/modal.js"></script>
