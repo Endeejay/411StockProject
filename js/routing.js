@@ -3,12 +3,12 @@ var stockApp = angular.module('stockApp', ['ui.router']);
 
 stockApp.config(function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/selector');
 
     $stateProvider
 
         .state('selector',{
-            url: '/main',
+            url: '/selector',
             templateUrl: 'SelectLiveOrHistoricData.html',
             controller: 'MainController'
         })
