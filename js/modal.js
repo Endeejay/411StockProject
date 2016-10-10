@@ -23,3 +23,9 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+
+$(document).ready(function()
+{
+    debugger;
+    $("#dtBox").DateTimePicker();
+});
