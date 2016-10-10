@@ -1,48 +1,45 @@
-var stockApp = angular.module('stockApp', ['ngRoute']);
-var isSelectPage = true;
-var selector = '.side-nav li';
+// app.js
+var stockApp = angular.module('stockApp', ['ui.router']);
 
+stockApp.config(function($stateProvider, $urlRouterProvider) {
 
-stockApp.config(function($routeProvider) {
-    $routeProvider
+    $urlRouterProvider.otherwise('/home');
 
-    .when('/', {
-         templateUrl : 'SelectLiveOrHistoricData.html',
-         controller : 'mainController'
-    })
-    .when('/home', {
-         templateUrl : 'home.html',
-         controller : 'homeController'
-    })
-    .when('/user', {
-         templateUrl : 'user.html',
-         controller : 'UserController'
-    })
-    .when('/buy_sell', {
-         templateUrl : 'buy_sell.html',
-         controller : 'BuySellController'
-    })
-    .when('/portfolio', {
-         templateUrl : 'portfolio.html',
-         controller : 'PortfolioController'
-    })
-    .when('/watch', {
-         templateUrl : 'watch.html',
-         controller : 'WatchController'
-    })
-});
+    $stateProvider
 
-stockApp.controller('mainController', function($scope) {
-  $scope.message = "Selection page";
-  $scope.isSelectPage = true;
-});
+        .state('selector',{
+            url: '/main',
+            templateUrl: 'SelectLiveOrHistoricData.html',
+            controller: 'MainController'
+        })
 
-stockApp.controller('homeController', function($scope) {
-  $scope.message = "Home Data page";
-});
+        .state('home', {
+            url: '/home',
+            templateUrl: 'home.html',
+            controller: 'HomeController'
+        })
 
-//the following script will highlight the current tab in the sidebar
-$(selector).on('click', function(){
-    $(selector).removeClass('active');
-    $(this).addClass('active');
+        .state('user', {
+            url: '/user',
+            templateUrl: 'user.html',
+            controller: 'UserController'
+        })
+
+        .state('buy_sell', {
+            url: '/buy_sell',
+            templateUrl: 'buy_sell.html',
+            controller: 'BuySellController'
+        })
+
+        .state('portfolio', {
+            url: '/portfolio',
+            templateUrl: 'portfolio.html',
+            controller: 'PortfolioController'
+        })
+
+        .state('watch', {
+            url: '/watch',
+            templateUrl: 'watch.html',
+            controller: 'WatchController'
+        });
 });
