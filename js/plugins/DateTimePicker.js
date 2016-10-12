@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------------- 
+/* -----------------------------------------------------------------------------
 
   jQuery DateTimePicker - Responsive flat design jQuery DateTime Picker plugin for Web & Mobile
   Version 0.1.35
@@ -9,15 +9,15 @@
  ----------------------------------------------------------------------------- */
 
 /* Support Object.keys in IE8 */
-if(!Object.keys) 
+if(!Object.keys)
 {
-    Object.keys = function(obj) 
+    Object.keys = function(obj)
     {
         var keys = [];
 
-        for (var i in obj) 
+        for (var i in obj)
         {
-            if (obj.hasOwnProperty(i)) 
+            if (obj.hasOwnProperty(i))
             {
                 keys.push(i);
             }
@@ -37,26 +37,26 @@ $.DateTimePicker = $.DateTimePicker || {
 	{
 		mode: "date",
 		defaultDate: null,
-	
+
 		dateSeparator: "-",
 		timeSeparator: ":",
 		timeMeridiemSeparator: " ",
 		dateTimeSeparator: " ",
 		monthYearSeparator: " ",
-	
-		dateTimeFormat: "dd-MM-yyyy HH:mm",
-		dateFormat: "dd-MM-yyyy",
+
+		dateTimeFormat: "MM-dd-yyyy HH:mm",
+		dateFormat: "MM-dd-yyyy",
 		timeFormat: "HH:mm",
-	
+
 		maxDate: null,
 		minDate:  null,
-	
+
 		maxTime: null,
 		minTime: null,
-	
+
 		maxDateTime: null,
 		minDateTime: null,
-	
+
 		shortDayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
 		fullDayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 		shortMonthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -68,12 +68,12 @@ $.DateTimePicker = $.DateTimePicker || {
 
 		secondsInterval: 1,
 		roundOffSeconds: true,
-	
+
 		showHeader: true,
 		titleContentDate: "Set Date",
 		titleContentTime: "Set Time",
 		titleContentDateTime: "Set Date & Time",
-	
+
 		buttonsToDisplay: ["HeaderCloseButton", "SetButton", "ClearButton"],
 		setButtonContent: "Set",
 		clearButtonContent: "Clear",
@@ -81,7 +81,7 @@ $.DateTimePicker = $.DateTimePicker || {
     	decrementButtonContent: "-",
 		setValueInTextboxOnEveryClick: false,
 		readonlyInputs: false,
-	
+
 		animationDuration: 400,
 
 		touchHoldInterval: 300, // in Milliseconds
@@ -89,7 +89,7 @@ $.DateTimePicker = $.DateTimePicker || {
 
 		mouseHoldInterval: 50, // in Milliseconds
 		captureMouseHold: false, // capture Mouse Hold Event
-	
+
 		isPopup: true,
 		parentElement: "body",
 
@@ -97,7 +97,7 @@ $.DateTimePicker = $.DateTimePicker || {
 		inputElement: null,
 
 		language: "",
-	
+
 		init: null, // init(oDateTimePicker)
 		addEventHandlers: null,  // addEventHandlers(oDateTimePicker)
 		beforeShow: null,  // beforeShow(oInputElement)
@@ -107,14 +107,14 @@ $.DateTimePicker = $.DateTimePicker || {
 		buttonClicked: null,  // buttonClicked(sButtonType, oInputElement) where sButtonType = "SET"|"CLEAR"|"CANCEL"|"TAB"
 		settingValueOfElement: null, // settingValueOfElement(sValue, dDateTime, oInputElement)
 		formatHumanDate: null,  // formatHumanDate(oDateTime, sMode, sFormat)
-	
+
 		parseDateTimeString: null, // parseDateTimeString(sDateTime, sMode, oInputField)
 		formatDateTimeString: null // formatDateTimeString(oDateTime, sMode, oInputField)
 	},
 
 	dataObject: // Temporary Variables For Calculation Specific to DateTimePicker Instance
 	{
-	
+
 		dCurrentDate: new Date(),
 		iCurrentDay: 0,
 		iCurrentMonth: 0,
@@ -124,14 +124,14 @@ $.DateTimePicker = $.DateTimePicker || {
 		iCurrentSeconds: 0,
 		sCurrentMeridiem: "",
 		iMaxNumberOfDays: 0,
-	
+
 		sDateFormat: "",
 		sTimeFormat: "",
 		sDateTimeFormat: "",
-	
+
 		dMinValue: null,
 		dMaxValue: null,
-	
+
 		sArrInputDateFormats: [],
 		sArrInputTimeFormats: [],
 		sArrInputDateTimeFormats: [],
@@ -140,12 +140,12 @@ $.DateTimePicker = $.DateTimePicker || {
 		bDateMode: false,
 		bTimeMode: false,
 		bDateTimeMode: false,
-	
+
 		oInputElement: null,
 
 		iTabIndex: 0,
 		bElemFocused: false,
-	
+
 		bIs12Hour: false,
 
 		sTouchButton: null,
@@ -175,29 +175,29 @@ $.cf = {
 				return false;
 		}
 		else
-			return false;			
+			return false;
 	}
 
 };
 
-(function (factory) 
+(function (factory)
 {
-    if(typeof define === "function" && define.amd) 
+    if(typeof define === "function" && define.amd)
     {
         // AMD. Register as an anonymous module.
         define(["jquery"], factory);
     }
-    else if(typeof exports === "object") 
+    else if(typeof exports === "object")
     {
         // Node/CommonJS
         module.exports = factory(require("jquery"));
     }
-    else 
+    else
     {
         // Browser globals
         factory(jQuery);
     }
-}(function ($) 
+}(function ($)
 {
 	"use strict";
 
@@ -224,7 +224,7 @@ $.cf = {
 		iKey, sKey;
 
 		if(typeof options === "string")
-		{			
+		{
 			if($.cf._isValid(oDTP))
 			{
 				if(options === "destroy")
@@ -237,17 +237,17 @@ $.cf = {
 							if(sKey.search("plugin_DateTimePicker") !== -1)
 							{
 								$(document).unbind("click.DateTimePicker keydown.DateTimePicker keyup.DateTimePicker");
-							
+
 								$(this).children().remove();
 								$(this).removeData();
 								$(this).unbind();
 								$(this).removeClass("dtpicker-overlay dtpicker-mobile dtpicker-inline");
 
 								oDTP = oDTP[sKey];
-							
+
 								console.log("Destroyed DateTimePicker Object");
 								console.log(oDTP);
-							
+
 								break;
 							}
 						}
@@ -279,7 +279,7 @@ $.cf = {
 		}
 		else
 		{
-			return this.each(function() 
+			return this.each(function()
 			{
 				$.removeData(this, "plugin_DateTimePicker");
 				if(!$.data(this, "plugin_DateTimePicker"))
@@ -289,12 +289,12 @@ $.cf = {
 	};
 
 	DateTimePicker.prototype = {
-	
+
 		// Public Method
-		init: function () 
+		init: function ()
 		{
-			var oDTP = this;					
-		
+			var oDTP = this;
+
 			oDTP._setDateFormatArray(); // Set DateFormatArray
 			oDTP._setTimeFormatArray(); // Set TimeFormatArray
 			oDTP._setDateTimeFormatArray(); // Set DateTimeFormatArray
@@ -304,7 +304,7 @@ $.cf = {
 	        {
 	           	oDTP.settings.parentElement = $(oDTP.element).data('parentelement');
 	        }
-		
+
 			if(oDTP.settings.isPopup && !oDTP.settings.isInline)
 			{
 				oDTP._createPicker();
@@ -322,26 +322,26 @@ $.cf = {
 
 			oDTP._addEventHandlersForInput();
 		},
-	
+
 		_setDateFormatArray: function()
 		{
 			var oDTP = this;
-		
-			oDTP.oData.sArrInputDateFormats = [];		
+
+			oDTP.oData.sArrInputDateFormats = [];
 			var sDate = "";
-		
+
 			//  0 - "dd-MM-yyyy"
 			sDate = "dd" + oDTP.settings.dateSeparator + "MM" + oDTP.settings.dateSeparator + "yyyy";
 			oDTP.oData.sArrInputDateFormats.push(sDate);
-		
+
 			//  1 - "MM-dd-yyyy"
 			sDate = "MM" + oDTP.settings.dateSeparator + "dd" + oDTP.settings.dateSeparator + "yyyy";
 			oDTP.oData.sArrInputDateFormats.push(sDate);
-		
+
 			//  2 - "yyyy-MM-dd"
 			sDate = "yyyy" + oDTP.settings.dateSeparator + "MM" + oDTP.settings.dateSeparator + "dd";
 			oDTP.oData.sArrInputDateFormats.push(sDate);
-		
+
 			//  3 - "dd-MMM-yyyy"
 			sDate = "dd" + oDTP.settings.dateSeparator + "MMM" + oDTP.settings.dateSeparator + "yyyy";
 			oDTP.oData.sArrInputDateFormats.push(sDate);
@@ -358,35 +358,35 @@ $.cf = {
 			sDate = "MMMM" + oDTP.settings.monthYearSeparator + "yyyy";
 			oDTP.oData.sArrInputDateFormats.push(sDate);
 		},
-	
+
 		_setTimeFormatArray: function()
 		{
 			var oDTP = this;
-		
+
 			oDTP.oData.sArrInputTimeFormats = [];
 			var sTime = "";
 
 			//  0 - "hh:mm:ss AA"
 			sTime = "hh" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeSeparator + "ss" + oDTP.settings.timeMeridiemSeparator + "AA";
 			oDTP.oData.sArrInputTimeFormats.push(sTime);
-		
+
 			//  1 - "HH:mm:ss"
 			sTime = "HH" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeSeparator + "ss";
 			oDTP.oData.sArrInputTimeFormats.push(sTime);
-		
+
 			//  2 - "hh:mm AA"
 			sTime = "hh" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeMeridiemSeparator + "AA";
 			oDTP.oData.sArrInputTimeFormats.push(sTime);
-		
+
 			//  3 - "HH:mm"
 			sTime = "HH" + oDTP.settings.timeSeparator + "mm";
 			oDTP.oData.sArrInputTimeFormats.push(sTime);
 		},
-	
+
 		_setDateTimeFormatArray: function()
 		{
 			var oDTP = this;
-		
+
 			oDTP.oData.sArrInputDateTimeFormats = [];
 			var sDate = "", sTime = "", sDateTime = "";
 
@@ -395,43 +395,43 @@ $.cf = {
 			sTime = "HH" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeSeparator + "ss";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-		
+
 			//  1 - "dd-MM-yyyy hh:mm:ss AA"
 			sDate = "dd" + oDTP.settings.dateSeparator + "MM" + oDTP.settings.dateSeparator + "yyyy";
 			sTime = "hh" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeSeparator + "ss" + oDTP.settings.timeMeridiemSeparator + "AA";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-		
+
 			//  2 - "MM-dd-yyyy HH:mm:ss"
 			sDate = "MM" + oDTP.settings.dateSeparator + "dd" + oDTP.settings.dateSeparator + "yyyy";
 			sTime = "HH" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeSeparator + "ss";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-		
+
 			//  3 - "MM-dd-yyyy hh:mm:ss AA"
 			sDate = "MM" + oDTP.settings.dateSeparator + "dd" + oDTP.settings.dateSeparator + "yyyy";
 			sTime = "hh" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeSeparator + "ss" + oDTP.settings.timeMeridiemSeparator + "AA";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-		
+
 			//  4 - "yyyy-MM-dd HH:mm:ss"
 			sDate = "yyyy" + oDTP.settings.dateSeparator + "MM" + oDTP.settings.dateSeparator + "dd";
 			sTime = "HH" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeSeparator + "ss";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-		
+
 			//  5 - "yyyy-MM-dd hh:mm:ss AA"
 			sDate = "yyyy" + oDTP.settings.dateSeparator + "MM" + oDTP.settings.dateSeparator + "dd";
 			sTime = "hh" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeSeparator + "ss" + oDTP.settings.timeMeridiemSeparator + "AA";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-			
+
 			//  6 - "dd-MMM-yyyy hh:mm:ss"
 			sDate = "dd" + oDTP.settings.dateSeparator + "MMM" + oDTP.settings.dateSeparator + "yyyy";
 			sTime = "hh" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeSeparator + "ss";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-			
+
 			//  7 - "dd-MMM-yyyy hh:mm:ss AA"
 			sDate = "dd" + oDTP.settings.dateSeparator + "MMM" + oDTP.settings.dateSeparator + "yyyy";
 			sTime = "hh" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeSeparator + "ss" + oDTP.settings.timeMeridiemSeparator + "AA";
@@ -439,49 +439,49 @@ $.cf = {
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
 
 			//--------------
-		
+
 			//  8 - "dd-MM-yyyy HH:mm"
 			sDate = "dd" + oDTP.settings.dateSeparator + "MM" + oDTP.settings.dateSeparator + "yyyy";
 			sTime = "HH" + oDTP.settings.timeSeparator + "mm";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-		
+
 			//  9 - "dd-MM-yyyy hh:mm AA"
 			sDate = "dd" + oDTP.settings.dateSeparator + "MM" + oDTP.settings.dateSeparator + "yyyy";
 			sTime = "hh" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeMeridiemSeparator + "AA";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-		
+
 			//  10 - "MM-dd-yyyy HH:mm"
 			sDate = "MM" + oDTP.settings.dateSeparator + "dd" + oDTP.settings.dateSeparator + "yyyy";
 			sTime = "HH" + oDTP.settings.timeSeparator + "mm";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-		
+
 			//  11 - "MM-dd-yyyy hh:mm AA"
 			sDate = "MM" + oDTP.settings.dateSeparator + "dd" + oDTP.settings.dateSeparator + "yyyy";
 			sTime = "hh" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeMeridiemSeparator + "AA";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-		
+
 			//  12 - "yyyy-MM-dd HH:mm"
 			sDate = "yyyy" + oDTP.settings.dateSeparator + "MM" + oDTP.settings.dateSeparator + "dd";
 			sTime = "HH" + oDTP.settings.timeSeparator + "mm";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-		
+
 			//  13 - "yyyy-MM-dd hh:mm AA"
 			sDate = "yyyy" + oDTP.settings.dateSeparator + "MM" + oDTP.settings.dateSeparator + "dd";
 			sTime = "hh" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeMeridiemSeparator + "AA";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-			
+
 			//  14 - "dd-MMM-yyyy hh:mm"
 			sDate = "dd" + oDTP.settings.dateSeparator + "MMM" + oDTP.settings.dateSeparator + "yyyy";
 			sTime = "hh" + oDTP.settings.timeSeparator + "mm";
 			sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
 			oDTP.oData.sArrInputDateTimeFormats.push(sDateTime);
-			
+
 			//  15 - "dd-MMM-yyyy hh:mm AA"
 			sDate = "dd" + oDTP.settings.dateSeparator + "MMM" + oDTP.settings.dateSeparator + "yyyy";
 			sTime = "hh" + oDTP.settings.timeSeparator + "mm" + oDTP.settings.timeMeridiemSeparator + "AA";
@@ -538,7 +538,7 @@ $.cf = {
 		_createPicker: function()
 		{
 			var oDTP = this;
-		
+
 			if(oDTP.settings.isInline)
 			{
 				$(oDTP.element).addClass("dtpicker-inline");
@@ -551,8 +551,8 @@ $.cf = {
 					oDTP._hidePicker("");
 				});
 			}
-		
-			var sTempStr = "";	
+
+			var sTempStr = "";
 			sTempStr += "<div class='dtpicker-bg'>";
 			sTempStr += "<div class='dtpicker-cont'>";
 			sTempStr += "<div class='dtpicker-content'>";
@@ -563,11 +563,11 @@ $.cf = {
 			sTempStr += "</div>";
 			$(oDTP.element).html(sTempStr);
 		},
-	
+
 		_addEventHandlersForInput: function()
 		{
 			var oDTP = this;
-		
+
 			if(!oDTP.settings.isInline)
 			{
 				oDTP.oData.oInputElement = null;
@@ -576,12 +576,12 @@ $.cf = {
 				{
 					$(this).attr("data-field", $(this).attr("type"));
 					$(this).attr("type", "text");
-				});	
-	        
+				});
+
 				var sel = "[data-field='date'], [data-field='time'], [data-field='datetime']";
 				$(oDTP.settings.parentElement).off("focus", sel, oDTP._inputFieldFocus)
 											  .on ("focus", sel, {"obj": oDTP}, oDTP._inputFieldFocus)
-											  
+
 				$(oDTP.settings.parentElement).off("click", sel, oDTP._inputFieldClick)
 											  .on ("click", sel, {"obj": oDTP}, oDTP._inputFieldClick);
 			}
@@ -589,7 +589,7 @@ $.cf = {
 			if(oDTP.settings.addEventHandlers)
 				oDTP.settings.addEventHandlers.call(oDTP);
 		},
-	
+
 		_inputFieldFocus: function(e)
 		{
 			var oDTP = e.data.obj;
@@ -659,7 +659,7 @@ $.cf = {
 			var oDTP = this;
 
 			dInput = dInput || oDTP.oData.dCurrentDate;
-		
+
 			var oArrElements;
 			if($.cf._isValid(oInputField))
 			{
@@ -680,16 +680,16 @@ $.cf = {
 					oArrElements = $("[data-field='date'], [data-field='time'], [data-field='datetime']");
 				}
 			}
-		
+
 			oArrElements.each(function()
 			{
 				var oElement = this,
 				sMode, sFormat, bIs12Hour, sOutput;
-			
+
 		        sMode = $(oElement).data("field");
 		        if(!$.cf._isValid(sMode))
 		    		sMode = oDTP.settings.mode;
-		    
+
 		    	sFormat = "Custom";
 		    	bIs12Hour = false;
 		    	if(! oDTP.settings.formatDateTimeString)
@@ -719,12 +719,12 @@ $.cf = {
 			var oDTP = this;
 			return oDTP._setOutput(sMode, sFormat, oDTP.getIs12Hour(sMode, sFormat), dInput);
 		},
-	
+
 		// Public Method
 		showDateTimePicker: function(oElement)
 		{
 			var oDTP = this;
-			
+
 			if(oDTP.oData.oInputElement !== null)
 			{
 				if(!oDTP.settings.isInline)
@@ -733,15 +733,15 @@ $.cf = {
 			else
 				oDTP._showPicker(oElement);
 		},
-	
+
 		_setButtonAction: function(bFromTab)
 		{
 			var oDTP = this;
-		
+
 			if(oDTP.oData.oInputElement !== null)
 			{
 				oDTP._setValueOfElement(oDTP._setOutput());
-				
+
 				if(bFromTab)
 				{
 					if(oDTP.settings.buttonClicked)
@@ -760,17 +760,17 @@ $.cf = {
 		_setOutput: function(sMode, sFormat, bIs12Hour, dCurrentDate, oElement)
 		{
 			var oDTP = this;
-		
+
 			dCurrentDate = $.cf._isValid(dCurrentDate) ? dCurrentDate : oDTP.oData.dCurrentDate;
 			bIs12Hour = bIs12Hour || oDTP.oData.bIs12Hour;
-		
+
 			var oDTV = oDTP._setVariablesForDate(dCurrentDate, true, true);
-		
+
 			var sOutput = "",
 			oFDate = oDTP._formatDate(oDTV),
 			oFTime = oDTP._formatTime(oDTV),
 			oFDT = $.extend({}, oFDate, oFTime),
-		
+
 			sDateStr = "", sTimeStr = "",
 			iArgsLength = Function.length,
 			bAddSeconds;
@@ -781,7 +781,7 @@ $.cf = {
 			}
 			else
 			{
-				// Set bDate, bTime, bDateTime & bArrMatchFormat based on arguments of this function 
+				// Set bDate, bTime, bDateTime & bArrMatchFormat based on arguments of this function
 				oDTP._setMatchFormat(iArgsLength, sMode, sFormat);
 
 				if(oDTP.oData.bDateMode)
@@ -834,48 +834,48 @@ $.cf = {
 						sOutput = oFDT.HH + oDTP.settings.timeSeparator + oFDT.mm;
 					}
 				}
-				else if(oDTP.oData.bDateTimeMode) 
+				else if(oDTP.oData.bDateTimeMode)
 				{
 					// Date Part - "dd-MM-yyyy"
-					if(oDTP.oData.bArrMatchFormat[0] || 
+					if(oDTP.oData.bArrMatchFormat[0] ||
 						oDTP.oData.bArrMatchFormat[1] ||
-						oDTP.oData.bArrMatchFormat[8] || 
+						oDTP.oData.bArrMatchFormat[8] ||
 						oDTP.oData.bArrMatchFormat[9])
 					{
 						sDateStr = oFDT.dd + oDTP.settings.dateSeparator + oFDT.MM + oDTP.settings.dateSeparator + oFDT.yyyy;
 					}
 					// Date Part - "MM-dd-yyyy"
-					else if(oDTP.oData.bArrMatchFormat[2] || 
+					else if(oDTP.oData.bArrMatchFormat[2] ||
 							oDTP.oData.bArrMatchFormat[3] ||
-							oDTP.oData.bArrMatchFormat[10] || 
+							oDTP.oData.bArrMatchFormat[10] ||
 							oDTP.oData.bArrMatchFormat[11])
 					{
 						sDateStr = oFDT.MM + oDTP.settings.dateSeparator + oFDT.dd + oDTP.settings.dateSeparator + oFDT.yyyy;
 					}
 					// Date Part - "yyyy-MM-dd"
-					else if(oDTP.oData.bArrMatchFormat[4] || 
+					else if(oDTP.oData.bArrMatchFormat[4] ||
 							oDTP.oData.bArrMatchFormat[5] ||
-							oDTP.oData.bArrMatchFormat[12] || 
+							oDTP.oData.bArrMatchFormat[12] ||
 							oDTP.oData.bArrMatchFormat[13])
 					{
 						sDateStr = oFDT.yyyy + oDTP.settings.dateSeparator + oFDT.MM + oDTP.settings.dateSeparator + oFDT.dd;
 					}
 					// Date Part - "dd-MMM-yyyy"
-					else if(oDTP.oData.bArrMatchFormat[6] || 
+					else if(oDTP.oData.bArrMatchFormat[6] ||
 							oDTP.oData.bArrMatchFormat[7] ||
-							oDTP.oData.bArrMatchFormat[14] || 
+							oDTP.oData.bArrMatchFormat[14] ||
 							oDTP.oData.bArrMatchFormat[15])
 					{
 						sDateStr = oFDT.dd + oDTP.settings.dateSeparator + oFDT.monthShort + oDTP.settings.dateSeparator + oFDT.yyyy;
 					}
-				
-					bAddSeconds = oDTP.oData.bArrMatchFormat[0] || 
+
+					bAddSeconds = oDTP.oData.bArrMatchFormat[0] ||
 							oDTP.oData.bArrMatchFormat[1] ||
-							oDTP.oData.bArrMatchFormat[2] || 
+							oDTP.oData.bArrMatchFormat[2] ||
 							oDTP.oData.bArrMatchFormat[3] ||
-							oDTP.oData.bArrMatchFormat[4] || 
+							oDTP.oData.bArrMatchFormat[4] ||
 							oDTP.oData.bArrMatchFormat[5] ||
-							oDTP.oData.bArrMatchFormat[6] || 
+							oDTP.oData.bArrMatchFormat[6] ||
 							oDTP.oData.bArrMatchFormat[7];
 					if(bIs12Hour)
 					{
@@ -899,22 +899,22 @@ $.cf = {
 							sTimeStr = oFDT.HH + oDTP.settings.timeSeparator + oFDT.mm;
 						}
 					}
-				
+
 					if(sDateStr !== "" && sTimeStr !== "")
 						sOutput = sDateStr + oDTP.settings.dateTimeSeparator + sTimeStr;
 				}
-			
+
 				// Reset bDate, bTime, bDateTime & bArrMatchFormat to original values
 				oDTP._setMatchFormat(iArgsLength);
 			}
 
 			return sOutput;
 		},
-	
+
 		_clearButtonAction: function()
 		{
 			var oDTP = this;
-		
+
 			if(oDTP.oData.oInputElement !== null)
 			{
 				oDTP._setValueOfElement("");
@@ -922,17 +922,17 @@ $.cf = {
 			if(!oDTP.settings.isInline)
 				oDTP._hidePicker("");
 		},
-	
+
 		_setOutputOnIncrementOrDecrement: function()
 		{
 			var oDTP = this;
-		
+
 			if($.cf._isValid(oDTP.oData.oInputElement) && oDTP.settings.setValueInTextboxOnEveryClick)
 			{
 				oDTP._setValueOfElement(oDTP._setOutput());
 			}
 		},
-	
+
 		_showPicker: function(oElement)
 		{
 			var oDTP = this;
@@ -941,7 +941,7 @@ $.cf = {
 			{
 				oDTP.oData.oInputElement = oElement;
 				oDTP.oData.iTabIndex = parseInt($(oElement).attr("tabIndex"));
-			
+
 				var sMode = $(oElement).data("field") || "",
 				sMinValue = $(oElement).data("min") || "",
 				sMaxValue = $(oElement).data("max") || "",
@@ -950,29 +950,29 @@ $.cf = {
 				sStartEnd = $(oElement).data("startend") || "",
 				sStartEndElem = $(oElement).data("startendelem") || "",
 				sCurrent = oDTP._getValueOfElement(oElement) || "";
-			
+
 				if(sView !== "")
 				{
 					if($.cf._compare(sView, "Popup"))
 						oDTP.setIsPopup(true);
-					else 
+					else
 						oDTP.setIsPopup(false);
 				}
-			
+
 				if(!oDTP.settings.isPopup && !oDTP.settings.isInline)
 				{
 					oDTP._createPicker();
-				
+
 					var iElemTop = $(oDTP.oData.oInputElement).offset().top + $(oDTP.oData.oInputElement).outerHeight(),
 					iElemLeft = $(oDTP.oData.oInputElement).offset().left,
 					iElemWidth =  $(oDTP.oData.oInputElement).outerWidth();
-				
+
 					$(oDTP.element).css({position: "absolute", top: iElemTop, left: iElemLeft, width: iElemWidth, height: "auto"});
 				}
 
 				if(oDTP.settings.beforeShow)
 					oDTP.settings.beforeShow.call(oDTP, oElement);
-			
+
 				sMode = $.cf._isValid(sMode) ? sMode : oDTP.settings.mode;
 				oDTP.settings.mode = sMode;
 				if(!$.cf._isValid(sFormat))
@@ -986,7 +986,7 @@ $.cf = {
 				}
 
 				oDTP._matchFormat(sMode, sFormat);
-			
+
 				oDTP.oData.dMinValue = null;
 				oDTP.oData.dMaxValue = null;
 				oDTP.oData.bIs12Hour = false;
@@ -995,19 +995,19 @@ $.cf = {
 				sTempDate, dTempDate,
 				sTempTime, dTempTime,
 				sTempDateTime, dTempDateTime;
-			
+
 				if(oDTP.oData.bDateMode)
 				{
 					sMin = sMinValue || oDTP.settings.minDate;
 					sMax = sMaxValue || oDTP.settings.maxDate;
-				
+
 					oDTP.oData.sDateFormat = sFormat;
-				
+
 					if($.cf._isValid(sMin))
 						oDTP.oData.dMinValue = oDTP._parseDate(sMin);
 					if($.cf._isValid(sMax))
 						oDTP.oData.dMaxValue = oDTP._parseDate(sMax);
-				
+
 					if(sStartEnd !== "" && ($.cf._compare(sStartEnd, "start") || $.cf._compare(sStartEnd, "end")) && sStartEndElem !== "")
 					{
 						if($(sStartEndElem).length >= 1)
@@ -1043,7 +1043,7 @@ $.cf = {
 							}
 						}
 					}
-				
+
 					if(oDTP.settings.parseDateTimeString)
 						oDTP.oData.dCurrentDate = oDTP.settings.parseDateTimeString.call(oDTP, sCurrent, sMode, $(oElement));
 					else
@@ -1057,10 +1057,10 @@ $.cf = {
 				{
 					sMin = sMinValue || oDTP.settings.minTime;
 					sMax = sMaxValue || oDTP.settings.maxTime;
-				
+
 					oDTP.oData.sTimeFormat = sFormat;
 					oDTP.oData.bIs12Hour = oDTP.getIs12Hour();
-				
+
 					if($.cf._isValid(sMin))
 					{
 						oDTP.oData.dMinValue = oDTP._parseTime(sMin);
@@ -1135,7 +1135,7 @@ $.cf = {
 							}
 						}
 					}
-				
+
 					if(oDTP.settings.parseDateTimeString)
 						oDTP.oData.dCurrentDate = oDTP.settings.parseDateTimeString.call(oDTP, sCurrent, sMode, $(oElement));
 					else
@@ -1145,15 +1145,15 @@ $.cf = {
 				{
 					sMin = sMinValue || oDTP.settings.minDateTime;
 					sMax = sMaxValue || oDTP.settings.maxDateTime;
-				
+
 					oDTP.oData.sDateTimeFormat = sFormat;
 					oDTP.oData.bIs12Hour = oDTP.getIs12Hour();
-				
+
 					if($.cf._isValid(sMin))
 						oDTP.oData.dMinValue = oDTP._parseDateTime(sMin);
 					if($.cf._isValid(sMax))
 						oDTP.oData.dMaxValue = oDTP._parseDateTime(sMax);
-								
+
 					if(sStartEnd !== "" && ($.cf._compare(sStartEnd, "start") || $.cf._compare(sStartEnd, "end")) && sStartEndElem !== "")
 					{
 						if($(sStartEndElem).length >= 1)
@@ -1165,7 +1165,7 @@ $.cf = {
 									dTempDateTime = oDTP.settings.parseDateTimeString.call(oDTP, sTempDateTime, sMode, $(sStartEndElem));
 								else
 									dTempDateTime = oDTP._parseDateTime(sTempDateTime);
-								
+
 								if($.cf._compare(sStartEnd, "start"))
 								{
 									if($.cf._isValid(sMax))
@@ -1189,13 +1189,13 @@ $.cf = {
 							}
 						}
 					}
-				
+
 					if(oDTP.settings.parseDateTimeString)
 						oDTP.oData.dCurrentDate = oDTP.settings.parseDateTimeString.call(oDTP, sCurrent, sMode, $(oElement));
 					else
 						oDTP.oData.dCurrentDate = oDTP._parseDateTime(sCurrent);
 				}
-			
+
 				oDTP._setVariablesForDate();
 				oDTP._modifyPicker();
 				$(oDTP.element).fadeIn(oDTP.settings.animationDuration);
@@ -1205,29 +1205,29 @@ $.cf = {
 					setTimeout(function()
 					{
 						oDTP.settings.afterShow.call(oDTP, oElement);
-					}, oDTP.settings.animationDuration);	
+					}, oDTP.settings.animationDuration);
 				}
 			}
 		},
-	
+
 		_hidePicker: function(iDuration, oElementToShow)
 		{
 			var oDTP = this;
-			
+
 			var oElement = oDTP.oData.oInputElement;
-			
+
 			if(oDTP.settings.beforeHide)
 				oDTP.settings.beforeHide.call(oDTP, oElement);
 
 			if(!$.cf._isValid(iDuration))
 				iDuration = oDTP.settings.animationDuration;
-		
+
 			if($.cf._isValid(oDTP.oData.oInputElement))
 			{
 				$(oDTP.oData.oInputElement).blur();
 				oDTP.oData.oInputElement = null;
 			}
-		
+
 			$(oDTP.element).fadeOut(iDuration);
 			if(iDuration === 0)
 			{
@@ -1261,7 +1261,7 @@ $.cf = {
 			if($.cf._isValid(oElementToShow))
 				oDTP._showPicker(oElementToShow);
 		},
-	
+
 		_modifyPicker: function()
 		{
 			var oDTP = this;
@@ -1272,7 +1272,7 @@ $.cf = {
 			{
 				sTitleContent = oDTP.settings.titleContentDate;
 				iNumberOfColumns = 3;
-			
+
 				if(oDTP.oData.bArrMatchFormat[0])  // "dd-MM-yyyy"
 				{
 					sArrFields = ["day", "month", "year"];
@@ -1332,7 +1332,7 @@ $.cf = {
 			else if(oDTP.oData.bDateTimeMode)
 			{
 				sTitleContent = oDTP.settings.titleContentDateTime;
-			
+
 				if(oDTP.oData.bArrMatchFormat[0])
 				{
 					iNumberOfColumns = 6;
@@ -1414,15 +1414,15 @@ $.cf = {
 					sArrFields = ["day", "month", "year", "hour", "minutes", "meridiem"];
 				}
 			}
-			
-		
+
+
 			//--------------------------------------------------------------------
 			var sColumnClass = "dtpicker-comp" + iNumberOfColumns,
 			bDisplayHeaderCloseButton = false,
 			bDisplaySetButton = false,
 			bDisplayClearButton = false,
 			iTempIndex;
-			
+
 			for(iTempIndex = 0; iTempIndex < oDTP.settings.buttonsToDisplay.length; iTempIndex++)
 			{
 				if($.cf._compare(oDTP.settings.buttonsToDisplay[iTempIndex], "HeaderCloseButton"))
@@ -1432,7 +1432,7 @@ $.cf = {
 				else if($.cf._compare(oDTP.settings.buttonsToDisplay[iTempIndex], "ClearButton"))
 					bDisplayClearButton = true;
 			}
-		
+
 			var sHeader = "";
 			if(oDTP.settings.showHeader)
 			{
@@ -1443,9 +1443,9 @@ $.cf = {
 				sHeader += "<div class='dtpicker-value'></div>";
 				sHeader += "</div>";
 			}
-		
+
 			//--------------------------------------------------------------------
-		
+
 			var sDTPickerComp = "";
 			sDTPickerComp += "<div class='dtpicker-components'>";
 
@@ -1466,17 +1466,17 @@ $.cf = {
 				sDTPickerComp += "</div>";
 				sDTPickerComp += "</div>";
 			}
-		
+
 			sDTPickerComp += "</div>";
-		
+
 			//--------------------------------------------------------------------
-		
+
 			var sButtonContClass = "";
 			if(bDisplaySetButton && bDisplayClearButton)
 				sButtonContClass = " dtpicker-twoButtons";
 			else
 				sButtonContClass = " dtpicker-singleButton";
-		
+
 			var sDTPickerButtons = "";
 			sDTPickerButtons += "<div class='dtpicker-buttonCont" + sButtonContClass + "'>";
 			if(bDisplaySetButton)
@@ -1484,22 +1484,22 @@ $.cf = {
 			if(bDisplayClearButton)
 				sDTPickerButtons += "<a class='dtpicker-button dtpicker-buttonClear'>" + oDTP.settings.clearButtonContent + "</a>";
 			sDTPickerButtons += "</div>";
-		
+
 			//--------------------------------------------------------------------
-		
+
 			var sTempStr = sHeader + sDTPickerComp + sDTPickerButtons;
-		
+
 			$(oDTP.element).find(".dtpicker-subcontent").html(sTempStr);
-		
+
 			oDTP._setCurrentDate();
 			oDTP._addEventHandlersForPicker();
 		},
-	
+
 		_addEventHandlersForPicker: function()
 		{
 			var oDTP = this;
 			var classType, keyCode, $nextElem;
-		
+
 			if(!oDTP.settings.isInline)
 			{
 				$(document).on("click.DateTimePicker", function(e)
@@ -1507,7 +1507,7 @@ $.cf = {
 					oDTP._hidePicker("");
 				});
 			}
-		
+
 			$(document).on("keydown.DateTimePicker", function(e)
 			{
 				keyCode = parseInt(e.keyCode ? e.keyCode : e.which);
@@ -1572,11 +1572,11 @@ $.cf = {
 			{
 				e.stopPropagation();
 			});
-		
+
 			if(!oDTP.settings.readonlyInputs)
 			{
-				$(".dtpicker-compValue").not(".month .dtpicker-compValue, .meridiem .dtpicker-compValue").keyup(function() 
-				{ 
+				$(".dtpicker-compValue").not(".month .dtpicker-compValue, .meridiem .dtpicker-compValue").keyup(function()
+				{
 					this.value = this.value.replace(/[^0-9\.]/g,"");
 				});
 
@@ -1585,12 +1585,12 @@ $.cf = {
 					oDTP.oData.bElemFocused = true;
 					$(this).select();
 				});
-			
+
 				$(".dtpicker-compValue").blur(function()
 				{
 					oDTP._getValuesFromInputBoxes();
 					oDTP._setCurrentDate();
-				
+
 					oDTP.oData.bElemFocused = false;
 					var $oParentElem = $(this).parent().parent();
 					setTimeout(function()
@@ -1599,17 +1599,17 @@ $.cf = {
 						{
 							oDTP._setButtonAction(false);
 						}
-					}, 50);			
+					}, 50);
 				});
-			
+
 				$(".dtpicker-compValue").keyup(function(e)
 				{
 					var $oTextField = $(this),
-				
+
 					sTextBoxVal = $oTextField.val(),
 					iLength = sTextBoxVal.length,
 					sNewTextBoxVal;
-				
+
 					if($oTextField.parent().hasClass("day") || $oTextField.parent().hasClass("hour") || $oTextField.parent().hasClass("minutes") || $oTextField.parent().hasClass("meridiem"))
 					{
 						if(iLength > 2)
@@ -1634,7 +1634,7 @@ $.cf = {
 							$oTextField.val(sNewTextBoxVal);
 						}
 					}
-					
+
 					if(parseInt(e.keyCode ? e.keyCode : e.which) === 9)
 						$(this).select();
 				});
@@ -1661,7 +1661,7 @@ $.cf = {
 			});
 
 			//-----------------------------------------------------------------------
-		
+
 			$(oDTP.element).find(".dtpicker-close").click(function(e)
 			{
 				if(oDTP.settings.buttonClicked)
@@ -1669,23 +1669,23 @@ $.cf = {
 				if(!oDTP.settings.isInline)
 					oDTP._hidePicker("");
 			});
-		
+
 			$(oDTP.element).find(".dtpicker-buttonSet").click(function(e)
 			{
 				if(oDTP.settings.buttonClicked)
 					oDTP.settings.buttonClicked.call(oDTP, "SET", oDTP.oData.oInputElement);
 				oDTP._setButtonAction(false);
 			});
-		
+
 			$(oDTP.element).find(".dtpicker-buttonClear").click(function(e)
 			{
 				if(oDTP.settings.buttonClicked)
 					oDTP.settings.buttonClicked.call(oDTP, "CLEAR", oDTP.oData.oInputElement);
 				oDTP._clearButtonAction();
 			});
-		
+
 			// ----------------------------------------------------------------------------
-		
+
 			//console.log((oDTP.settings.captureTouchHold || oDTP.settings.captureMouseHold));
 			if(oDTP.settings.captureTouchHold || oDTP.settings.captureMouseHold)
 			{
@@ -1694,7 +1694,7 @@ $.cf = {
 					sHoldEvents += "touchstart touchmove touchend ";
 				if(oDTP.settings.captureMouseHold)
 					sHoldEvents += "mousedown mouseup";
- 
+
 				$(".dtpicker-cont *").on(sHoldEvents, function(e)
 				{
 					oDTP._clearIntervalForTouchEvents();
@@ -1715,63 +1715,63 @@ $.cf = {
 					oDTP._setCurrentDate();
 					oDTP._setOutputOnIncrementOrDecrement();
 				});
-			
+
 				$(oDTP.element).find(".day .decrement, .day .decrement *").click(function(e)
 				{
 					oDTP.oData.iCurrentDay--;
 					oDTP._setCurrentDate();
 					oDTP._setOutputOnIncrementOrDecrement();
 				});
-			
+
 				$(oDTP.element).find(".month .increment, .month .increment *").click(function(e)
 				{
 					oDTP.oData.iCurrentMonth++;
 					oDTP._setCurrentDate();
 					oDTP._setOutputOnIncrementOrDecrement();
 				});
-			
+
 				$(oDTP.element).find(".month .decrement, .month .decrement *").click(function(e)
 				{
 					oDTP.oData.iCurrentMonth--;
 					oDTP._setCurrentDate();
 					oDTP._setOutputOnIncrementOrDecrement();
 				});
-			
+
 				$(oDTP.element).find(".year .increment, .year .increment *").click(function(e)
 				{
 					oDTP.oData.iCurrentYear++;
 					oDTP._setCurrentDate();
 					oDTP._setOutputOnIncrementOrDecrement();
 				});
-			
+
 				$(oDTP.element).find(".year .decrement, .year .decrement *").click(function(e)
 				{
 					oDTP.oData.iCurrentYear--;
 					oDTP._setCurrentDate();
 					oDTP._setOutputOnIncrementOrDecrement();
 				});
-			
+
 				$(oDTP.element).find(".hour .increment, .hour .increment *").click(function(e)
 				{
 					oDTP.oData.iCurrentHour++;
 					oDTP._setCurrentDate();
 					oDTP._setOutputOnIncrementOrDecrement();
 				});
-			
+
 				$(oDTP.element).find(".hour .decrement, .hour .decrement *").click(function(e)
 				{
 					oDTP.oData.iCurrentHour--;
 					oDTP._setCurrentDate();
 					oDTP._setOutputOnIncrementOrDecrement();
 				});
-			
+
 				$(oDTP.element).find(".minutes .increment, .minutes .increment *").click(function(e)
 				{
 					oDTP.oData.iCurrentMinutes += oDTP.settings.minuteInterval;
 					oDTP._setCurrentDate();
 					oDTP._setOutputOnIncrementOrDecrement();
 				});
-			
+
 				$(oDTP.element).find(".minutes .decrement, .minutes .decrement *").click(function(e)
 				{
 					oDTP.oData.iCurrentMinutes -= oDTP.settings.minuteInterval;
@@ -1785,7 +1785,7 @@ $.cf = {
 					oDTP._setCurrentDate();
 					oDTP._setOutputOnIncrementOrDecrement();
 				});
-			
+
 				$(oDTP.element).find(".seconds .decrement, .seconds .decrement *").click(function(e)
 				{
 					oDTP.oData.iCurrentSeconds -= oDTP.settings.secondsInterval;
@@ -1793,7 +1793,7 @@ $.cf = {
 					oDTP._setOutputOnIncrementOrDecrement();
 				});
 			}
-		
+
 			$(oDTP.element).find(".meridiem .dtpicker-compButton, .meridiem .dtpicker-compButton *").click(function(e)
 			{
 				if($.cf._compare(oDTP.oData.sCurrentMeridiem, "AM"))
@@ -1811,7 +1811,7 @@ $.cf = {
 			});
 		},
 
-		_adjustMinutes: function(iMinutes) 
+		_adjustMinutes: function(iMinutes)
 		{
 			var oDTP = this;
 			if(oDTP.settings.roundOffMinutes && oDTP.settings.minuteInterval !== 1)
@@ -1821,7 +1821,7 @@ $.cf = {
 			return iMinutes;
 		},
 
-		_adjustSeconds: function(iSeconds) 
+		_adjustSeconds: function(iSeconds)
 		{
 			var oDTP = this;
 			if(oDTP.settings.roundOffSeconds && oDTP.settings.secondsInterval !== 1)
@@ -1830,27 +1830,27 @@ $.cf = {
 			}
 			return iSeconds;
 		},
-	
+
 		_getValueOfElement: function(oElem)
 		{
 			var oDTP = this;
 			var sElemValue = "";
-		
+
 			if($.cf._compare($(oElem).prop("tagName"), "INPUT"))
 				sElemValue = $(oElem).val();
 			else
 				sElemValue = $(oElem).html();
-		
+
 			return sElemValue;
 		},
-	
+
 		_setValueOfElement: function(sElemValue, $oElem)
 		{
 			var oDTP = this;
-		
+
 			if(!$.cf._isValid($oElem))
 				$oElem = $(oDTP.oData.oInputElement);
-		
+
 			if($.cf._compare($oElem.prop("tagName"), "INPUT"))
 				$oElem.val(sElemValue);
 			else
@@ -1860,9 +1860,9 @@ $.cf = {
 
 			if(oDTP.settings.settingValueOfElement)
 				oDTP.settings.settingValueOfElement.call(oDTP, sElemValue, dElemValue, $oElem);
-		
-			$oElem.change();		
-		
+
+			$oElem.change();
+
 			return sElemValue;
 		},
 
@@ -2030,9 +2030,9 @@ $.cf = {
 			oDTP._setCurrentDate();
 			oDTP._setOutputOnIncrementOrDecrement();
 		},
-	
+
 		//-----------------------------------------------------------------
-	
+
 		_parseDate: function(sDate)
 		{
 			var oDTP = this;
@@ -2041,7 +2041,7 @@ $.cf = {
 			iDate = dTempDate.getDate(),
 			iMonth = dTempDate.getMonth(),
 			iYear = dTempDate.getFullYear();
-		
+
 			if($.cf._isValid(sDate))
 			{
 				if(typeof sDate === "string")
@@ -2051,7 +2051,7 @@ $.cf = {
 						sArrDate = sDate.split(oDTP.settings.monthYearSeparator);
 					else
 						sArrDate = sDate.split(oDTP.settings.dateSeparator);
-				
+
 					if(oDTP.oData.bArrMatchFormat[0])  // "dd-MM-yyyy"
 					{
 						iDate = parseInt(sArrDate[0]);
@@ -2106,11 +2106,11 @@ $.cf = {
 			dTempDate = new Date(iYear, iMonth, iDate, 0, 0, 0, 0);
 			return dTempDate;
 		},
-	
+
 		_parseTime: function(sTime)
 		{
 			var oDTP = this;
-		
+
 			var dTempDate = (oDTP.settings.defaultDate ? new Date(oDTP.settings.defaultDate) : new Date()),
 			iDate = dTempDate.getDate(),
 			iMonth = dTempDate.getMonth(),
@@ -2123,7 +2123,7 @@ $.cf = {
 							oDTP.oData.bArrMatchFormat[1];
 
 			iSeconds = bShowSeconds ? oDTP._adjustSeconds(iSeconds) : 0;
-		
+
 			if($.cf._isValid(sTime))
 			{
 				if(typeof sTime === "string")
@@ -2166,16 +2166,16 @@ $.cf = {
 				}
 			}
 			iMinutes = oDTP._adjustMinutes(iMinutes);
-		
+
 			dTempDate = new Date(iYear, iMonth, iDate, iHour, iMinutes, iSeconds, 0);
-		
+
 			return dTempDate;
 		},
-	
+
 		_parseDateTime: function(sDateTime)
 		{
 			var oDTP = this;
-		
+
 			var dTempDate = (oDTP.settings.defaultDate ? new Date(oDTP.settings.defaultDate) : new Date()),
 			iDate = dTempDate.getDate(),
 			iMonth = dTempDate.getMonth(),
@@ -2195,14 +2195,14 @@ $.cf = {
 							oDTP.oData.bArrMatchFormat[7]; // "dd-MMM-yyyy hh:mm:ss AA"
 
 			iSeconds = bShowSeconds ? oDTP._adjustSeconds(iSeconds) : 0;
-		
+
 			if($.cf._isValid(sDateTime))
 			{
 				if(typeof sDateTime === "string")
 				{
 					sArrDateTime = sDateTime.split(oDTP.settings.dateTimeSeparator);
 					sArrDate = sArrDateTime[0].split(oDTP.settings.dateSeparator);
-				
+
 					if(oDTP.oData.bArrMatchFormat[0] || // "dd-MM-yyyy HH:mm:ss"
 						oDTP.oData.bArrMatchFormat[1] || // ""dd-MM-yyyy hh:mm:ss AA"
 						oDTP.oData.bArrMatchFormat[8] || // "dd-MM-yyyy HH:mm"
@@ -2239,7 +2239,7 @@ $.cf = {
 						iMonth = oDTP._getShortMonthIndex(sArrDate[1]);
 						iYear = parseInt(sArrDate[2]);
 					}
-				
+
 					sTime = sArrDateTime[1];
 					if($.cf._isValid(sTime))
 					{
@@ -2253,11 +2253,11 @@ $.cf = {
 								sTime = sArrTimeComp[0];
 								sMeridiem = sArrTimeComp[1];
 							}
-						
+
 							if(!($.cf._compare(sMeridiem, "AM") || $.cf._compare(sMeridiem, "PM")))
 								sMeridiem = "";
 						}
-						
+
 						sArrTime = sTime.split(oDTP.settings.timeSeparator);
 
 						iHour = parseInt(sArrTime[0]);
@@ -2290,11 +2290,11 @@ $.cf = {
 				}
 			}
 			iMinutes = oDTP._adjustMinutes(iMinutes);
-    	
+
 			dTempDate = new Date(iYear, iMonth, iDate, iHour, iMinutes, iSeconds, 0);
 			return dTempDate;
 		},
-	
+
 		_getShortMonthIndex: function(sMonthName)
 		{
 			var oDTP = this;
@@ -2322,14 +2322,14 @@ $.cf = {
 		{
 			var oDTP = this;
 
-			var bIs12Hour = false, 
+			var bIs12Hour = false,
 			iArgsLength = Function.length;
 
 			oDTP._setMatchFormat(iArgsLength, sMode, sFormat);
 
 			if(oDTP.oData.bTimeMode)
 	        {
-	        	bIs12Hour = oDTP.oData.bArrMatchFormat[0] || 
+	        	bIs12Hour = oDTP.oData.bArrMatchFormat[0] ||
 	        				oDTP.oData.bArrMatchFormat[2];
 	        }
 	        else if(oDTP.oData.bDateTimeMode)
@@ -2348,13 +2348,13 @@ $.cf = {
 
 			return bIs12Hour;
 		},
-	
+
 		//-----------------------------------------------------------------
-	
+
 		_setVariablesForDate: function(dInput, bIncludeTime, bSetMeridiem)
 		{
 			var oDTP = this;
-		
+
 			var dTemp, oDTV = {},
 			bValidInput = $.cf._isValid(dInput);
 			if(bValidInput)
@@ -2369,9 +2369,9 @@ $.cf = {
 			{
 				if (Object.prototype.toString.call(oDTP.oData.dCurrentDate) === "[object Date]" && isFinite(oDTP.oData.dCurrentDate))
     		  			dTemp = new Date(oDTP.oData.dCurrentDate);
-  				else 
+  				else
     					dTemp = new Date();
-    					
+
 				if(!$.cf._isValid(bIncludeTime))
 					bIncludeTime = (oDTP.oData.bTimeMode || oDTP.oData.bDateTimeMode);
 				if(!$.cf._isValid(bSetMeridiem))
@@ -2382,13 +2382,13 @@ $.cf = {
 			oDTV.iCurrentMonth = dTemp.getMonth();
 			oDTV.iCurrentYear = dTemp.getFullYear();
 			oDTV.iCurrentWeekday = dTemp.getDay();
-		
+
 			if(bIncludeTime)
 			{
 				oDTV.iCurrentHour = dTemp.getHours();
 				oDTV.iCurrentMinutes = dTemp.getMinutes();
 				oDTV.iCurrentSeconds = dTemp.getSeconds();
-			
+
 				if(bSetMeridiem)
 				{
 					oDTV.sCurrentMeridiem = oDTP._determineMeridiemFromHourAndMinutes(oDTV.iCurrentHour, oDTV.iCurrentMinutes);
@@ -2400,11 +2400,11 @@ $.cf = {
 			else
 				oDTP.oData = $.extend(oDTP.oData, oDTV);
 		},
-	
+
 		_getValuesFromInputBoxes: function()
 		{
 			var oDTP = this;
-		
+
 			if(oDTP.oData.bDateMode || oDTP.oData.bDateTimeMode)
 			{
 				var sMonth, iMonth;
@@ -2424,11 +2424,11 @@ $.cf = {
 						oDTP.oData.iCurrentMonth = parseInt(sMonth - 1);
 					}
 				}
-			
-				oDTP.oData.iCurrentDay = parseInt($(oDTP.element).find(".day .dtpicker-compValue").val()) || oDTP.oData.iCurrentDay;					
+
+				oDTP.oData.iCurrentDay = parseInt($(oDTP.element).find(".day .dtpicker-compValue").val()) || oDTP.oData.iCurrentDay;
 				oDTP.oData.iCurrentYear = parseInt($(oDTP.element).find(".year .dtpicker-compValue").val()) || oDTP.oData.iCurrentYear;
 			}
-		
+
 			if(oDTP.oData.bTimeMode || oDTP.oData.bDateTimeMode)
 			{
 				var iTempHour, iTempMinutes, iTempSeconds, sMeridiem;
@@ -2440,7 +2440,7 @@ $.cf = {
 				oDTP.oData.iCurrentHour = isNaN(iTempHour) ? oDTP.oData.iCurrentHour : iTempHour;
 				oDTP.oData.iCurrentMinutes = isNaN(iTempMinutes) ? oDTP.oData.iCurrentMinutes : iTempMinutes;
 				oDTP.oData.iCurrentSeconds = isNaN(iTempSeconds) ? oDTP.oData.iCurrentSeconds : iTempSeconds;
-			
+
 				if(oDTP.oData.iCurrentSeconds > 59)
 				{
 					oDTP.oData.iCurrentMinutes += oDTP.oData.iCurrentSeconds / 60;
@@ -2462,13 +2462,13 @@ $.cf = {
 					if(oDTP.oData.iCurrentHour > 23)
 						oDTP.oData.iCurrentHour = (oDTP.oData.iCurrentHour % 23);
 				}
-			
+
 				if(oDTP.oData.bIs12Hour)
 				{
 					sMeridiem = $(oDTP.element).find(".meridiem .dtpicker-compValue").val();
 					if($.cf._compare(sMeridiem, "AM") || $.cf._compare(sMeridiem, "PM"))
 						oDTP.oData.sCurrentMeridiem = sMeridiem;
-				
+
 					if($.cf._compare(oDTP.oData.sCurrentMeridiem, "PM"))
 					{
 						if(oDTP.oData.iCurrentHour !== 12 && oDTP.oData.iCurrentHour < 13)
@@ -2483,7 +2483,7 @@ $.cf = {
 		_setCurrentDate: function()
 		{
 			var oDTP = this;
-		
+
 			if(oDTP.oData.bTimeMode || oDTP.oData.bDateTimeMode)
 			{
 				if(oDTP.oData.iCurrentSeconds > 59)
@@ -2499,25 +2499,25 @@ $.cf = {
 				oDTP.oData.iCurrentMinutes = oDTP._adjustMinutes(oDTP.oData.iCurrentMinutes);
 				oDTP.oData.iCurrentSeconds = oDTP._adjustSeconds(oDTP.oData.iCurrentSeconds);
 			}
-		
+
 			var dTempDate = new Date(oDTP.oData.iCurrentYear, oDTP.oData.iCurrentMonth, oDTP.oData.iCurrentDay, oDTP.oData.iCurrentHour, oDTP.oData.iCurrentMinutes, oDTP.oData.iCurrentSeconds, 0),
 			bGTMaxDate = false, bLTMinDate = false,
 			sFormat, oDate, oFormattedDate, oFormattedTime,
 			sDate, sTime, sDateTime;
-		
+
 			if(oDTP.oData.dMaxValue !== null)
 				bGTMaxDate = (dTempDate.getTime() > oDTP.oData.dMaxValue.getTime());
 			if(oDTP.oData.dMinValue !== null)
 				bLTMinDate = (dTempDate.getTime() < oDTP.oData.dMinValue.getTime());
-		
+
 			if(bGTMaxDate || bLTMinDate)
 			{
-				var bCDGTMaxDate = false, bCDLTMinDate = false; 
+				var bCDGTMaxDate = false, bCDLTMinDate = false;
 				if(oDTP.oData.dMaxValue !== null)
 					bCDGTMaxDate = (oDTP.oData.dCurrentDate.getTime() > oDTP.oData.dMaxValue.getTime());
 				if(oDTP.oData.dMinValue !== null)
 					bCDLTMinDate = (oDTP.oData.dCurrentDate.getTime() < oDTP.oData.dMinValue.getTime());
-			
+
 				if(!(bCDGTMaxDate || bCDLTMinDate))
 					dTempDate = new Date(oDTP.oData.dCurrentDate);
 				else
@@ -2535,21 +2535,21 @@ $.cf = {
 					console.log("Please enter proper Date/Time/DateTime values.");
 				}
 			}
-		
+
 			oDTP.oData.dCurrentDate = new Date(dTempDate);
 			oDTP._setVariablesForDate();
-		
+
 			oDate = {}; sDate = ""; sTime = ""; sDateTime = "";
 
 			if(oDTP.oData.bDateMode || oDTP.oData.bDateTimeMode)
 			{
 				if(oDTP.oData.bDateMode && (oDTP.oData.bArrMatchFormat[4] || oDTP.oData.bArrMatchFormat[5] || oDTP.oData.bArrMatchFormat[6]))
 					oDTP.oData.iCurrentDay = 1;
-			
+
 				oFormattedDate = oDTP._formatDate();
 
 				$(oDTP.element).find(".day .dtpicker-compValue").val(oFormattedDate.dd);
-			
+
 				if(oDTP.oData.bDateMode)
 				{
 					if(oDTP.oData.bArrMatchFormat[4])  // "MM-yyyy"
@@ -2561,9 +2561,9 @@ $.cf = {
 				}
 				else
 					$(oDTP.element).find(".month .dtpicker-compValue").val(oFormattedDate.monthShort);
-			
+
 				$(oDTP.element).find(".year .dtpicker-compValue").val(oFormattedDate.yyyy);
-			
+
 				if(oDTP.settings.formatHumanDate)
 				{
 					oDate = $.extend(oDate, oFormattedDate);
@@ -2586,13 +2586,13 @@ $.cf = {
 			if(oDTP.oData.bTimeMode || oDTP.oData.bDateTimeMode)
 			{
 				oFormattedTime = oDTP._formatTime();
-			
+
 				if(oDTP.oData.bIs12Hour)
 					$(oDTP.element).find(".meridiem .dtpicker-compValue").val(oDTP.oData.sCurrentMeridiem);
 				$(oDTP.element).find(".hour .dtpicker-compValue").val(oFormattedTime.hour);
 				$(oDTP.element).find(".minutes .dtpicker-compValue").val(oFormattedTime.mm);
 				$(oDTP.element).find(".seconds .dtpicker-compValue").val(oFormattedTime.ss);
-			
+
 				if(oDTP.settings.formatHumanDate)
 				{
 					oDate = $.extend(oDate, oFormattedTime);
@@ -2603,14 +2603,14 @@ $.cf = {
 						oDTP.oData.bArrMatchFormat[0] ||
 						oDTP.oData.bArrMatchFormat[1])),
 
-					bShowSecondsDateTime = (oDTP.oData.bDateTimeMode && 
-							(oDTP.oData.bArrMatchFormat[0] || 
+					bShowSecondsDateTime = (oDTP.oData.bDateTimeMode &&
+							(oDTP.oData.bArrMatchFormat[0] ||
 							oDTP.oData.bArrMatchFormat[1] ||
-							oDTP.oData.bArrMatchFormat[2] || 
+							oDTP.oData.bArrMatchFormat[2] ||
 							oDTP.oData.bArrMatchFormat[3] ||
-							oDTP.oData.bArrMatchFormat[4] || 
+							oDTP.oData.bArrMatchFormat[4] ||
 							oDTP.oData.bArrMatchFormat[5] ||
-							oDTP.oData.bArrMatchFormat[6] || 
+							oDTP.oData.bArrMatchFormat[6] ||
 							oDTP.oData.bArrMatchFormat[7]));
 
 					if(bShowSecondsTime || bShowSecondsDateTime)
@@ -2622,7 +2622,7 @@ $.cf = {
 						sTime += oDTP.settings.timeMeridiemSeparator + oDTP.oData.sCurrentMeridiem;
 				}
 			}
-		
+
 			if(oDTP.settings.formatHumanDate)
 			{
 				if(oDTP.oData.bDateTimeMode)
@@ -2634,7 +2634,7 @@ $.cf = {
 
 				sDateTime = oDTP.settings.formatHumanDate.call(oDTP, oDate, oDTP.settings.mode, sFormat);
 			}
-			else		
+			else
 			{
 				if(oDTP.oData.bDateTimeMode)
 					sDateTime = sDate + oDTP.settings.dateTimeSeparator + sTime;
@@ -2653,8 +2653,8 @@ $.cf = {
 		{
 			var oDTP = this;
 			var oDTV = {},
-			sDay, sYear, 
-			iMonth, sMonth, sMonthShort, sMonthFull, 
+			sDay, sYear,
+			iMonth, sMonth, sMonthShort, sMonthFull,
 			iDayOfTheWeek, sDayOfTheWeek, sDayOfTheWeekFull;
 
 			if($.cf._isValid(oDTVP))
@@ -2678,7 +2678,7 @@ $.cf = {
 			iDayOfTheWeek = oDTV.iCurrentWeekday;
 			sDayOfTheWeek = oDTP.settings.shortDayNames[iDayOfTheWeek];
 			sDayOfTheWeekFull = oDTP.settings.fullDayNames[iDayOfTheWeek];
-		
+
 			return {
 				"dd": sDay,
 				"MM": sMonth,
@@ -2719,12 +2719,12 @@ $.cf = {
 			sHour12 = (iHour12 < 10) ? ("0" + iHour12) : iHour12;
 			if(oDTP.oData.bIs12Hour)
 				sHour = sHour12;
-		
+
 			sMinutes = oDTV.iCurrentMinutes;
 			sMinutes = (sMinutes < 10) ? ("0" + sMinutes) : sMinutes;
 			sSeconds = oDTV.iCurrentSeconds;
 			sSeconds = (sSeconds < 10) ? ("0" + sSeconds) : sSeconds;
-		
+
 			return {
 				"H": iHour24,
 				"HH": sHour24,
@@ -2738,12 +2738,12 @@ $.cf = {
 				"ME": oDTV.sCurrentMeridiem
 			};
 		},
-	
+
 		_setButtons: function()
 		{
 			var oDTP = this;
 			$(oDTP.element).find(".dtpicker-compButton").removeClass("dtpicker-compButtonDisable").addClass("dtpicker-compButtonEnable");
-		
+
 			var dTempDate;
 			if(oDTP.oData.dMaxValue !== null)
 			{
@@ -2752,7 +2752,7 @@ $.cf = {
 					// Decrement Hour
 					if((oDTP.oData.iCurrentHour + 1) > oDTP.oData.dMaxValue.getHours() || ((oDTP.oData.iCurrentHour + 1) === oDTP.oData.dMaxValue.getHours() && oDTP.oData.iCurrentMinutes > oDTP.oData.dMaxValue.getMinutes()))
 						$(oDTP.element).find(".hour .increment").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
-				
+
 					// Decrement Minutes
 					if(oDTP.oData.iCurrentHour >= oDTP.oData.dMaxValue.getHours() && (oDTP.oData.iCurrentMinutes + 1) > oDTP.oData.dMaxValue.getMinutes())
 						$(oDTP.element).find(".minutes .increment").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
@@ -2763,22 +2763,22 @@ $.cf = {
 					dTempDate = new Date(oDTP.oData.iCurrentYear, oDTP.oData.iCurrentMonth, (oDTP.oData.iCurrentDay + 1), oDTP.oData.iCurrentHour, oDTP.oData.iCurrentMinutes, oDTP.oData.iCurrentSeconds, 0);
 					if(dTempDate.getTime() > oDTP.oData.dMaxValue.getTime())
 						$(oDTP.element).find(".day .increment").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
-				
+
 					// Increment Month
 					dTempDate = new Date(oDTP.oData.iCurrentYear, (oDTP.oData.iCurrentMonth + 1), oDTP.oData.iCurrentDay, oDTP.oData.iCurrentHour, oDTP.oData.iCurrentMinutes, oDTP.oData.iCurrentSeconds, 0);
 					if(dTempDate.getTime() > oDTP.oData.dMaxValue.getTime())
 						$(oDTP.element).find(".month .increment").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
-				
+
 					// Increment Year
 					dTempDate = new Date((oDTP.oData.iCurrentYear + 1), oDTP.oData.iCurrentMonth, oDTP.oData.iCurrentDay, oDTP.oData.iCurrentHour, oDTP.oData.iCurrentMinutes, oDTP.oData.iCurrentSeconds, 0);
 					if(dTempDate.getTime() > oDTP.oData.dMaxValue.getTime())
 						$(oDTP.element).find(".year .increment").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
-				
+
 					// Increment Hour
 					dTempDate = new Date(oDTP.oData.iCurrentYear, oDTP.oData.iCurrentMonth, oDTP.oData.iCurrentDay, (oDTP.oData.iCurrentHour + 1), oDTP.oData.iCurrentMinutes, oDTP.oData.iCurrentSeconds, 0);
 					if(dTempDate.getTime() > oDTP.oData.dMaxValue.getTime())
 						$(oDTP.element).find(".hour .increment").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
-				
+
 					// Increment Minutes
 					dTempDate = new Date(oDTP.oData.iCurrentYear, oDTP.oData.iCurrentMonth, oDTP.oData.iCurrentDay, oDTP.oData.iCurrentHour, (oDTP.oData.iCurrentMinutes + 1), oDTP.oData.iCurrentSeconds, 0);
 					if(dTempDate.getTime() > oDTP.oData.dMaxValue.getTime())
@@ -2790,7 +2790,7 @@ $.cf = {
 						$(oDTP.element).find(".seconds .increment").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
 				}
 			}
-		
+
 			if(oDTP.oData.dMinValue !== null)
 			{
 				if(oDTP.oData.bTimeMode)
@@ -2798,33 +2798,33 @@ $.cf = {
 					// Decrement Hour
 					if((oDTP.oData.iCurrentHour - 1) < oDTP.oData.dMinValue.getHours() || ((oDTP.oData.iCurrentHour - 1) === oDTP.oData.dMinValue.getHours() && oDTP.oData.iCurrentMinutes < oDTP.oData.dMinValue.getMinutes()))
 						$(oDTP.element).find(".hour .decrement").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
-				
+
 					// Decrement Minutes
 					if(oDTP.oData.iCurrentHour <= oDTP.oData.dMinValue.getHours() && (oDTP.oData.iCurrentMinutes - 1) < oDTP.oData.dMinValue.getMinutes())
 						$(oDTP.element).find(".minutes .decrement").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
 				}
 				else
 				{
-					// Decrement Day 
+					// Decrement Day
 					dTempDate = new Date(oDTP.oData.iCurrentYear, oDTP.oData.iCurrentMonth, (oDTP.oData.iCurrentDay - 1), oDTP.oData.iCurrentHour, oDTP.oData.iCurrentMinutes, oDTP.oData.iCurrentSeconds, 0);
 					if(dTempDate.getTime() < oDTP.oData.dMinValue.getTime())
 						$(oDTP.element).find(".day .decrement").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
-				
-					// Decrement Month 
+
+					// Decrement Month
 					dTempDate = new Date(oDTP.oData.iCurrentYear, (oDTP.oData.iCurrentMonth - 1), oDTP.oData.iCurrentDay, oDTP.oData.iCurrentHour, oDTP.oData.iCurrentMinutes, oDTP.oData.iCurrentSeconds, 0);
 					if(dTempDate.getTime() < oDTP.oData.dMinValue.getTime())
 						$(oDTP.element).find(".month .decrement").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
-				
-					// Decrement Year 
+
+					// Decrement Year
 					dTempDate = new Date((oDTP.oData.iCurrentYear - 1), oDTP.oData.iCurrentMonth, oDTP.oData.iCurrentDay, oDTP.oData.iCurrentHour, oDTP.oData.iCurrentMinutes, oDTP.oData.iCurrentSeconds, 0);
 					if(dTempDate.getTime() < oDTP.oData.dMinValue.getTime())
 						$(oDTP.element).find(".year .decrement").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
-				
+
 					// Decrement Hour
 					dTempDate = new Date(oDTP.oData.iCurrentYear, oDTP.oData.iCurrentMonth, oDTP.oData.iCurrentDay, (oDTP.oData.iCurrentHour - 1), oDTP.oData.iCurrentMinutes, oDTP.oData.iCurrentSeconds, 0);
 					if(dTempDate.getTime() < oDTP.oData.dMinValue.getTime())
 						$(oDTP.element).find(".hour .decrement").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
-				
+
 					// Decrement Minutes
 					dTempDate = new Date(oDTP.oData.iCurrentYear, oDTP.oData.iCurrentMonth, oDTP.oData.iCurrentDay, oDTP.oData.iCurrentHour, (oDTP.oData.iCurrentMinutes - 1), oDTP.oData.iCurrentSeconds, 0);
 					if(dTempDate.getTime() < oDTP.oData.dMinValue.getTime())
@@ -2836,7 +2836,7 @@ $.cf = {
 						$(oDTP.element).find(".seconds .decrement").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
 				}
 			}
-			
+
 			if(oDTP.oData.bIs12Hour)
 			{
 				var iTempHour, iTempMinutes;
@@ -2847,9 +2847,9 @@ $.cf = {
 						iTempHour += 12;
 					else if($.cf._compare(oDTP.oData.sCurrentMeridiem, "PM"))
 						iTempHour -= 12;
-				
+
 					dTempDate = new Date(oDTP.oData.iCurrentYear, oDTP.oData.iCurrentMonth, oDTP.oData.iCurrentDay, iTempHour, oDTP.oData.iCurrentMinutes, oDTP.oData.iCurrentSeconds, 0);
-				
+
 					if(oDTP.oData.dMaxValue !== null)
 					{
 						if(oDTP.oData.bTimeMode)
@@ -2864,7 +2864,7 @@ $.cf = {
 								$(oDTP.element).find(".meridiem .dtpicker-compButton").removeClass("dtpicker-compButtonEnable").addClass("dtpicker-compButtonDisable");
 						}
 					}
-				
+
 					if(oDTP.oData.dMinValue !== null)
 					{
 						if(oDTP.oData.bTimeMode)
@@ -2882,48 +2882,48 @@ $.cf = {
 				}
 			}
 		},
-	
+
 		// Public Method
 		setIsPopup: function(bIsPopup)
 		{
 			var oDTP = this;
-		
+
 			if(!oDTP.settings.isInline)
 			{
 				oDTP.settings.isPopup = bIsPopup;
 
 				if($(oDTP.element).css("display") !== "none")
 					oDTP._hidePicker(0);
-			
+
 				if(oDTP.settings.isPopup)
 				{
 					$(oDTP.element).addClass("dtpicker-mobile");
-					
+
 					$(oDTP.element).css({position: "fixed", top: 0, left: 0, width: "100%", height: "100%"});
 				}
 				else
 				{
 					$(oDTP.element).removeClass("dtpicker-mobile");
-					
+
 					if(oDTP.oData.oInputElement !== null)
 					{
 						var iElemTop = $(oDTP.oData.oInputElement).offset().top + $(oDTP.oData.oInputElement).outerHeight(),
 						iElemLeft = $(oDTP.oData.oInputElement).offset().left,
 						iElemWidth =  $(oDTP.oData.oInputElement).outerWidth();
-					
+
 						$(oDTP.element).css({position: "absolute", top: iElemTop, left: iElemLeft, width: iElemWidth, height: "auto"});
 					}
 				}
 			}
 		},
-	
+
 		_compareDates: function(dDate1, dDate2)
 		{
 			dDate1 = new Date(dDate1.getDate(), dDate1.getMonth(), dDate1.getFullYear(), 0, 0, 0, 0);
 			var iDateDiff = (dDate1.getTime() - dDate2.getTime()) / 864E5;
 			return (iDateDiff === 0) ? iDateDiff: (iDateDiff/Math.abs(iDateDiff));
 		},
-	
+
 		_compareTime: function(dTime1, dTime2)
 		{
 			var iTimeMatch = 0;
@@ -2945,7 +2945,7 @@ $.cf = {
 			}
 			return iTimeMatch;
 		},
-	
+
 		_compareDateTime: function(dDate1, dDate2)
 		{
 			var iDateTimeDiff = (dDate1.getTime() - dDate2.getTime()) / 6E4;
@@ -2954,11 +2954,11 @@ $.cf = {
 
 		_determineMeridiemFromHourAndMinutes: function(iHour, iMinutes)
 		{
-			if(iHour > 12 || (iHour === 12 && iMinutes >= 0)) 
+			if(iHour > 12 || (iHour === 12 && iMinutes >= 0))
 			{
 				return "PM";
 			}
-			else 
+			else
 			{
 				return "AM";
 			}
@@ -2975,11 +2975,10 @@ $.cf = {
 			oDTP._setDateFormatArray(); // Set DateFormatArray
 			oDTP._setTimeFormatArray(); // Set TimeFormatArray
 			oDTP._setDateTimeFormatArray(); // Set DateTimeFormatArray
-		
+
 			return oDTP;
 		}
 
 	};
-	
-}));
 
+}));

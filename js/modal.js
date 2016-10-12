@@ -24,6 +24,7 @@ window.onclick = function(event) {
     }
 }
 
+//initialze the dtBox (datePicker) function for the modal
 $(document).ready(function()
 {
     $("#dtBox").DateTimePicker();
