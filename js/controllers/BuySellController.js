@@ -10,5 +10,22 @@ stockApp.controller('BuySellController', ['$scope', 'BuySellService', function B
     $scope.DiffenceBetweenOpenAndClose = currentVal.Last - currentVal.Open;
 
   })
+    $scope.item = {
+        chart: {
+            renderTo: 'container',
+        },
+        title: {
+            text: 'Chart in Electron'
+        },
+        series: [{
+            type: 'line',
+            data: [
+                ['a', 1], ['b', 3], ['c', 2]
+            ]
+        }],
+        credits: {
+            enabled: false
+        }
+    }
 
 }]);

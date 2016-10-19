@@ -1,5 +1,5 @@
 // app.js
-var stockApp = angular.module('stockApp', ['ui.router']);
+var stockApp = angular.module('stockApp', ['ui.router','app.directives.makeCharts']);
 
 stockApp.config(function($stateProvider, $urlRouterProvider) {
 
