@@ -20,6 +20,9 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
         })
         .state('historic', {
           views: {
+            header: {
+              templateUrl: 'templates/dateHeader.html'
+            },
             nav: {
               templateUrl: 'templates/historicNavbar.html'
             },

@@ -13,41 +13,34 @@
     <div ui-view name="nav"></div>
     <div class="container">
         <!-- whatever will go on the home landing page goes here -->
+        <div ui-view name="header"></div>
         <div ui-view name="content"></div>
     </div>
-
-    <!-- loading angular, jquery, materialize, etc -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-    <script src="https://unpkg.com/angular-ui-router/release/angular-ui-router.js"></script>
-
-    <script src = "../js/customModules/Stock.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
-    <script type="text/javascript" src="../js/plugins/materialize.js"></script>
-    <script src = "../node_modules/highcharts/highcharts.js"></script>
-
-    <!-- custom scripts -->
-
-    <script src="../js/routing.js"></script>
-   <!--  <script src="../db/Database.js"></script> -->
-    <!-- <script src = "../js/makeCharts.js"></script> -->
-    <script src="../js/controllers/LiveController.js"></script>
-    <script src="../js/controllers/HistoricController.js"></script>
-    <script src="../js/controllers/MainController.js"></script>
-    <script src="../js/controllers/HomeController.js"></script>
-    <script src="../js/controllers/BuySellController.js"></script>
-    <script src="../js/services/BuySellService.js"></script>
-
-
-    <script src="../js/services/UserService.js"></script>
-    <script src="../js/controllers/UserController.js"></script>
-    <script src="../js/services/PortfolioService.js"></script>
-    <script src="../js/controllers/PortfolioController.js"></script>
-    <script src="../js/services/WatchService.js"></script>
-    <script src="../js/controllers/WatchController.js"></script>
-
-
 </body>
 
-</html>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script src="https://unpkg.com/angular-ui-router/release/angular-ui-router.js"></script>
+
+<script src = "../js/customModules/Stock.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+<script type="text/javascript" src="../js/plugins/materialize.js"></script>
+<script src = "../node_modules/highcharts/highcharts.js"></script>
+
+<script src="../js/routing.js"></script>
+  <!-- <script src="../db/Database.js"></script>
+ <script src = "../js/makeCharts.js"></script> -->
+<script src="../js/controllers/LiveController.js"></script>
+<script src="../js/controllers/HistoricController.js"></script>
+<script src="../js/controllers/MainController.js"></script>
+<script src="../js/controllers/HomeController.js"></script>
+<script src="../js/controllers/BuySellController.js"></script>
+<script src="../js/services/BuySellService.js"></script>
+
+<script src="../js/services/UserService.js"></script>
+<script src="../js/controllers/UserController.js"></script>
+<script src="../js/services/PortfolioService.js"></script>
+<script src="../js/controllers/PortfolioController.js"></script>
+<script src="../js/services/WatchService.js"></script>
+<script src="../js/controllers/WatchController.js"></script>
