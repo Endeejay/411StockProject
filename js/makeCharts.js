@@ -5,7 +5,7 @@ angular.module('app.directives.makeCharts',[])
 //                 restrict    : 'E',
 //                 //making the controller
 //                 controller: function($scope){
-//                     console.log("SlimBandito");              
+//                     console.log("SlimBandito");
 //                 }
 //         }
 // });

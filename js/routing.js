@@ -1,45 +1,103 @@
 // app.js
-var stockApp = angular.module('stockApp', ['ui.router','app.directives.makeCharts']);
+var stockApp = angular.module('stockApp', ['ui.router'/*,'app.directives.makeCharts'*/]);
 
+stockApp.run(['$rootScope', '$state',
+  function($rootScope, $state, $stateParams) {
+    $rootScope.$state = $state;
+  }
+]);
 stockApp.config(function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/selector');
-
     $stateProvider
-
-        .state('selector',{
-            url: '/selector',
-            templateUrl: 'SelectLiveOrHistoricData.html',
-            controller: 'MainController'
+        .state('root', {
+          url: '/',
+          views: {
+            content: {
+              templateUrl: 'templates/selectPage.html',
+              controller: 'MainController'
+            }
+          }
         })
-
-        .state('home', {
-            url: '/home',
-            templateUrl: 'home.html',
-            controller: 'HomeController'
+        .state('historic', {
+          views: {
+            nav: {
+              templateUrl: 'templates/historicNavbar.html'
+            },
+            content: {
+              templateUrl: 'home.html'
+            }
+          }
         })
-
-        .state('user', {
-            url: '/user',
-            templateUrl: 'user.html',
-            controller: 'UserController'
+        .state('historic.buy_sell', {
+            controller: 'BuySellController',
+            services: 'BuySellService',
+            views: {
+              content: {
+                templateUrl: 'buy_sell.html'
+              }
+            }
         })
-
-        .state('buy_sell', {
-            url: '/buy_sell',
-            templateUrl: 'buy_sell.html',
-            controller: 'BuySellController'
+        .state('historic.user', {
+            views: {
+              content: {
+                templateUrl: 'user.html'
+              }
+            }
         })
-
-        .state('portfolio', {
-            url: '/portfolio',
-            templateUrl: 'portfolio.html',
-            controller: 'PortfolioController'
+        .state('historic.portfolio', {
+            views: {
+              content: {
+                templateUrl: 'portfolio.html'
+              }
+            }
         })
-
-        .state('watch', {
-            url: '/watch',
-            templateUrl: 'watch.html',
-            controller: 'WatchController'
+        .state('historic.watch', {
+            views: {
+              content: {
+                templateUrl: 'watch.html'
+              }
+            }
+        })
+        .state('live', {
+           views: {
+             nav: {
+               templateUrl: 'templates/liveNavbar.html'
+             },
+             content: {
+               templateUrl: 'home.html',
+               controller: 'LiveController'
+             }
+           }
+        })
+        .state('live.buy_sell', {
+            controller: 'BuySellController',
+            services: 'BuySellService',
+            views: {
+              content: {
+                templateUrl: 'buy_sell.html',
+              }
+            }
+        })
+        .state('live.user', {
+            views: {
+              content: {
+                templateUrl: 'user.html'
+              }
+            }
+        })
+        .state('live.portfolio', {
+            views: {
+              content: {
+                templateUrl: 'portfolio.html'
+              }
+            }
+        })
+        .state('live.watch', {
+            views: {
+              content: {
+                templateUrl: 'watch.html'
+              }
+            }
         });
+        $urlRouterProvider.otherwise('/root');
 });

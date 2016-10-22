@@ -1,53 +1,19 @@
 <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="../css/style.css" />
 <link type="text/css" rel="stylesheet" href="../css/materialize.css" media="screen,projection" />
-<html data-ng-app="stockApp" class="no-js">
+<div ng-app="stockApp" class="no-js">
 
 
 <!-- Main screen with two selection options for testing -->
-
 <body ng-controller="MainController">
-    <div class="centered">
-        <div id="historicData" ng-show="isSelectPage" style="text-align:center" class="selectScreen">
-            <h1><img src="../images/electrontrader.png" /></h1>
-            <!-- <h1 class="grey-text text-lighten-5">Select a testing strategy:</h1> -->
-            <a id="histBtn" class="waves-effect waves-light btn-large z-depth-3" style="font-weight: bold">Historic Data</a>
-            <td>
-            </td>
-            <div id="liveData" class="selectScreen">
-                <a id="liveBtn" href="#home" ng-click="isSelectPage=false" class="waves-effect waves-light btn-large z-depth-3" style="font-weight: bold">Live Data</a>
-            </div>
-        </div>
-    </div>
-
-    <!--modal - will appear if user selects Historic Data, prompting them to select date range -->
-        <div id="myModal" class="modal z-depth-5">
-          <!-- Modal content: invoking partial view  -->
-          <div ng-include src="'./partialviews/selectorModal.html'"></div>
-          <div class="modal-footer">
-              <span class="go">
-                <button ng-click="isSelectPage=false" class="waves-effect waves-green btn z-depth-2">Go</button>
-              </span>
-              <span class="close">
-                <button class="waves-effect waves-red btn z-depth-2" style="right: 50px">Return</button>
-              </span>
-          </div>
-        </div>
-
-    <!-- NAVIGATION -->
-    <div ng-hide="isSelectPage">
-        <ul id="slide-out" class="side-nav fixed">
-            <li><a ui-sref="selector" ng-click="isSelectPage=true">Switch</a></li>
-            <li><a ui-sref="user">User</a></li>
-            <li><a ui-sref="buy_sell">Buy/Sell</a></li>
-            <li><a ui-sref="portfolio">Portfolio</a></li>
-            <li><a ui-sref="watch">Watch</a></li>
-        </ul>
-    </div>
-
-    <div id="main">
+  <!-- for debugging - displays current state -->
+    <!-- <div id="uiRouterInfo">
+          $state = {{$state.current.name}}
+    </div> -->
+    <div ui-view name="nav"></div>
+    <div class="container">
         <!-- whatever will go on the home landing page goes here -->
-        <div ui-view></div>
+        <div ui-view name="content"></div>
     </div>
 
     <!-- loading angular, jquery, materialize, etc -->
@@ -55,30 +21,31 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="https://unpkg.com/angular-ui-router/release/angular-ui-router.js"></script>
 
-    <script src = "../js/customModules/stock.js"></script>
+    <script src = "../js/customModules/Stock.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
     <script type="text/javascript" src="../js/plugins/materialize.js"></script>
-    <script type="text/javascript" src="../js/plugins/DateTimePicker.js"></script>
     <script src = "../node_modules/highcharts/highcharts.js"></script>
 
     <!-- custom scripts -->
 
     <script src="../js/routing.js"></script>
-    <script src="../js/makeCharts.js"></script>
    <!--  <script src="../db/Database.js"></script> -->
-    <script src="../js/customModules/modal.js"></script>
-    <!-- <script src = "../js/customModules/MakeCharts.js"></script> -->
+    <!-- <script src = "../js/makeCharts.js"></script> -->
+    <script src="../js/controllers/LiveController.js"></script>
+    <script src="../js/controllers/HistoricController.js"></script>
     <script src="../js/controllers/MainController.js"></script>
     <script src="../js/controllers/HomeController.js"></script>
+    <script src="../js/controllers/BuySellController.js"></script>
+    <script src="../js/services/BuySellService.js"></script>
+
+
     <script src="../js/services/UserService.js"></script>
     <script src="../js/controllers/UserController.js"></script>
-    <script src="../js/services/BuySellService.js"></script>
-    <script src="../js/controllers/BuySellController.js"></script>
-    <!-- <script src="../js/services/PortfolioService.js"></script>
+    <script src="../js/services/PortfolioService.js"></script>
     <script src="../js/controllers/PortfolioController.js"></script>
     <script src="../js/services/WatchService.js"></script>
-    <script src="../js/controllers/WatchController.js"></script> -->
+    <script src="../js/controllers/WatchController.js"></script>
 
 
 </body>

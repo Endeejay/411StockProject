@@ -1,9 +1,11 @@
 <link type="text/css" rel="stylesheet" href="../css/style.css" />
 <link type="text/css" rel="stylesheet" href="../css/materialize.css"  media="screen,projection"/>
-<title>Buy/Sell</title>
-<body>
-<!-- the working thing -->
- <div ng-controller="BuySellController">
-	<line-chart config="item"></line-chart>
- </div> 
-</body>
+<title data-ng-app="stockApp">Buy/Sell</title>
+
+<div ui-view name="content">
+  <!-- the working thing -->
+  <div ng-controller="BuySellController">
+    <h1>BUY SELL PAGE</h1>
+    <line-chart config="item"></line-chart>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 var fs = require("fs");
-var content = fs.readFileSync('../db/TestDataFixed.json','utf8');
+var content = fs.readFileSync('../411StockProject/db/TestDataFixed.json','utf8');
 var jsonContent = JSON.parse(content);
 //getting our stock names
 
@@ -52,4 +52,3 @@ module.exports = {
 	return dates;
 	}
 };
-

@@ -4,6 +4,7 @@
   "main": "main.js",
   "dependencies": {
     "highcharts": "^5.0.0",
+    "materialize-css": "^0.97.7",
     "pretty-bytes": "^2.0.1",
     "sqlite3": "^3.1.6"
   },

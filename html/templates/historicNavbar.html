@@ -1,0 +1,20 @@
+<!-- NAVIGATION -->
+<div ui-view name="nav">
+    <ul id="slide-out" class="side-nav fixed">
+        <li><a ui-sref="live">Switch to Live Data</a></li>
+        <li><a ui-sref="historic.user">User</a></li>
+        <li><a ui-sref="historic.buy_sell">Buy/Sell</a></li>
+        <li><a ui-sref="historic.portfolio">Portfolio</a></li>
+        <li><a ui-sref="historic.watch">Watch</a></li>
+    </ul>
+</div>
+
+<script>
+var selector = '.side-nav li';
+$(selector).removeClass('active');
+
+  $(selector).on('click', function() {
+    $(selector).removeClass('active');
+    $(this).addClass('active');
+  });
+</script>
