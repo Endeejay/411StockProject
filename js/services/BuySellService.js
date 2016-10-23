@@ -1,32 +1,13 @@
-stockApp.service('BuySellService', [function () {
+stockApp.service('BuySellService',['$http','$q',function ($http, $q) {
 
-// var StockData = require('../js/customModules/Stock.js');
-// StockData.getAllStockSymbols();
-// var namez = StockData.getAllStockNamez().toString();
-// console.log(namez);
 
-    function getTestData() {
-      var fs = require("fs");
-      var stringOfData = fs.readFileSync('./db/TestData.json', 'utf8');
-      return JSON.parse(stringOfData);
-    }
+var fs = require("fs");
+var deferred = $q.defer();
+$http.get('http://localhost:3000/db').then(function (data) {
+  deferred.resolve(data);
+});
 
-    // function getStockName(){
-    //   return StockData.getAllStockNamez
-    // }
-
-    function newPrice(arr, index){
-      var exName = arr[index]["ExchangeName"];
-      var open = arr[index]["Open"];
-      var close = arr[index]["Close"];
-
-      ExchangeName = exName;
-      Open = open;
-      Close = close;
-    }
-
-    return {
-      'getTestData' : getTestData,
-      'newPrice' : newPrice
-    };
+this.getAllStocks = function () {
+  return deferred.promise;
+};
 }]);

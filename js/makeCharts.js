@@ -40,7 +40,11 @@ angular.module('app.directives.makeCharts',[])
         },
         template    : '<div id="container"></div>',
         link        : function (scope, element, attrs) {
-            $(element).highcharts(scope.config)
+            var chart = undefined;
+            scope.$watch("config", function(newValue, oldValue) {
+                  // if (chart != undefined) chart.destroy()
+                  chart = $(element).highcharts(newValue);
+            });
         }
     }
 })

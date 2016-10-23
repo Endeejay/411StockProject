@@ -1,3 +1,24 @@
+
+
+<!-- <script src="app.js"></script> -->
 <div ui-view name="header">
-  <p> start date and end date</p>
+  <html ng-app="TY" >
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+
+  </head>
+  <body ng-controller="DatePickerController">
+  <div>
+    <input ui-date="opts" is-open="true" ng-model="data.date" readonly=""></input>
+    Date: {{data.date}}
+   </div>
+   </div>
+  </body>
+  <html ng-app="stockApp" >
 </div>
