@@ -69,6 +69,8 @@ function makeChart(data){
         chart: {
             renderTo: 'container',
             backgroundColor: '#3e3e40',
+            borderColor: 'black',
+            borderWidth: 2,
             style: {
               fontFamily: "'Roboto', sans-serif"
             }
@@ -102,7 +104,7 @@ function makeChart(data){
           type: 'datetime',
           labels: {
             format: '{value:%Y-%m-%d}',
-            rotation: 45,
+            // rotation: 45,
             align: 'left',
             style: { 
               color: 'white'
