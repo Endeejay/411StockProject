@@ -31,6 +31,9 @@ function getName(){
   });
 }
 
+// var chartArray = [];
+$scope.charts = [];
+
 function makeChart(data){
   angular.forEach(data, function(value, key) {
     //changing our dates to utc dates
@@ -40,7 +43,17 @@ function makeChart(data){
       var utcDate = Date.UTC(parts[2],parts[0]-1,parts[1]);
       UTCDates.push(utcDate);
     }
-    console.log(UTCDates);
+    for(i=0;i<value.Prices.length;i++){
+      console.log(netValue);
+      var netValue = value.Prices[i]-value.Prices[0];
+      if(netValue < 0){
+        var color = '#f02d41';
+      }else if(netValue > 0){
+        var color = '#2DF04E';
+      }else {
+        var color = '#c3bcad'
+      }
+    }
     //getting our dat array, and then bigArray and littleArray
     var dat = $.map(UTCDates, function(v,i) {return [v,value.Prices[i]]; });
     var bigArray=[];
@@ -49,13 +62,16 @@ function makeChart(data){
     while (dat.length > 0) {
       bigArray.push(dat.splice(0,size));
     }
-
-    $scope.item = {
+    //our chart item
+    var item = {
         colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
           '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
         chart: {
             renderTo: 'container',
-            backgroundColor: '#3e3e40'
+            backgroundColor: '#3e3e40',
+            style: {
+              fontFamily: "'Roboto', sans-serif"
+            }
         },
         title: {
             text: value.Name,
@@ -75,6 +91,11 @@ function makeChart(data){
             style: { 
               color: 'white'
             }
+          },
+          labels: {
+            style: { 
+              color: 'white'
+            }
           }
         },
         xAxis: {
@@ -82,7 +103,10 @@ function makeChart(data){
           labels: {
             format: '{value:%Y-%m-%d}',
             rotation: 45,
-            align: 'left'
+            align: 'left',
+            style: { 
+              color: 'white'
+            }
           },
           title: {
               text: 'Dates',
@@ -92,13 +116,16 @@ function makeChart(data){
           }
         },
         series: [{
+            showInLegend: false,
             type: 'line',
-            data: bigArray
+            data: bigArray,
+            color: color 
         }],
         credits: {
             enabled: false
         }
       }
+      $scope.charts.push(item);
 });
 
   // $scope.item = {

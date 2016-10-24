@@ -1,12 +1,17 @@
 <link type="text/css" rel="stylesheet" href="../css/style.css" />
 <link type="text/css" rel="stylesheet" href="../css/materialize.css"  media="screen,projection"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <title data-ng-app="stockApp">Buy/Sell</title>
 
 <div ui-view name="content">
   <!-- the working thing -->
   <div ng-controller="BuySellController">
     <h1>BUY SELL PAGE</h1>
-    <line-chart config="item"></line-chart>
+    <!-- <line-chart config="item"></line-chart>
+    <line-chart config="item"></line-chart> -->
 
+	<!--<tr ng-repeat="item in charts">-->
+		<line-chart ng-repeat="item in charts" config='item'></line-chart>
+	<!--</tr>-->
   </div>
 </div>
