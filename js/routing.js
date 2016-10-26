@@ -36,28 +36,28 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
             controller: 'BuySellController',
             services: 'BuySellService',
             views: {
-              content: {
+              "content@": {
                 templateUrl: 'buy_sell.html'
               }
             }
         })
         .state('historic.user', {
             views: {
-              content: {
+              "content@": {
                 templateUrl: 'user.html'
               }
             }
         })
         .state('historic.portfolio', {
             views: {
-              content: {
+              "content@": {
                 templateUrl: 'portfolio.html'
               }
             }
         })
         .state('historic.watch', {
             views: {
-              content: {
+              "content@": {
                 templateUrl: 'watch.html'
               }
             }
@@ -83,21 +83,21 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
         })
         .state('live.user', {
             views: {
-              content: {
+              "content@": {
                 templateUrl: 'user.html'
               }
             }
         })
         .state('live.portfolio', {
             views: {
-              content: {
+              "content@": {
                 templateUrl: 'portfolio.html'
               }
             }
         })
         .state('live.watch', {
             views: {
-              content: {
+              "content@": {
                 templateUrl: 'watch.html'
               }
             }
