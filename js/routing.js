@@ -28,7 +28,7 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
               templateUrl: 'templates/historicNavbar.html'
             },
             content: {
-              templateUrl: 'home.html'
+              templateUrl: 'templates/historicHome.html'
             }
           }
         })
@@ -68,8 +68,7 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
                templateUrl: 'templates/liveNavbar.html'
              },
              content: {
-               templateUrl: 'home.html',
-               controller: 'LiveController'
+               templateUrl: 'templates/liveHome.html'
              }
            }
         })

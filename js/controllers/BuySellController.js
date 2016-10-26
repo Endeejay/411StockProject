@@ -71,31 +71,34 @@ function makeChart(data){
             backgroundColor: '#3e3e40',
             borderColor: 'black',
             borderWidth: 2,
+            marginLeft: 75,
+            marginRight: 75,
             style: {
               fontFamily: "'Roboto', sans-serif"
             }
         },
         title: {
             text: value.Name,
-            style: { 
+            style: {
               color: 'white'
             }
         },
         subtitle: {
             text: value.Symbol,
-            style: { 
+            style: {
               color: '#E0E0E3'
             }
         },
         yAxis: {
+          type: 'string',
           title: {
             text: 'Prices',
-            style: { 
+            style: {
               color: 'white'
             }
           },
           labels: {
-            style: { 
+            style: {
               color: 'white'
             }
           }
@@ -103,25 +106,26 @@ function makeChart(data){
         xAxis: {
           type: 'datetime',
           labels: {
-            format: '{value:%Y-%m-%d}',
+            format: '{value:%m/%d/%Y}',
             // rotation: 45,
             align: 'left',
-            style: { 
+            style: {
               color: 'white'
             }
           },
           title: {
               text: 'Dates',
-              style: { 
+              style: {
               color: 'white'
             }
           }
         },
         series: [{
+            name: 'Price',
             showInLegend: false,
             type: 'line',
             data: bigArray,
-            color: color 
+            color: color
         }],
         credits: {
             enabled: false

@@ -16,9 +16,24 @@ div {
   color: white;
 }
 
+h2 {
+  color: white;
+  text-align: center;
+}
+
+h3 {
+  text-align: center;
+  color: #009688;
+}
+
 #histBtn, #liveBtn {
   width: 200px;
 }
+
+#buyBtn, #sellBtn {
+  width: 100px;
+}
+
 
 .selectScreen {
   display: inline;
