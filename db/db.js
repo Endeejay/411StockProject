@@ -7,49 +7,35 @@ var transaction = 'transaction';
 
 /*run init to make your initial jsonFiles*/
 //initJsonFiles();
-
-var y = getRelevantDataByPortfolioId(watch, 0);
+//addWatch(3,3);
+// var y = getRelevantDataByPortfolioId(transaction, 1);
+// debugger;
 
 function getRelevantDataByPortfolioId(field, portfolioId){
-  var data = get(field);
-  var jsonInfo = {}
-  var jsonString;
-  var idIndexCounter;
-  var count = 1;
-
-  for (property in data){
-    var propertyValue = property;
-    if(propertyValue === "portfolio_Id"){
-       idIndexCounter = 0;
-      for(var i = 0; i < data[propertyValue].length; i++){
-        if(data[propertyValue][i] == portfolioId){
-          break;
-        }
-        idIndexCounter++;
+    var data = getJsonArray(field);
+    var jsonInfo = [];
+    var errorString = getNoPortfolioidError();
+    for (index in data){
+      if(data[index].error){
+        jsonInfo.push(data[index]);
+        break;
+      }
+      if(data[index].portfolio_Id == portfolioId){
+        jsonInfo.push(data[index]);
       }
     }
-    var arrayValue = data[property][idIndexCounter];
+    if(jsonInfo.length == 0){
 
-    if(count > 1){
-      jsonString += ", \"" + propertyValue + "\" : " +"["+ arrayValue +"]"
-    }else{
-      jsonString = "\"" + propertyValue + "\" : " +"["+ arrayValue +"]"
+        jsonInfo.push(errorString);
     }
-    count++;
+    return jsonInfo
 }
 
-if(idIndexCounter < count){
-  jsonString = "{"+ jsonString +"}"
-  jsonInfo = JSON.parse(jsonString);
+function getNoPortfolioidError(){
+  var errorString = "{\"error\" : \"portfolioId doesn't exist\"}"
+  errorString = JSON.parse(errorString);
+  return errorString;
 }
-else{
-  var errorString = "{\"error\" : [\"portfolioId doesn't exixst\"]}"
-  jsonInfo = JSON.parse(errorString);
-}
-
-return jsonInfo;
-}
-
 
 function addPortfolio(portfolioName, startDate, endDate){
   var field = "portfolio"
@@ -135,7 +121,7 @@ function isNull(value){
 function initJsonFiles(){
   var portfolio = makePortfolioJson(null, null, null, null);
   var watch = makeWatchJson(null, null);
-  var transation = makeTransactionJson(null, null, null, null, null, null);
+  var transaction = makeTransactionJson(null, null, null, null, null, null);
 
   set("portfolio", portfolio);
   set("watch", watch);
@@ -179,10 +165,46 @@ function initJsonFiles(){
     function get(field) {
       var fs = require('fs');
       var currentUser = getUserDirective();
-      var data = fs.readFileSync(currentUser + '\\AppData\\Roaming\\Electron\\' + field +'.json', 'utf8');
-
-      return JSON.parse(data);
+      var stringData = fs.readFileSync(currentUser + '\\AppData\\Roaming\\Electron\\' + field +'.json', 'utf8');
+      var parsedJsonData = JSON.parse(stringData);
+      return parsedJsonData;
     }
+
+function getJsonArray(field){
+  var jsonArrayData = get(field);
+  var arrayOfJsonObjects = [];
+  var jsonString;
+  var lengthOfObjectArray = 1;
+  for(var i = 0;i< lengthOfObjectArray; i++){
+    var count = 0;
+    for (property in jsonArrayData){
+      if(i==0){
+        if(jsonArrayData[property] == null){
+          jsonString = "\"error\" : \"" + field + " is null!\""
+          break;
+        }
+          lengthOfObjectArray = jsonArrayData[property].length
+      }
+      //var propertyValue = property;
+      var arrayValue = jsonArrayData[property][i];
+
+      if(count > 0){
+        jsonString += ", \"" + property + "\" : " +"\""+arrayValue +"\""
+      }else{
+        jsonString = "\"" + property + "\" : " +"\""+ arrayValue +"\""
+      }
+      count++;
+    }
+
+    jsonString = "{"+ jsonString +"}";
+    jsonObject = JSON.parse(jsonString);
+    arrayOfJsonObjects.push(jsonObject);
+    jsonString = "";
+}
+
+return arrayOfJsonObjects;
+}
+
     function getUserDirective(){
       var directoryString = __dirname;
       var returnString = "";
