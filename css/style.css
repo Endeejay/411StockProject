@@ -25,6 +25,10 @@ h3 {
   text-align: center;
   color: #009688;
 }
+p{
+  text-align: center;
+  color: white;
+}
 
 #histBtn, #liveBtn {
   width: 200px;
