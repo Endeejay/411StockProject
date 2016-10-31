@@ -1,24 +1,10 @@
 
-stockApp.controller('BuySellController', ['$scope', 'BuySellService', function BuySellController($scope, BuySellService) {
+stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', function BuySellController($scope, BuySellService, $state) {
 getName();
 
 
-// $scope.item = {
-//     chart: {
-//         renderTo: 'container',
-//     },
-//     title: {
-//         text: "woo"
-//     },
-//     series: [{
-//         type: 'line',
-//         data: [
-//             ['a', 1], ['b', 3], ['c', 2]
-//         ]
-//     }],
-//     credits: {
-//         enabled: false
-//     }
+// function changeTemplate(){
+//   $location.url('/historic.buy_sell');
 // }
 
 
@@ -73,6 +59,16 @@ function makeChart(data){
             borderWidth: 2,
             marginLeft: 75,
             marginRight: 75,
+            events: {
+              click: function() {
+                if($state.is("live.buy_sell")){
+                  $state.go('live.buy_sell.details');
+                }
+                else {
+                  $state.go('historic.buy_sell.details');
+                }
+              }
+            },
             style: {
               fontFamily: "'Roboto', sans-serif"
             }
@@ -92,7 +88,7 @@ function makeChart(data){
         yAxis: {
           type: 'string',
           title: {
-            text: 'Prices',
+            text: 'Prices (USD)',
             style: {
               color: 'white'
             }
@@ -133,24 +129,6 @@ function makeChart(data){
       }
       $scope.charts.push(item);
 });
-
-  // $scope.item = {
-  //     chart: {
-  //         renderTo: 'container',
-  //     },
-  //     title: {
-  //         text: data.Name
-  //     },
-  //     series: [{
-  //         type: 'line',
-  //         data: [
-  //             ['a', 1], ['b', 3], ['c', 2]
-  //         ]
-  //     }],
-  //     credits: {
-  //         enabled: false
-  //     }
-  //   }
 }
 
 }]);

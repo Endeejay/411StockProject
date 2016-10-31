@@ -20,13 +20,12 @@ app.on('window-all-closed', function() {
 app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 625,
     toolbar: false
   });
 
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/html/index.html');
+  mainWindow.maximize();
   mainWindow.openDevTools();
 
   // Emitted when the window is closed.

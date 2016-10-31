@@ -41,6 +41,13 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
               }
             }
         })
+        .state('historic.buy_sell.details', {
+           views: {
+             "content@": {
+                templateUrl: 'templates/buySellDetails.html'
+             }
+           }
+        })
         .state('historic.user', {
             views: {
               "content@": {
@@ -76,10 +83,17 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
             controller: 'BuySellController',
             services: 'BuySellService',
             views: {
-              content: {
+              "content@": {
                 templateUrl: 'buy_sell.html',
               }
             }
+        })
+        .state('live.buy_sell.details', {
+           views: {
+             "content@": {
+                templateUrl: 'templates/buySellDetails.html'
+             }
+           }
         })
         .state('live.user', {
             views: {
