@@ -1,4 +1,3 @@
-
 stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', function BuySellController($scope, BuySellService, $state) {
 getName();
 
