@@ -61,10 +61,10 @@ function makeChart(data){
             events: {
               click: function() {
                 if($state.is("live.buy_sell")){
-                  $state.go('live.buy_sell.details');
+                  $state.go('live.buy_sell.details', {stockObj: value});
                 }
                 else {
-                  $state.go('historic.buy_sell.details');
+                  $state.go('historic.buy_sell.details', {stockObj: value});
                 }
               }
             },
