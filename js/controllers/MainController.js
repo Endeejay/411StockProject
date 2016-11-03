@@ -1,4 +1,4 @@
-stockApp.controller('MainController', ['$scope', function MainController($scope) {
+stockApp.controller('MainController', ['$scope', 'DBService', function MainController($scope, DBService) {
 
-
+DBService.initializeDBAtTheBeginningOfStockApp();
 }]);

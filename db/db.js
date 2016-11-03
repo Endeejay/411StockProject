@@ -1,16 +1,11 @@
 stockApp.service('DBService',[function () {
 const storage = require('electron-json-storage');
 
-/*These are fields*/
-var portfolio = 'portfolio';
-var watch = 'watch';
-var transaction = 'transaction';
-
-/*run init to make your initial jsonFiles*/
 //initJsonFiles();
 /*if you wanna use a function elsewhere make it look like getRelevantDataByPortfolioId */
 
 this.getRelevantDataByPortfolioId = getRelevantDataByPortfolioId;
+this.initializeDBAtTheBeginningOfStockApp = initializeDBAtTheBeginningOfStockApp;
 
 function getRelevantDataByPortfolioId(field, portfolioId){
   var data = getJsonArray(field);
@@ -119,6 +114,16 @@ function isNull(value){
   return value === null;
 }
 
+function initializeDBAtTheBeginningOfStockApp(){
+  var portfolio = 'portfolio';
+  var portfolioJson = get(portfolio);
+
+  if(portfolioJson == false)
+  {
+    initJsonFiles();
+  }
+}
+
 function initJsonFiles(){
   var portfolio = makePortfolioJson(null, null, null, null);
   var watch = makeWatchJson(null, null);
@@ -166,8 +171,15 @@ function initJsonFiles(){
     function get(field) {
       var fs = require('fs');
       var currentUser = getUserDirective();
-      var stringData = fs.readFileSync(currentUser + '\\AppData\\Roaming\\Electron\\' + field +'.json', 'utf8');
+      var stringData;
+      var parsedJsonData;
+      try{
+        stringData = fs.readFileSync(currentUser + '\\AppData\\Roaming\\Electron\\' + field +'.json', 'utf8');
+      } catch (err){
+        return false;
+      }
       var parsedJsonData = JSON.parse(stringData);
+
       return parsedJsonData;
     }
 
