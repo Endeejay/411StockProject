@@ -10,24 +10,26 @@ var transaction = 'transaction';
 //initJsonFiles();
 /*if you wanna use a function elsewhere make it look like getRelevantDataByPortfolioId */
 
-this.getRelevantDataByPortfolioId = function (field, portfolioId){
-    var data = getJsonArray(field);
-    var jsonInfo = [];
-    var errorString = getNoPortfolioidError();
-    for (index in data){
-      if(data[index].error){
-        jsonInfo.push(data[index]);
-        break;
-      }
-      if(data[index].portfolio_Id == portfolioId){
-        jsonInfo.push(data[index]);
-      }
-    }
-    if(jsonInfo.length == 0){
+this.getRelevantDataByPortfolioId = getRelevantDataByPortfolioId;
 
-        jsonInfo.push(errorString);
+function getRelevantDataByPortfolioId(field, portfolioId){
+  var data = getJsonArray(field);
+  var jsonInfo = [];
+  var errorString = getNoPortfolioidError();
+  for (index in data){
+    if(data[index].error){
+      jsonInfo.push(data[index]);
+      break;
     }
-    return jsonInfo
+    if(data[index].portfolio_Id == portfolioId){
+      jsonInfo.push(data[index]);
+    }
+  }
+  if(jsonInfo.length == 0){
+
+      jsonInfo.push(errorString);
+  }
+  return jsonInfo
 }
 
 function getNoPortfolioidError(){
