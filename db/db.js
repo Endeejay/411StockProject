@@ -1,3 +1,4 @@
+stockApp.service('DBService',[function () {
 const storage = require('electron-json-storage');
 
 /*These are fields*/
@@ -7,11 +8,9 @@ var transaction = 'transaction';
 
 /*run init to make your initial jsonFiles*/
 //initJsonFiles();
-//addWatch(3,3);
-// var y = getRelevantDataByPortfolioId(transaction, 1);
-// debugger;
+/*if you wanna use a function elsewhere make it look like getRelevantDataByPortfolioId */
 
-function getRelevantDataByPortfolioId(field, portfolioId){
+this.getRelevantDataByPortfolioId = function (field, portfolioId){
     var data = getJsonArray(field);
     var jsonInfo = [];
     var errorString = getNoPortfolioidError();
@@ -265,3 +264,4 @@ return arrayOfJsonObjects;
         if(error) throw error;
       });
     }
+}]);
