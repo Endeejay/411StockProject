@@ -1,11 +1,15 @@
-/*stockApp.service('DBService',[function () {
+stockApp.service('DBService',[function () {
 const storage = require('electron-json-storage');
 
 //initJsonFiles();
-if you wanna use a function elsewhere make it look like getRelevantDataByPortfolioId 
+/*if you wanna use a function elsewhere make it look like getRelevantDataByPortfolioId */
 
+//***Function Mappings***//
 this.getRelevantDataByPortfolioId = getRelevantDataByPortfolioId;
 this.initializeDBAtTheBeginningOfStockApp = initializeDBAtTheBeginningOfStockApp;
+this.addPortfolio = addPortfolio;
+this.getAllPortfoliosForUser = getAllPortfoliosForUser;
+
 
 function getRelevantDataByPortfolioId(field, portfolioId){
   var data = getJsonArray(field);
@@ -25,6 +29,12 @@ function getRelevantDataByPortfolioId(field, portfolioId){
       jsonInfo.push(errorString);
   }
   return jsonInfo
+}
+
+function getAllPortfoliosForUser(){
+  var field = "portfolio";
+  var userPortfolios = getJsonArray(field);
+  return userPortfolios;
 }
 
 function getNoPortfolioidError(){
@@ -54,10 +64,17 @@ function addPortfolio(portfolioName, startDate, endDate){
     _endDate.push(endDate);
   }
 
-
+  var portfolio = {
+    'portfolio_Id': _portfolioId[_portfolioId.length-1] + 1,
+    'portfolio_name': portfolioName,
+    'start_date': startDate,
+    'end_date': endDate
+  }
 
   var newPortfolioJson = makePortfolioJson(_portfolioId, _portfolioName, _startDate, _endDate);
   set(field, newPortfolioJson);
+
+  return portfolio;
 }
 
 function addWatch(portfolioId, exchangeShortName){
@@ -241,7 +258,7 @@ return arrayOfJsonObjects;
         if(error) throw error;
       });
     }
-/*has checks if the Field is in the DB.... Field = 
+/*has checks if the Field is in the DB.... Field = */
     function has(field){
       storage.has(field, function(error,hasKey){
         if(error) throw error;
@@ -279,4 +296,3 @@ return arrayOfJsonObjects;
       });
     }
 }]);
-*/

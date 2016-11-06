@@ -61,7 +61,8 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
         .state('historic.portfolio', {
             views: {
               "content@": {
-                templateUrl: 'portfolio.html'
+                templateUrl: 'portfolio.html',
+                controller: 'PortfolioController'
               }
             }
         })
@@ -111,7 +112,8 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
         .state('live.portfolio', {
             views: {
               "content@": {
-                templateUrl: 'portfolio.html'
+                templateUrl: 'portfolio.html',
+                controller: 'PortfolioController' 
               }
             }
         })
