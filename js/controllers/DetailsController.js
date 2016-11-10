@@ -27,4 +27,8 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     $scope.sellStock = function(){
     	console.log("Sold one of " + stockObj.Symbol);
     }
+
+    $scope.watchStock = function(){
+        console.log("Started watching " + stockObj.Symbol);
+    }
 });
