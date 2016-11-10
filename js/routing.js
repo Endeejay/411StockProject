@@ -69,7 +69,8 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
         .state('historic.watch', {
             views: {
               "content@": {
-                templateUrl: 'watch.html'
+                templateUrl: 'watch.html',
+                controller: 'WatchController'
               }
             }
         })
@@ -120,7 +121,8 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
         .state('live.watch', {
             views: {
               "content@": {
-                templateUrl: 'watch.html'
+                templateUrl: 'watch.html',
+                controller: 'WatchController'
               }
             }
         });

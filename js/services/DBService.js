@@ -9,7 +9,8 @@ this.getRelevantDataByPortfolioId = getRelevantDataByPortfolioId;
 this.initializeDBAtTheBeginningOfStockApp = initializeDBAtTheBeginningOfStockApp;
 this.addPortfolio = addPortfolio;
 this.getAllPortfoliosForUser = getAllPortfoliosForUser;
-
+this.addWatch = addWatch;
+this.getAllWatchForPortfolio = getAllWatchForPortfolio;
 
 function getRelevantDataByPortfolioId(field, portfolioId){
   var data = getJsonArray(field);
@@ -77,22 +78,28 @@ function addPortfolio(portfolioName, startDate, endDate){
   return portfolio;
 }
 
-function addWatch(portfolioId, exchangeShortName){
-  var field = "watch"
+function getAllWatchForPortfolio(portfolioId){
+  var field = "watch";
+  var userWatchedStocks = getRelevantDataByPortfolioId(field, portfolioId);
+  return userWatchedStocks;
+}
+
+function addWatch(portfolioId, symbol){
+  var field = "watch";
   var currentWatch = get(field);
   var _portfolioId = currentWatch.portfolio_Id;
-  var _exchangeShortName = currentWatch.exchange_short_name;
+  var _symbol = currentWatch.symbol;
 
   if(isNull(currentWatch.portfolio_Id)){
     _portfolioId = [portfolioId];
-    _exchangeShortName = [exchangeShortName];
+    _symbol = [symbol];
   }
   else{
     _portfolioId.push(portfolioId);
-    _exchangeShortName.push(exchangeShortName);
+    _symbol.push(symbol);
   }
 
-  var newWatchJson = makeWatchJson(_portfolioId, _exchangeShortName);
+  var newWatchJson = makeWatchJson(_portfolioId, _symbol);
   set(field, newWatchJson);
 }
 
@@ -162,10 +169,10 @@ function initJsonFiles(){
       return portfolioJson;
     }
 
-    function makeWatchJson(portfolioId, exchangeShortName){
+    function makeWatchJson(portfolioId, symbol){
       var watchJson = {
         "portfolio_Id" : portfolioId,
-        "exchange_short_name" : exchangeShortName
+        "symbol" : symbol
       };
 
       return watchJson;

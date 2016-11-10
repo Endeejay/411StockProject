@@ -8,9 +8,8 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     	}
     }
 
-    
-     var stockObj = $stateParams.stockObj;
-     $scope.stockReal = {};
+    var stockObj = $stateParams.stockObj;
+    $scope.stockReal = {};
 
     getStock(); 
 
