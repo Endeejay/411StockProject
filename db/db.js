@@ -6,6 +6,9 @@ const storage = require('electron-json-storage');
 
 this.getRelevantDataByPortfolioId = getRelevantDataByPortfolioId;
 this.initializeDBAtTheBeginningOfStockApp = initializeDBAtTheBeginningOfStockApp;
+this.addPortfolio = addPortfolio;
+this.getPortfolioIds = getPortfolioIds;
+
 
 function getRelevantDataByPortfolioId(field, portfolioId){
   var data = getJsonArray(field);
@@ -33,30 +36,34 @@ function getNoPortfolioidError(){
   return errorString;
 }
 
-function addPortfolio(portfolioName, startDate, endDate){
+function addPortfolio(portfolioName, isLive, startDate, endDate, currency){
   var field = "portfolio"
   var currentPortfolio = get(field);
   var _portfolioId = currentPortfolio.portfolio_Id;
   var _portfolioName = currentPortfolio.portfolio_name;
+  var _isLive = currentPortfolio.isLive;
   var _startDate = currentPortfolio.start_date;
   var _endDate = currentPortfolio.end_date;
-
+  var _currency = currentPortfolio.currency;
+debugger;
   if(isNull(currentPortfolio.portfolio_Id)){
     _portfolioId = [0];
     _portfolioName =  [portfolioName];
+    _isLive = [isLive];
     _startDate = [startDate];
     _endDate = [endDate];
+    _currency = [currency];
   }
   else{
     _portfolioId.push(_portfolioId[_portfolioId.length-1] + 1);
     _portfolioName.push(portfolioName);
+    _isLive.push(isLive);
     _startDate.push(startDate);
     _endDate.push(endDate);
+    _currency.push(currency);
   }
 
-
-
-  var newPortfolioJson = makePortfolioJson(_portfolioId, _portfolioName, _startDate, _endDate);
+  var newPortfolioJson = makePortfolioJson(_portfolioId, _portfolioName, _isLive, _startDate, _endDate, _currency);
   set(field, newPortfolioJson);
 }
 
@@ -125,7 +132,7 @@ function initializeDBAtTheBeginningOfStockApp(){
 }
 
 function initJsonFiles(){
-  var portfolio = makePortfolioJson(null, null, null, null);
+  var portfolio = makePortfolioJson(null, null, null, null, null, null);
   var watch = makeWatchJson(null, null);
   var transaction = makeTransactionJson(null, null, null, null, null, null);
 
@@ -134,12 +141,14 @@ function initJsonFiles(){
   set("transaction", transaction);
 }
 
-    function makePortfolioJson(portfolioId, portfolioName, startDate, endDate){
+    function makePortfolioJson(portfolioId, portfolioName, isLive, startDate, endDate, currency){
       var portfolioJson = {
         "portfolio_Id" : portfolioId,
         "portfolio_name" : portfolioName,
+        "isLive" : isLive,
         "start_date" : startDate,
-        "end_date" : endDate
+        "end_date" : endDate,
+        "currency" : currency
       };
 
       return portfolioJson;
@@ -166,7 +175,6 @@ function initJsonFiles(){
 
       return transactionJson;
     }
-
 
     function get(field) {
       var fs = require('fs');
@@ -213,11 +221,22 @@ function getJsonArray(field){
     jsonObject = JSON.parse(jsonString);
     arrayOfJsonObjects.push(jsonObject);
     jsonString = "";
-}
-
+    }
 return arrayOfJsonObjects;
 }
 
+function getPortfolioIds(){
+  var jsonArrayData = get("portfolio");
+  var arrayPortfolioIds = [];
+
+  for(property in jsonArrayData)
+  {
+    if(property == "portfolio_id")
+    {
+      arrayPortfolioIds.push(jsonArrayData[property]);
+    }
+  }
+}
     function getUserDirective(){
       var directoryString = __dirname;
       var returnString = "";
@@ -240,6 +259,7 @@ return arrayOfJsonObjects;
       storage.set(field, object ,function(error){
         if(error) throw error;
       });
+
     }
 /*has checks if the Field is in the DB.... Field = */
     function has(field){

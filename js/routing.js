@@ -22,13 +22,13 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
           views: {
             header: {
               templateUrl: 'templates/dateHeader.html',
-              controller: 'DatePickerController'
             },
             nav: {
               templateUrl: 'templates/historicNavbar.html'
             },
             content: {
-              templateUrl: 'templates/historicHome.html'
+              templateUrl: 'templates/historicHome.html',
+              controller: 'HomeController'
             }
           }
         })
@@ -78,7 +78,8 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
                templateUrl: 'templates/liveNavbar.html'
              },
              content: {
-               templateUrl: 'templates/liveHome.html'
+               templateUrl: 'templates/liveHome.html',
+               controller: 'HomeController'
              }
            }
         })
