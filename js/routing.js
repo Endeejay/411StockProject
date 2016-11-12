@@ -61,14 +61,16 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
         .state('historic.portfolio', {
             views: {
               "content@": {
-                templateUrl: 'portfolio.html'
+                templateUrl: 'portfolio.html',
+                controller: 'PortfolioController'
               }
             }
         })
         .state('historic.watch', {
             views: {
               "content@": {
-                templateUrl: 'watch.html'
+                templateUrl: 'watch.html',
+                controller: 'WatchController'
               }
             }
         })
@@ -112,14 +114,16 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
         .state('live.portfolio', {
             views: {
               "content@": {
-                templateUrl: 'portfolio.html'
+                templateUrl: 'portfolio.html',
+                controller: 'PortfolioController' 
               }
             }
         })
         .state('live.watch', {
             views: {
               "content@": {
-                templateUrl: 'watch.html'
+                templateUrl: 'watch.html',
+                controller: 'WatchController'
               }
             }
         });

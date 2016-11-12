@@ -1,116 +1,16 @@
-/*stockApp.service('DBService',[function () {
+stockApp.service('DBService',[function () {
 const storage = require('electron-json-storage');
 
 //initJsonFiles();
-if you wanna use a function elsewhere make it look like getRelevantDataByPortfolioId 
+/*if you wanna use a function elsewhere make it look like getRelevantDataByPortfolioId */
 
+//***Function Mappings***//
 this.getRelevantDataByPortfolioId = getRelevantDataByPortfolioId;
 this.initializeDBAtTheBeginningOfStockApp = initializeDBAtTheBeginningOfStockApp;
 this.addPortfolio = addPortfolio;
-this.getPortfolioIds = getPortfolioIds;
-this.isPortfolioNull = isPortfolioNull;
-this.checkIfPortfolioIdForLiveOrHistoricExists = checkIfPortfolioIdForLiveOrHistoricExists;
-this.getCurrentPortfolio = getCurrentPortfolio;
-this.getPortfolioById = getPortfolioById;
-this.setPortfolioValues = setPortfolioValues;
-
-function setPortfolioValues(id, objectField, value){
-  var data = getJsonArray("portfolio");
-  debugger;
-  var portfolioId = [];
-  var portfolioName = [];
-  var isLive = [];
-  var startDate = [];
-  var endDate = [];
-  var currency = [];
-
-  for(index in data){
-    if(data[index].portfolio_Id == id){
-      data[index][objectField] = value;
-    }
-    if(data[index].portfolio_Id){
-      portfolioId.push(data[index].portfolio_Id);
-    }
-    if(data[index].portfolio_name){
-      portfolioName.push(data[index].portfolio_name);
-    }
-    if(data[index].isLive){
-      isLive.push(data[index].isLive);
-    }
-    if(data[index].start_date){
-      startDate.push(data[index].start_date);
-    }
-    if(data[index].end_date){
-      endDate.push(data[index].end_date);
-    }
-    if(data[index].currency){
-      currency.push(data[index].currency);
-    }
-  }
-  var newPortfolioJson = makePortfolioJson(portfolioId, portfolioName, isLive, startDate, endDate, currency);
-  set("portfolio", newPortfolioJson);
-}
-
-function getCurrentPortfolio(state){
-  var data = getJsonArray("portfolio");
-  var stateJsonInfo = [];
-  var jsonInfo = [];
-
-  for(index in data){
-    if(data[index].isLive == state){
-      stateJsonInfo.push(data[index]);
-    }
-  }
-  jsonInfo.push(stateJsonInfo[stateJsonInfo.length - 1])
-
-  return jsonInfo;
-
-}
-
-function getPortfolioById(portfolioId){
-  var data = getJsonArray("portfolio");
-  var errorString = getNoPortfolioidError();
-  var jsonInfo = [];
-
-  for(index in data){
-    if(data[index].portfolio_Id == portfolioId){
-      jsonInfo.push(data[index])
-    }
-  }
-  if(jsonInfo.length == 0)
-  {
-    jsonInfo.push(errorString);
-  }
-
-  return jsonInfo;
-}
-
-function getPortfolioIds(){
-  var data = getJsonArray("portfolio");
-  var portfolioIds = [];
-
-  for(index in data){
-    portfolioIds.push(data[index].portfolio_Id);
-  }
-  return portfolioIds;
-}
-
-function checkIfPortfolioIdForLiveOrHistoricExists(isLive){
-  var data = getJsonArray("portfolio");
-  var doesLiveExist = false;
-  for (index in data){
-    if(data[index].isLive == isLive){
-      doesLiveExist = true;
-    }
-  }
-
-  return doesLiveExist;
-}
-
-function isPortfolioNull(){
-  var data = getJsonArray("portfolio");
-  return data[0].error;
-}
+this.getAllPortfoliosForUser = getAllPortfoliosForUser;
+this.addWatch = addWatch;
+this.getAllWatchForPortfolio = getAllWatchForPortfolio;
 
 function getRelevantDataByPortfolioId(field, portfolioId){
   var data = getJsonArray(field);
@@ -132,59 +32,74 @@ function getRelevantDataByPortfolioId(field, portfolioId){
   return jsonInfo
 }
 
+function getAllPortfoliosForUser(){
+  var field = "portfolio";
+  var userPortfolios = getJsonArray(field);
+  return userPortfolios;
+}
+
 function getNoPortfolioidError(){
   var errorString = "{\"error\" : \"portfolioId doesn't exist\"}"
   errorString = JSON.parse(errorString);
   return errorString;
 }
 
-function addPortfolio(portfolioName, isLive, startDate, endDate, currency){
+function addPortfolio(portfolioName, startDate, endDate){
   var field = "portfolio"
   var currentPortfolio = get(field);
   var _portfolioId = currentPortfolio.portfolio_Id;
   var _portfolioName = currentPortfolio.portfolio_name;
-  var _isLive = currentPortfolio.isLive;
   var _startDate = currentPortfolio.start_date;
   var _endDate = currentPortfolio.end_date;
-  var _currency = currentPortfolio.currency;
 
   if(isNull(currentPortfolio.portfolio_Id)){
-    _portfolioId = [1];
+    _portfolioId = [0];
     _portfolioName =  [portfolioName];
-    _isLive = [isLive];
     _startDate = [startDate];
     _endDate = [endDate];
-    _currency = [currency];
   }
   else{
     _portfolioId.push(_portfolioId[_portfolioId.length-1] + 1);
     _portfolioName.push(portfolioName);
-    _isLive.push(isLive);
     _startDate.push(startDate);
     _endDate.push(endDate);
-    _currency.push(currency);
   }
 
-  var newPortfolioJson = makePortfolioJson(_portfolioId, _portfolioName, _isLive, _startDate, _endDate, _currency);
+  var portfolio = {
+    'portfolio_Id': _portfolioId[_portfolioId.length-1] + 1,
+    'portfolio_name': portfolioName,
+    'start_date': startDate,
+    'end_date': endDate
+  }
+
+  var newPortfolioJson = makePortfolioJson(_portfolioId, _portfolioName, _startDate, _endDate);
   set(field, newPortfolioJson);
+
+  return portfolio;
 }
 
-function addWatch(portfolioId, exchangeShortName){
-  var field = "watch"
+function getAllWatchForPortfolio(portfolioId){
+  var field = "watch";
+  var userWatchedStocks = getRelevantDataByPortfolioId(field, portfolioId);
+  return userWatchedStocks;
+}
+
+function addWatch(portfolioId, symbol){
+  var field = "watch";
   var currentWatch = get(field);
   var _portfolioId = currentWatch.portfolio_Id;
-  var _exchangeShortName = currentWatch.exchange_short_name;
+  var _symbol = currentWatch.symbol;
 
   if(isNull(currentWatch.portfolio_Id)){
     _portfolioId = [portfolioId];
-    _exchangeShortName = [exchangeShortName];
+    _symbol = [symbol];
   }
   else{
     _portfolioId.push(portfolioId);
-    _exchangeShortName.push(exchangeShortName);
+    _symbol.push(symbol);
   }
 
-  var newWatchJson = makeWatchJson(_portfolioId, _exchangeShortName);
+  var newWatchJson = makeWatchJson(_portfolioId, _symbol);
   set(field, newWatchJson);
 }
 
@@ -234,7 +149,7 @@ function initializeDBAtTheBeginningOfStockApp(){
 }
 
 function initJsonFiles(){
-  var portfolio = makePortfolioJson(null, null, null, null, null, null);
+  var portfolio = makePortfolioJson(null, null, null, null);
   var watch = makeWatchJson(null, null);
   var transaction = makeTransactionJson(null, null, null, null, null, null);
 
@@ -243,23 +158,21 @@ function initJsonFiles(){
   set("transaction", transaction);
 }
 
-    function makePortfolioJson(portfolioId, portfolioName, isLive, startDate, endDate, currency){
+    function makePortfolioJson(portfolioId, portfolioName, startDate, endDate){
       var portfolioJson = {
         "portfolio_Id" : portfolioId,
         "portfolio_name" : portfolioName,
-        "isLive" : isLive,
         "start_date" : startDate,
-        "end_date" : endDate,
-        "currency" : currency
+        "end_date" : endDate
       };
 
       return portfolioJson;
     }
 
-    function makeWatchJson(portfolioId, exchangeShortName){
+    function makeWatchJson(portfolioId, symbol){
       var watchJson = {
         "portfolio_Id" : portfolioId,
-        "exchange_short_name" : exchangeShortName
+        "symbol" : symbol
       };
 
       return watchJson;
@@ -277,6 +190,7 @@ function initJsonFiles(){
 
       return transactionJson;
     }
+
 
     function get(field) {
       var fs = require('fs');
@@ -323,9 +237,11 @@ function getJsonArray(field){
     jsonObject = JSON.parse(jsonString);
     arrayOfJsonObjects.push(jsonObject);
     jsonString = "";
-    }
+}
+
 return arrayOfJsonObjects;
 }
+
     function getUserDirective(){
       var directoryString = __dirname;
       var returnString = "";
@@ -348,9 +264,8 @@ return arrayOfJsonObjects;
       storage.set(field, object ,function(error){
         if(error) throw error;
       });
-
     }
-/*has checks if the Field is in the DB.... Field = 
+/*has checks if the Field is in the DB.... Field = */
     function has(field){
       storage.has(field, function(error,hasKey){
         if(error) throw error;
@@ -388,4 +303,3 @@ return arrayOfJsonObjects;
       });
     }
 }]);
-*/
