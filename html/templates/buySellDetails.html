@@ -5,10 +5,11 @@
     <div id="#sellBtn" class="col s2 red btn" ng-click="sellStock()">Sell</div>
 </div>
 <div class="row">
-    <a id="#watchStock"><i class="material-icons">star</i> Add to Watchlist</a>
+    <a id="#watchStock" ng-click="watchStock()"><i class="material-icons">star</i> Add to Watchlist</a>
 </div>
 <div class="row">
     <!-- the ^ below refers to the parent of current state -->
+    <!--{{stockReal.LastPrice}} -->
     <a ui-sref="^">Back to Market</a>
 </div>
 
