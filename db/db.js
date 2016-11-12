@@ -12,13 +12,43 @@ this.isPortfolioNull = isPortfolioNull;
 this.checkIfPortfolioIdForLiveOrHistoricExists = checkIfPortfolioIdForLiveOrHistoricExists;
 this.getCurrentPortfolio = getCurrentPortfolio;
 this.getPortfolioById = getPortfolioById;
-this.setPortfolioCurrency = setPortfolioCurrency;
+this.setPortfolioValues = setPortfolioValues;
 
-function setPortfolioCurrency(id, currency){
+function setPortfolioValues(id, objectField, value){
   var data = getJsonArray("portfolio");
-  
-  //work in progress
-  //next on my todo
+  debugger;
+  var portfolioId = [];
+  var portfolioName = [];
+  var isLive = [];
+  var startDate = [];
+  var endDate = [];
+  var currency = [];
+
+  for(index in data){
+    if(data[index].portfolio_Id == id){
+      data[index][objectField] = value;
+    }
+    if(data[index].portfolio_Id){
+      portfolioId.push(data[index].portfolio_Id);
+    }
+    if(data[index].portfolio_name){
+      portfolioName.push(data[index].portfolio_name);
+    }
+    if(data[index].isLive){
+      isLive.push(data[index].isLive);
+    }
+    if(data[index].start_date){
+      startDate.push(data[index].start_date);
+    }
+    if(data[index].end_date){
+      endDate.push(data[index].end_date);
+    }
+    if(data[index].currency){
+      currency.push(data[index].currency);
+    }
+  }
+  var newPortfolioJson = makePortfolioJson(portfolioId, portfolioName, isLive, startDate, endDate, currency);
+  set("portfolio", newPortfolioJson);
 }
 
 function getCurrentPortfolio(state){
