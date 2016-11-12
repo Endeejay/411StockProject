@@ -17,9 +17,23 @@ this.getCurrentPortfolio = getCurrentPortfolio;
 this.getPortfolioById = getPortfolioById;
 this.setPortfolioValues = setPortfolioValues;
 
+function getMostRecentTransaction(portfolioId, shortName){
+  var data = getJsonArray("transaction");
+  var info = [];
+  var jsonInfo = [];
+
+  for(index in data){
+    if(data[index].portfolio_Id == portfolio_Id){
+      stateJsonInfo.push(data[index]);
+    }
+  }
+  jsonInfo.push(stateJsonInfo[stateJsonInfo.length - 1])
+
+  return jsonInfo;
+}
+
 function setPortfolioValues(id, objectField, value){
   var data = getJsonArray("portfolio");
-  debugger;
   var portfolioId = [];
   var portfolioName = [];
   var isLive = [];
@@ -37,8 +51,8 @@ function setPortfolioValues(id, objectField, value){
     if(data[index].portfolio_name){
       portfolioName.push(data[index].portfolio_name);
     }
-    if(data[index].isLive){
-      isLive.push(data[index].isLive);
+    if(data[index].is_live){
+      isLive.push(data[index].is_live);
     }
     if(data[index].start_date){
       startDate.push(data[index].start_date);
@@ -137,38 +151,35 @@ function getNoPortfolioidError(){
   return errorString;
 }
 
-function addPortfolio(portfolioName, startDate, endDate){
+function addPortfolio(portfolioName, isLive, startDate, endDate, currency){
   var field = "portfolio"
   var currentPortfolio = get(field);
   var _portfolioId = currentPortfolio.portfolio_Id;
   var _portfolioName = currentPortfolio.portfolio_name;
+  var _isLive = currentPortfolio.is_live;
   var _startDate = currentPortfolio.start_date;
   var _endDate = currentPortfolio.end_date;
+  var _currency = currentPortfolio.currency;
 
   if(isNull(currentPortfolio.portfolio_Id)){
-    _portfolioId = [0];
+    _portfolioId = [1];
     _portfolioName =  [portfolioName];
+    _isLive = [isLive];
     _startDate = [startDate];
     _endDate = [endDate];
+    _currency = [currency];
   }
   else{
     _portfolioId.push(_portfolioId[_portfolioId.length-1] + 1);
     _portfolioName.push(portfolioName);
+    _isLive.push(isLive);
     _startDate.push(startDate);
     _endDate.push(endDate);
+    _currency.push(currency);
   }
 
-  var portfolio = {
-    'portfolio_Id': _portfolioId[_portfolioId.length-1] + 1,
-    'portfolio_name': portfolioName,
-    'start_date': startDate,
-    'end_date': endDate
-  }
-
-  var newPortfolioJson = makePortfolioJson(_portfolioId, _portfolioName, _startDate, _endDate);
+  var newPortfolioJson = makePortfolioJson(_portfolioId, _portfolioName, _isLive, _startDate, _endDate, _currency);
   set(field, newPortfolioJson);
-
-  return portfolio;
 }
 
 function getAllWatchForPortfolio(portfolioId){
@@ -196,7 +207,7 @@ function addWatch(portfolioId, symbol){
   set(field, newWatchJson);
 }
 
-function addTransaction(portfolioId, exchangeName, exchangeShortName, tradeTime, stockValue, numberOfShares ){
+function addTransaction(portfolioId, exchangeName, exchangeShortName, tradeTime, stockValue, numberOfShares, buyOrSell){
   var field = "transaction";
   var currentTransaction = get(field);
   var _portfolioId = currentTransaction.portfolio_Id;
@@ -205,6 +216,7 @@ function addTransaction(portfolioId, exchangeName, exchangeShortName, tradeTime,
   var _tradeTime = currentTransaction.trade_time;
   var _stockValue = currentTransaction.stock_value;
   var _numberOfShares = currentTransaction.number_of_shares;
+  var _buyOrSell = currentTransaction.buy_or_sell;
 
   if(isNull(currentTransaction.portfolio_Id)){
     _portfolioId = [portfolioId];
@@ -213,6 +225,7 @@ function addTransaction(portfolioId, exchangeName, exchangeShortName, tradeTime,
     _tradeTime = [tradeTime];
     _stockValue = [stockValue];
     _numberOfShares = [numberOfShares];
+    _buyOrSell = [buyOrSell];
   }
   else{
     _portfolioId.push(portfolioId);
@@ -221,9 +234,10 @@ function addTransaction(portfolioId, exchangeName, exchangeShortName, tradeTime,
     _tradeTime.push(tradeTime);
     _stockValue.push(stockValue);
     _numberOfShares.push(numberOfShares);
+    _buyOrSell.push(buyOrSell);
   }
 
-  var newTransactionJson = makeTransactionJson(_portfolioId, _exchangeName, _exchangeShortName, _tradeTime, _stockValue, _numberOfShares);
+  var newTransactionJson = makeTransactionJson(_portfolioId, _exchangeName, _exchangeShortName, _tradeTime, _stockValue, _numberOfShares, _buyOrSell);
   set(field, newTransactionJson);
 }
 
@@ -242,21 +256,23 @@ function initializeDBAtTheBeginningOfStockApp(){
 }
 
 function initJsonFiles(){
-  var portfolio = makePortfolioJson(null, null, null, null);
+  var portfolio = makePortfolioJson(null, null, null, null, null, null);
   var watch = makeWatchJson(null, null);
-  var transaction = makeTransactionJson(null, null, null, null, null, null);
+  var transaction = makeTransactionJson(null, null, null, null, null, null, null);
 
   set("portfolio", portfolio);
   set("watch", watch);
   set("transaction", transaction);
 }
 
-    function makePortfolioJson(portfolioId, portfolioName, startDate, endDate){
+    function makePortfolioJson(portfolioId, portfolioName, isLive, startDate, endDate, currency){
       var portfolioJson = {
         "portfolio_Id" : portfolioId,
         "portfolio_name" : portfolioName,
+        "is_live" : isLive,
         "start_date" : startDate,
-        "end_date" : endDate
+        "end_date" : endDate,
+        "currency" : currency
       };
 
       return portfolioJson;
@@ -271,14 +287,15 @@ function initJsonFiles(){
       return watchJson;
     }
 
-    function makeTransactionJson(portfolioId, exchangeName, excahangeShortName, tradeTime, stockValue, numberOfShares){
+    function makeTransactionJson(portfolioId, exchangeName, excahangeShortName, tradeTime, stockValue, numberOfShares, buyOrSell){
       var transactionJson = {
         "portfolio_Id" : portfolioId,
         "exchange_name": exchangeName,
         "exchange_short_name": excahangeShortName,
         "trade_time" : tradeTime,
         "stock_value" : stockValue,
-        "number_of_shares" : numberOfShares
+        "number_of_shares" : numberOfShares,
+        "buy_or_sell" : buyOrSell
       };
 
       return transactionJson;
