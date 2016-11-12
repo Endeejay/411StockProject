@@ -42,14 +42,14 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
             }
         })
         .state('historic.buy_sell.details', {
-          url: '/details',
+          url: '/historicDetails',
           views: {
             "content@": {
               templateUrl: 'templates/buySellDetails.html',
               controller: 'DetailsController'
             }
           },
-          params: {stockObj: null}
+          params: {stockObj: Object}
         })
         .state('historic.user', {
             views: {
@@ -95,14 +95,14 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
             }
         })
         .state('live.buy_sell.details', {
-           url: '/details',
+           url: '/liveDetails',
            views: {
              "content@": {
                templateUrl: 'templates/buySellDetails.html',
                controller: 'DetailsController'
              }
            },
-           params: {stockObj: null}
+           params: {stockObj: Object}
         })
         .state('live.user', {
             views: {

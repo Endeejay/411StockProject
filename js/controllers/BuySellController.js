@@ -62,7 +62,7 @@ function makeChart(data){
                 if($state.is("live.buy_sell")){
                   $state.go('live.buy_sell.details', {stockObj: value});
                 }
-                else {
+                else if($state.is("historic.buy_sell")){
                   $state.go('historic.buy_sell.details', {stockObj: value});
                 }
               }

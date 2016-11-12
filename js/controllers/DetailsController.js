@@ -1,12 +1,12 @@
-stockApp.controller('DetailsController', function DetailsController($scope, $stateParams, $state, DBService, APIService) {
-    if($stateParams.stockObj == null){
-    	if($state.is('live.buy_sell.details')){
-    		$state.go('live.buy_sell');
-    	}
-    	else{
-    		$state.go('historic.buy_sell');
-    	}
-    }
+stockApp.controller('DetailsController', function DetailsController($scope, $stateParams, $state, DBService, WatchService, APIService) {
+    // if($stateParams.stockObj == null){
+    // 	if($state.is('live.buy_sell.details')){
+    // 		$state.go('live.buy_sell');
+    // 	}
+    // 	else if($state.is('historic.buy_sell.details')){
+    // 		$state.go('historic.buy_sell');
+    // 	}
+    // }
 
     var stockObj = $stateParams.stockObj;
     $scope.stockReal = {};
