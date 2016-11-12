@@ -8,7 +8,79 @@ this.getRelevantDataByPortfolioId = getRelevantDataByPortfolioId;
 this.initializeDBAtTheBeginningOfStockApp = initializeDBAtTheBeginningOfStockApp;
 this.addPortfolio = addPortfolio;
 this.getPortfolioIds = getPortfolioIds;
+this.isPortfolioNull = isPortfolioNull;
+this.checkIfPortfolioIdForLiveOrHistoricExists = checkIfPortfolioIdForLiveOrHistoricExists;
+this.getCurrentPortfolio = getCurrentPortfolio;
+this.getPortfolioById = getPortfolioById;
+this.setPortfolioCurrency = setPortfolioCurrency;
 
+function setPortfolioCurrency(id, currency){
+  var data = getJsonArray("portfolio");
+  
+  //work in progress
+  //next on my todo
+}
+
+function getCurrentPortfolio(state){
+  var data = getJsonArray("portfolio");
+  var stateJsonInfo = [];
+  var jsonInfo = [];
+
+  for(index in data){
+    if(data[index].isLive == state){
+      stateJsonInfo.push(data[index]);
+    }
+  }
+  jsonInfo.push(stateJsonInfo[stateJsonInfo.length - 1])
+
+  return jsonInfo;
+
+}
+
+function getPortfolioById(portfolioId){
+  var data = getJsonArray("portfolio");
+  var errorString = getNoPortfolioidError();
+  var jsonInfo = [];
+
+  for(index in data){
+    if(data[index].portfolio_Id == portfolioId){
+      jsonInfo.push(data[index])
+    }
+  }
+  if(jsonInfo.length == 0)
+  {
+    jsonInfo.push(errorString);
+  }
+
+  return jsonInfo;
+}
+
+function getPortfolioIds(){
+  var data = getJsonArray("portfolio");
+  var portfolioIds = [];
+
+  for(index in data){
+    portfolioIds.push(data[index].portfolio_Id);
+  }
+  return portfolioIds;
+}
+
+function checkIfPortfolioIdForLiveOrHistoricExists(isLive){
+  var data = getJsonArray("portfolio");
+  var doesLiveExist = false;
+  for (index in data){
+    if(data[index].isLive == isLive){
+      doesLiveExist = true;
+    }
+  }
+
+  return doesLiveExist;
+}
+
+function isPortfolioNull(){
+  var data = getJsonArray("portfolio");
+  return data[0].error;
+}
 
 function getRelevantDataByPortfolioId(field, portfolioId){
   var data = getJsonArray(field);
@@ -45,9 +117,9 @@ function addPortfolio(portfolioName, isLive, startDate, endDate, currency){
   var _startDate = currentPortfolio.start_date;
   var _endDate = currentPortfolio.end_date;
   var _currency = currentPortfolio.currency;
-debugger;
+
   if(isNull(currentPortfolio.portfolio_Id)){
-    _portfolioId = [0];
+    _portfolioId = [1];
     _portfolioName =  [portfolioName];
     _isLive = [isLive];
     _startDate = [startDate];
@@ -223,19 +295,6 @@ function getJsonArray(field){
     jsonString = "";
     }
 return arrayOfJsonObjects;
-}
-
-function getPortfolioIds(){
-  var jsonArrayData = get("portfolio");
-  var arrayPortfolioIds = [];
-
-  for(property in jsonArrayData)
-  {
-    if(property == "portfolio_id")
-    {
-      arrayPortfolioIds.push(jsonArrayData[property]);
-    }
-  }
 }
     function getUserDirective(){
       var directoryString = __dirname;
