@@ -1,7 +1,5 @@
 stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state','DBService', function BuySellController($scope, BuySellService, $state, DBService) {
 getName();
-
-
 // function changeTemplate(){
 //   $location.url('/historic.buy_sell');
 // }
@@ -28,7 +26,6 @@ function makeChart(data){
       UTCDates.push(utcDate);
     }
     for(i=0;i<value.Prices.length;i++){
-      console.log(netValue);
       var netValue = value.Prices[i]-value.Prices[0];
       if(netValue < 0){
         var color = '#f02d41';

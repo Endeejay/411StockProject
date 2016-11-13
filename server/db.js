@@ -2,107 +2,21 @@ stockApp.service('DBService',[function () {
 const storage = require('electron-json-storage');
 
 //initJsonFiles();
-/*if you wanna use a function elsewhere make it look like getRelevantDataByPortfolioId */
+//if you wanna use a function elsewhere make it look like getRelevantDataByPortfolioId 
 
-//***Function Mappings***//
 this.getRelevantDataByPortfolioId = getRelevantDataByPortfolioId;
 this.initializeDBAtTheBeginningOfStockApp = initializeDBAtTheBeginningOfStockApp;
 this.addPortfolio = addPortfolio;
-this.addTransaction = addTransaction;
-this.addWatch = addWatch;
-this.getAllPortfoliosForUser = getAllPortfoliosForUser;
-this.getAllWatchForPortfolio = getAllWatchForPortfolio;
-this.getMostRecentTransaction = getMostRecentTransaction;
+this.getPortfolioIds = getPortfolioIds;
 this.isPortfolioNull = isPortfolioNull;
 this.checkIfPortfolioIdForLiveOrHistoricExists = checkIfPortfolioIdForLiveOrHistoricExists;
 this.getCurrentPortfolio = getCurrentPortfolio;
 this.getPortfolioById = getPortfolioById;
 this.setPortfolioValues = setPortfolioValues;
-this.getCurrentState = getCurrentState;
-this.getTotalShares = getTotalShares;
-this.setTransactionValues = setTransactionValues;
-
-function getCurrentState(state){
-  var isLive;
-  var currentState= state.substr(0, state.indexOf('.')); 
-  if(currentState === 'live'){
-    isLive = 1;
-  }else{
-    isLive = 2;
-  }
-  return isLive;
-}
-
-function getMostRecentTransaction(portfolioId, shortName){
-  var data = getJsonArray("transaction");
-  var info = [];
-  var jsonInfo = [];
-
-  for(index in data){
-    if(data[index].portfolio_Id == portfolioId){
-      if(data[index].exchange_short_name == shortName){
-        info.push(data[index]);      
-      }
-    }
-  }
-  jsonInfo.push(info[info.length - 1])
-
-  return jsonInfo;
-}
-
-function getTotalShares(portfolioId, exchangeShortName){
-  var data = getJsonArray("transaction");
-  var stockValues = 0;
-  for(index in data){
-    if(data[index].portfolio_Id == portfolioId){
-      if(data[index].exchange_short_name == exchangeShortName){
-        var shares = parseInt(data[index].number_of_shares);
-        stockValues += shares;
-      }
-
-    }
-  }
-
-  return stockValues;
-}
-
-function setTransactionValues(Id, exchangeShortName, objectField, value){
-  var data = getJsonArray("transaction");
-  var portfolioId = [];
-  var exchangeName = [];
-  var exchangeShortName = [];
-  var tradeTime = [];
-  var stockValue = [];
-  var totalShares = [];
-  var totalSharesAtTransaction = [];
-  var numberOfShares = [];
-  var buyOrSell = [];
-  var currencyAtTransaction = [];
-
-  for(index in data){
-    if(data[index].portfolio_Id == id){
-      if(data[index].exchange_short_name == exchangeShortName){
-        data[index][objectField] = value;
-      }
-    }
-    
-      portfolioId.push(data[index].portfolio_Id);
-      exchangeName.push(data[index].exchange_name);
-      exchangeShortName.push(data[index].exchange_short_name);
-      tradeTime.push(data[index].trade_time);
-      stockValue.push(data[index].stock_value);
-      totalShares.push(data[index].total_shares);
-      totalSharesAtTransaction.push(data[index].total_shares_at_transaction);
-      numberOfShares.push(data[index].number_of_shares);
-      buyOrSell.push(data[index].buy_or_sell);
-      currencyAtTransaction.push(data[index].currency_at_transaction);
-  }
-  var newTransactionJson = makeTransactionJson(portfolioId, exchangeName, exchangeShortName, tradeTime, stockValue, totalShares, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction);
-  set("transaction", newTransactionJson);
-}
 
 function setPortfolioValues(id, objectField, value){
   var data = getJsonArray("portfolio");
+  debugger;
   var portfolioId = [];
   var portfolioName = [];
   var isLive = [];
@@ -114,13 +28,24 @@ function setPortfolioValues(id, objectField, value){
     if(data[index].portfolio_Id == id){
       data[index][objectField] = value;
     }
-    
+    if(data[index].portfolio_Id){
       portfolioId.push(data[index].portfolio_Id);
+    }
+    if(data[index].portfolio_name){
       portfolioName.push(data[index].portfolio_name);
-      isLive.push(data[index].is_live);
+    }
+    if(data[index].isLive){
+      isLive.push(data[index].isLive);
+    }
+    if(data[index].start_date){
       startDate.push(data[index].start_date);
+    }
+    if(data[index].end_date){
       endDate.push(data[index].end_date);
+    }
+    if(data[index].currency){
       currency.push(data[index].currency);
+    }
   }
   var newPortfolioJson = makePortfolioJson(portfolioId, portfolioName, isLive, startDate, endDate, currency);
   set("portfolio", newPortfolioJson);
@@ -130,8 +55,9 @@ function getCurrentPortfolio(state){
   var data = getJsonArray("portfolio");
   var stateJsonInfo = [];
   var jsonInfo = [];
+
   for(index in data){
-    if(data[index].is_live == state){
+    if(data[index].isLive == state){
       stateJsonInfo.push(data[index]);
     }
   }
@@ -159,11 +85,21 @@ function getPortfolioById(portfolioId){
   return jsonInfo;
 }
 
+function getPortfolioIds(){
+  var data = getJsonArray("portfolio");
+  var portfolioIds = [];
+
+  for(index in data){
+    portfolioIds.push(data[index].portfolio_Id);
+  }
+  return portfolioIds;
+}
+
 function checkIfPortfolioIdForLiveOrHistoricExists(isLive){
   var data = getJsonArray("portfolio");
   var doesLiveExist = false;
   for (index in data){
-    if(data[index].is_live == isLive){
+    if(data[index].isLive == isLive){
       doesLiveExist = true;
     }
   }
@@ -196,12 +132,6 @@ function getRelevantDataByPortfolioId(field, portfolioId){
   return jsonInfo
 }
 
-function getAllPortfoliosForUser(){
-  var field = "portfolio";
-  var userPortfolios = getJsonArray(field);
-  return userPortfolios;
-}
-
 function getNoPortfolioidError(){
   var errorString = "{\"error\" : \"portfolioId doesn't exist\"}"
   errorString = JSON.parse(errorString);
@@ -213,7 +143,7 @@ function addPortfolio(portfolioName, isLive, startDate, endDate, currency){
   var currentPortfolio = get(field);
   var _portfolioId = currentPortfolio.portfolio_Id;
   var _portfolioName = currentPortfolio.portfolio_name;
-  var _isLive = currentPortfolio.is_live;
+  var _isLive = currentPortfolio.isLive;
   var _startDate = currentPortfolio.start_date;
   var _endDate = currentPortfolio.end_date;
   var _currency = currentPortfolio.currency;
@@ -239,39 +169,26 @@ function addPortfolio(portfolioName, isLive, startDate, endDate, currency){
   set(field, newPortfolioJson);
 }
 
-function getAllWatchForPortfolio(portfolioId){
-  var field = "watch";
-  var userWatchedStocks = getRelevantDataByPortfolioId(field, portfolioId);
-  return userWatchedStocks;
-}
-
-function addWatch(portfolioId, symbol, priceWhenAdded, dateWhenAdded){
-  var field = "watch";
+function addWatch(portfolioId, exchangeShortName){
+  var field = "watch"
   var currentWatch = get(field);
   var _portfolioId = currentWatch.portfolio_Id;
-  var _symbol = currentWatch.symbol;
-  var _priceWhenAdded = currentWatch.price_when_added;
-  var _dateWhenAdded = currentWatch.date_when_added;
+  var _exchangeShortName = currentWatch.exchange_short_name;
 
   if(isNull(currentWatch.portfolio_Id)){
     _portfolioId = [portfolioId];
-    _symbol = [symbol];
-    _priceWhenAdded = [priceWhenAdded];
-    _dateWhenAdded = [dateWhenAdded];
+    _exchangeShortName = [exchangeShortName];
   }
   else{
     _portfolioId.push(portfolioId);
-    _symbol.push(symbol);
-    _priceWhenAdded = push(priceWhenAdded);
-    _dateWhenAdded = push(dateWhenAdded);
-
+    _exchangeShortName.push(exchangeShortName);
   }
 
-  var newWatchJson = makeWatchJson(_portfolioId, _symbol, _priceWhenAdded, _dateWhenAdded);
+  var newWatchJson = makeWatchJson(_portfolioId, _exchangeShortName);
   set(field, newWatchJson);
 }
 
-function addTransaction(portfolioId, exchangeName, exchangeShortName, tradeTime, stockValue, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction){
+function addTransaction(portfolioId, exchangeName, exchangeShortName, tradeTime, stockValue, numberOfShares ){
   var field = "transaction";
   var currentTransaction = get(field);
   var _portfolioId = currentTransaction.portfolio_Id;
@@ -279,10 +196,7 @@ function addTransaction(portfolioId, exchangeName, exchangeShortName, tradeTime,
   var _exchangeShortName = currentTransaction.exchange_short_name;
   var _tradeTime = currentTransaction.trade_time;
   var _stockValue = currentTransaction.stock_value;
-  var _totalSharesAtTransaction = currentTransaction.total_shares_at_transaction;
   var _numberOfShares = currentTransaction.number_of_shares;
-  var _buyOrSell = currentTransaction.buy_or_sell;
-  var _currencyAtTransaction = currentTransaction.currency_at_transaction;
 
   if(isNull(currentTransaction.portfolio_Id)){
     _portfolioId = [portfolioId];
@@ -290,10 +204,7 @@ function addTransaction(portfolioId, exchangeName, exchangeShortName, tradeTime,
     _exchangeShortName = [exchangeShortName];
     _tradeTime = [tradeTime];
     _stockValue = [stockValue];
-    _totalSharesAtTransaction = [totalSharesAtTransaction];
     _numberOfShares = [numberOfShares];
-    _buyOrSell = [buyOrSell];
-    _currencyAtTransaction = [currencyAtTransaction];
   }
   else{
     _portfolioId.push(portfolioId);
@@ -301,13 +212,10 @@ function addTransaction(portfolioId, exchangeName, exchangeShortName, tradeTime,
     _exchangeShortName.push(exchangeShortName);
     _tradeTime.push(tradeTime);
     _stockValue.push(stockValue);
-    _totalSharesAtTransaction.push(totalSharesAtTransaction);
     _numberOfShares.push(numberOfShares);
-    _buyOrSell.push(buyOrSell);
-    _currencyAtTransaction.push(currencyAtTransaction);
   }
 
-  var newTransactionJson = makeTransactionJson(_portfolioId, _exchangeName, _exchangeShortName, _tradeTime, _stockValue, _totalSharesAtTransaction, _numberOfShares, _buyOrSell, _currencyAtTransaction);
+  var newTransactionJson = makeTransactionJson(_portfolioId, _exchangeName, _exchangeShortName, _tradeTime, _stockValue, _numberOfShares);
   set(field, newTransactionJson);
 }
 
@@ -327,8 +235,8 @@ function initializeDBAtTheBeginningOfStockApp(){
 
 function initJsonFiles(){
   var portfolio = makePortfolioJson(null, null, null, null, null, null);
-  var watch = makeWatchJson(null, null, null, null);
-  var transaction = makeTransactionJson(null, null, null, null, null, null, null, null, null);
+  var watch = makeWatchJson(null, null);
+  var transaction = makeTransactionJson(null, null, null, null, null, null);
 
   set("portfolio", portfolio);
   set("watch", watch);
@@ -339,7 +247,7 @@ function initJsonFiles(){
       var portfolioJson = {
         "portfolio_Id" : portfolioId,
         "portfolio_name" : portfolioName,
-        "is_live" : isLive,
+        "isLive" : isLive,
         "start_date" : startDate,
         "end_date" : endDate,
         "currency" : currency
@@ -348,33 +256,27 @@ function initJsonFiles(){
       return portfolioJson;
     }
 
-    function makeWatchJson(portfolioId, symbol, priceWhenAdded, dateWhenAdded){
+    function makeWatchJson(portfolioId, exchangeShortName){
       var watchJson = {
         "portfolio_Id" : portfolioId,
-        "symbol" : symbol,
-        "price_when_added" : priceWhenAdded,
-        "date_when_added" : dateWhenAdded
+        "exchange_short_name" : exchangeShortName
       };
 
       return watchJson;
     }
 
-    function makeTransactionJson(portfolioId, exchangeName, excahangeShortName, tradeTime, stockValue, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction){
+    function makeTransactionJson(portfolioId, exchangeName, excahangeShortName, tradeTime, stockValue, numberOfShares){
       var transactionJson = {
         "portfolio_Id" : portfolioId,
         "exchange_name": exchangeName,
         "exchange_short_name": excahangeShortName,
         "trade_time" : tradeTime,
         "stock_value" : stockValue,
-        "total_shares_at_transaction" : totalSharesAtTransaction, 
-        "number_of_shares" : numberOfShares,
-        "buy_or_sell" : buyOrSell,
-        "currency_at_transaction" : currencyAtTransaction
+        "number_of_shares" : numberOfShares
       };
 
       return transactionJson;
     }
-
 
     function get(field) {
       var fs = require('fs');
@@ -421,11 +323,9 @@ function getJsonArray(field){
     jsonObject = JSON.parse(jsonString);
     arrayOfJsonObjects.push(jsonObject);
     jsonString = "";
-}
-
+    }
 return arrayOfJsonObjects;
 }
-
     function getUserDirective(){
       var directoryString = __dirname;
       var returnString = "";
@@ -448,8 +348,9 @@ return arrayOfJsonObjects;
       storage.set(field, object ,function(error){
         if(error) throw error;
       });
+
     }
-/*has checks if the Field is in the DB.... Field = */
+//has checks if the Field is in the DB.... Field = 
     function has(field){
       storage.has(field, function(error,hasKey){
         if(error) throw error;
