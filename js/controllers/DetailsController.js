@@ -1,3 +1,4 @@
+
 stockApp.controller('DetailsController', function DetailsController($scope, $stateParams, $state, DBService, APIService, MathService) {
     if($stateParams.stockObj == null){
     	if($state.is('live.buy_sell.details')){
@@ -7,7 +8,6 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     		$state.go('historic.buy_sell');
     	}
     }
-
     var stockObj = $stateParams.stockObj;
     $scope.stockReal = {};
     getStock(); 
