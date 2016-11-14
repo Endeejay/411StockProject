@@ -1,6 +1,12 @@
   <!-- detailed candlestick chart would be loaded here -->
 <div class="row">
-    <div id="#buyBtn" class="col s2 green btn" ng-click="buyStock()">Buy</div>
+        <p>You are viewing {{stockObj.Symbol}}</p>
+</div>
+<div class="row">
+        <p>Price : ${{currentPrice}} per share</p>
+</div>
+<div class="row">
+    <div id="#buyBtn" class="col s2 light-green btn" ng-click="buyStock()">Buy</div>
     <div class = "input-field col s2">
    		<input id = "sharesBuy" type = "number" min ="1" class = "validate">
    		<label for = "sharesBuy">Shares</label>
@@ -13,13 +19,10 @@
     </div>
 </div>
 <div class="row">
-    <a id="#watchStock" ng-click="watchStock()"><i class="material-icons">star</i> Add to Watchlist</a>
+    <a id="#watchStock" ng-click="watchStock()"><i class="material-icons prefix">star</i>Add to Watchlist</a>
 </div>
 <div class="row">
     <!-- the ^ below refers to the parent of current state -->
     <!--{{stockReal.LastPrice}} -->
     <a ui-sref="^">Back to Market</a>
 </div>
-
-
-  

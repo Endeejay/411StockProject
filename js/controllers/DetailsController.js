@@ -1,5 +1,6 @@
 
 stockApp.controller('DetailsController', function DetailsController($scope, $stateParams, $state, DBService, APIService, MathService) {
+
     if($stateParams.stockObj == null){
     	if($state.is('live.buy_sell.details')){
     		$state.go('live.buy_sell');
@@ -9,8 +10,13 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     	}
     }
     var stockObj = $stateParams.stockObj;
+    $scope.stockObj = stockObj;
     $scope.stockReal = {};
     getStock(); 
+
+    //get the current price before performing functions so the user knows current price
+    var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+    $scope.currentPrice = currentPrice;
 
     function getStock(){
         APIService.getSingleStock(stockObj.Symbol).then(function(data){
@@ -28,8 +34,19 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
        
         if(checkTransactionForEnoughCurrency(sharesInput,currentPrice,currentPortfolio[0].currency)){
             buyOrSellStock(1,sharesInput);
+            if (sharesInput == 1){
+              Materialize.toast('Successfully purchased ' + sharesInput + ' share of ' + stockObj.Symbol, 4000);
+            }
+            else if (sharesInput > 1){
+              Materialize.toast('Successfully purchased ' + sharesInput + ' shares of ' + stockObj.Symbol, 4000);
+            }
         }else{
-            alert("You broke Slim Bandito");
+            if (isNaN(sharesInput)) {
+                Materialize.toast('Please enter a number of shares to purchase.', 4000);
+            }
+            else {
+                Materialize.toast("You don't have enough money for this!", 4000);
+            }
         } 
     }
 
@@ -40,16 +57,32 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
         var currentPrice = MathService.getMostRecentStockPrice(stockObj);
         var currentPortfolio = DBService.getCurrentPortfolio(isLive);
 
+        $scope.currentPrice = currentPrice;
+
         if(checkIfStockIsBought(currentPortfolio, stockObj.Symbol, sharesInput)){
             buyOrSellStock(2,sharesInput);
+            if (sharesInput == 1){
+              Materialize.toast('Successfully sold ' + sharesInput + ' share of ' + stockObj.Symbol, 4000);
+            }
+            else if (sharesInput > 1){
+              Materialize.toast('Successfully sold ' + sharesInput + ' shares of ' + stockObj.Symbol, 4000);
+            }
         }else{
-            alert("You can't sell things you don't own Slim Bandito");
+            if (isNaN(sharesInput)) {
+                Materialize.toast('Please enter a number of shares to sell.', 4000);
+            }
+            else {
+                Materialize.toast("You can't sell things you don't own.", 4000);
+            }
         } 
         
     }
 
     $scope.watchStock = function(){
-        console.log("Started watching " + stockObj.Symbol);
+        Materialize.toast("Started watching " + stockObj.Symbol, 4000);
+        // var currentPortfolio = DBService.getCurrentPortfolio();
+        // var currentPortfolioId = currentPortfolio[0].portfolio_Id;
+        // DBService.addWatch(currentPortfolioId, stockObj.Symbol);
     }
 
     function buyOrSellStock(buyOrSell, amountOfShares){
