@@ -17,8 +17,9 @@ stockApp.service('SQLDBService', [ function(){
 
 	function initDb(){
 		try {
-			db.run("CREATE TABLE IF NOT EXISTS portfolio (id INT UNIQUE, portfolioName TEXT, isLive INT, startDate TEXT, endDate TEXT, currency TEXT)");
+			db.run("CREATE TABLE IF NOT EXISTS portfolio (id INT UNIQUE, portfolioName TEXT, isLive INT, startDate TEXT, endDate TEXT, totalMoney INT)");
 			db.run("CREATE TABLE IF NOT EXISTS watch (id INT UNIQUE, portfolioId INT, symbol TEXT,FOREIGN KEY(portfolioId) REFERENCES portfolio(id))");
+			db.run("CREATE TABLE IF NOT EXISTS transactions (id INT UNIQUE, date TEXT, stockName TEXT, portfolioId INT, stockPrice REAL, numOfShares INT, totalPrice REAL, FOREIGN KEY(portfolioId) REFERENCES portfolio(id))");
 		} catch (e) {
 			console.log(e);
 		}
