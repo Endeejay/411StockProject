@@ -1,10 +1,23 @@
   <!-- detailed candlestick chart would be loaded here -->
+
+
 <div class="row">
         <p>You are viewing {{stockObj.Symbol}}</p>
+        <p>You have <span ng-bind="CurrentPortfolioMoney"></span></p>
+        <!-- <p>You have <span ng-bind="Shares"></span></p> -->
 </div>
 <div class="row">
         <p>Price : ${{currentPrice}} per share</p>
 </div>
+<div class="row">
+  <!-- detailed candlestick chart would be loaded here -->
+
+<stock-chart config='chart'>
+</stock-chart>
+
+</br>
+</br>
+
 <div class="row">
     <div id="#buyBtn" class="col s2 light-green btn" ng-click="buyStock()">Buy</div>
     <div class = "input-field col s2">

@@ -1,5 +1,5 @@
 
-stockApp.controller('DetailsController', function DetailsController($scope, $stateParams, $state, DBService, APIService, MathService) {
+stockApp.controller('DetailsController', function DetailsController($scope, $stateParams, $state, DBService, APIService, MathService, DetailsService) {
 
     if($stateParams.stockObj == null){
     	if($state.is('live.buy_sell.details')){
@@ -12,7 +12,194 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     var stockObj = $stateParams.stockObj;
     $scope.stockObj = stockObj;
     $scope.stockReal = {};
-    getStock(); 
+
+    var isLive = DBService.getCurrentState($state.current.name)
+    var currentPortfolio = DBService.getCurrentPortfolio(isLive);
+
+    $scope.CurrentPortfolioMoney = parseInt(currentPortfolio[0].currency);
+    $scope.Shares = parseInt(DBService.getTotalShares(currentPortfolio[0].portfolio_Id, stockObj.Symbol));
+
+    makeChart();
+    function makeChart(){
+    DetailsService.getStockData().then(function(data){
+    var chartData = [];
+    var dataLength = data.length;
+    for (var i = 0; i < 10; i += 1) {
+        chartData.push([
+            data[i][0], // the date
+            data[i][1], // open
+            data[i][2], // high
+            data[i][3], // low
+            data[i][4] // close
+      ]);
+    }
+        $scope.chart = {
+          colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
+            '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+          chart: {
+            zoomType: 'x',
+            backgroundColor: '#3e3e40',
+            // events: {
+            //     selection: function (event) {
+            //         if (event.xAxis) {
+            //             $report.html('Last selection:<br/>min: ' + Highcharts.dateFormat('%Y-%m-%d', event.xAxis[0].min) +
+            //                 ', max: ' + Highcharts.dateFormat('%Y-%m-%d', event.xAxis[0].max));
+            //         } else {
+            //             $report.html('Selection reset');
+            //         }
+            //     }
+            // },
+            style: {
+               fontFamily: "'Roboto', sans-serif"
+            },
+            plotBorderColor: '#606063'
+          },
+          rangeSelector: {
+              selected: 1,
+              buttonTheme: {
+                 fill: '#505053',
+                 stroke: '#000000',
+                 style: {
+                    color: '#CCC'
+                 },
+                 states: {
+                    hover: {
+                       fill: '#707073',
+                       stroke: '#000000',
+                       style: {
+                          color: 'white'
+                       }
+                    },
+                    select: {
+                       fill: '#000003',
+                       stroke: '#000000',
+                       style: {
+                          color: 'white'
+                       }
+                    }
+                 }
+              },
+              inputBoxBorderColor: '#505053',
+              inputStyle: {
+                 backgroundColor: '#333',
+                 color: 'silver'
+              },
+              labelStyle: {
+                 color: 'silver'
+              }
+          },
+          title: {
+              text: stockObj.Name,
+              style: {
+                 color: '#E0E0E3',
+                 textTransform: 'uppercase',
+                 fontSize: '20px'
+              }
+          },
+          subtitle: {
+              text: stockObj.Symbol,
+              style: {
+                 color: '#E0E0E3',
+                 textTransform: 'uppercase'
+              }
+          },
+          xAxis: {
+            type: 'datetime',
+            labels: {
+              format: '{value:%m/%d/%Y}',
+              // rotation: 45,
+              align: 'left',
+                style: {
+                   color: '#E0E0E3'
+                }
+             },
+             lineColor: '#707073',
+             minorGridLineColor: '#505053',
+             tickColor: '#707073',
+             title: {
+                style: {
+                   color: '#A0A0A3'
+
+                }
+             }
+          },
+          yAxis: {
+            type: 'string',
+            title: {
+              text: 'Prices (USD)',
+              style: {
+                color: 'white'
+              }
+            },
+            labels: {
+              style: {
+                color: 'white'
+              }
+            }
+          },
+          plotOptions: {
+            series: {
+               dataLabels: {
+                  color: '#B0B0B3'
+               },
+               marker: {
+                  lineColor: '#333'
+               }
+            },
+            boxplot: {
+               fillColor: '#505053'
+            },
+            candlestick: {
+               lineColor: 'white',
+               color: '#f02d41',
+               upColor: '#2DF04E'
+            },
+            errorbar: {
+               color: 'white'
+            }
+         },
+          tooltip: {
+             valueDecimals: 2,
+             backgroundColor: 'rgba(0, 0, 0, 0.85)',
+             style: {
+                color: '#F0F0F0'
+             }
+          },
+          legend: {
+             enabled: false
+          },
+          navigation: {
+             buttonOptions: {
+                symbolStroke: '#DDDDDD',
+                theme: {
+                   fill: '#505053'
+                }
+             }
+          },
+          series: [{
+              type: 'candlestick',
+              name: stockObj.Name,
+              data: chartData,
+              dataGrouping: {
+              units: [
+                [
+                  'week', // unit name
+                  [1] // allowed multiples
+                ], [
+                'month',
+                    [1, 2, 3, 4, 6]
+                  ]
+                ]
+              }
+            }],
+            scrollbar: {
+                enabled: false
+            }
+        };
+      })
+    }
+
+    getStock();
 
     //get the current price before performing functions so the user knows current price
     var currentPrice = MathService.getMostRecentStockPrice(stockObj);
@@ -26,12 +213,15 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     }
 
     $scope.buyStock = function(){
-        var sharesInput = document.getElementById("sharesBuy").value;
+      var sharesInput = document.getElementById("sharesBuy").value;
+      if(!sharesInput==0)
+      {
         sharesInput = parseInt(sharesInput);
         var isLive = DBService.getCurrentState($state.current.name);
         var currentPrice = MathService.getMostRecentStockPrice(stockObj);
         var currentPortfolio = DBService.getCurrentPortfolio(isLive);
-       
+
+
         if(checkTransactionForEnoughCurrency(sharesInput,currentPrice,currentPortfolio[0].currency)){
             buyOrSellStock(1,sharesInput);
             if (sharesInput == 1){
@@ -47,35 +237,44 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
             else {
                 Materialize.toast("You don't have enough money for this!", 4000);
             }
-        } 
+        }
+
+        $scope.CurrentPortfolioMoney = parseInt(currentPortfolio[0].currency) - (parseInt(currentPrice) * sharesInput);
+        // $scope.Shares = parseInt($scope.Shares) + sharesInput;
+      }
     }
 
     $scope.sellStock = function(){
         var sharesInput = document.getElementById("sharesSell").value;
-        sharesInput = parseInt(sharesInput);
-        var isLive = DBService.getCurrentState($state.current.name);
-        var currentPrice = MathService.getMostRecentStockPrice(stockObj);
-        var currentPortfolio = DBService.getCurrentPortfolio(isLive);
+        if(!sharesInput==0)
+        {
+          sharesInput = parseInt(sharesInput);
+          var isLive = DBService.getCurrentState($state.current.name);
+          var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+          var currentPortfolio = DBService.getCurrentPortfolio(isLive);
 
-        $scope.currentPrice = currentPrice;
+          $scope.currentPrice = currentPrice;
 
-        if(checkIfStockIsBought(currentPortfolio, stockObj.Symbol, sharesInput)){
-            buyOrSellStock(2,sharesInput);
-            if (sharesInput == 1){
-              Materialize.toast('Successfully sold ' + sharesInput + ' share of ' + stockObj.Symbol, 4000);
-            }
-            else if (sharesInput >= 1){
-              Materialize.toast('Successfully sold ' + sharesInput + ' shares of ' + stockObj.Symbol, 4000);
-            }
-        }else{
-            if (isNaN(sharesInput)) {
-                Materialize.toast('Please enter a number of shares to sell.', 4000);
-            }
-            else {
-                Materialize.toast("You can't sell things you don't own.", 4000);
-            }
-        } 
-        
+          if(checkIfStockIsBought(currentPortfolio, stockObj.Symbol, sharesInput)){
+              buyOrSellStock(2,sharesInput);
+              if (sharesInput == 1){
+                Materialize.toast('Successfully sold ' + sharesInput + ' share of ' + stockObj.Symbol, 4000);
+              }
+              else if (sharesInput >= 1){
+                Materialize.toast('Successfully sold ' + sharesInput + ' shares of ' + stockObj.Symbol, 4000);
+              }
+          }else{
+              if (isNaN(sharesInput)) {
+                  Materialize.toast('Please enter a number of shares to sell.', 4000);
+              }
+              else {
+                  Materialize.toast("You can't sell things you don't own.", 4000);
+              }
+          }
+
+          $scope.CurrentPortfolioMoney = parseInt(currentPortfolio[0].currency) + (parseInt(currentPrice) * sharesInput);
+          // $scope.Shares = parseInt($scope.Shares) - sharesInput;
+        }
     }
 
     $scope.watchStock = function(){
@@ -110,13 +309,13 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
             //figure out date for histoic state
             date = new Date();
         }
-        
+
         DBService.addTransaction(currentPortfolio[0].portfolio_Id, stockObj.Name, stockObj.Symbol, date, currentPrice, totalSharesAfterTransaction, amountOfShares, buyOrSell, currentPortfolio[0].currency);
         var totalTransactionPrice = MathService.totalTransactionPrice(amountOfShares, currentPrice);
         var newCurrency = MathService.calculateNewCurrencyValue(currentPortfolio[0].currency, totalTransactionPrice, buyOrSell);
-    
+
         DBService.setPortfolioValues(currentPortfolio[0].portfolio_Id,"currency",newCurrency);
-        
+
     }
 
     function checkTransactionForEnoughCurrency(shares, priceOfStock, currentCurrency){
