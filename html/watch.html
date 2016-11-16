@@ -1,5 +1,18 @@
-<div ui-view name="watchContent">
   <h2>My Watchlist</h2>
-  
-    {{usersWatchedStocks}}
-</div>
+    <table>
+      <thead>
+        <tr class="teal-text">
+          <th>Portfolio Id</th>
+          <th>Stock Symbol</th>
+          <th>Price when Added</th>
+          <th>Started Watching</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="stocks in usersWatchedStocks">
+          <td class="white-text">{{stocks.portfolio_Id}}</td>
+          <td class="white-text">{{stocks.symbol}}</td>
+          <td class="white-text">{{"$" + stocks.price_when_added}}</td>
+          <td class="white-text">{{stocks.date_when_added.substring(0,10)}}</td>
+      </tbody>
+    </table>

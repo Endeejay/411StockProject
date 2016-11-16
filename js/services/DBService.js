@@ -268,8 +268,8 @@ function addWatch(portfolioId, symbol, priceWhenAdded, dateWhenAdded){
   else{
     _portfolioId.push(portfolioId);
     _symbol.push(symbol);
-    _priceWhenAdded = push(priceWhenAdded);
-    _dateWhenAdded = push(dateWhenAdded);
+    _priceWhenAdded.push(priceWhenAdded);
+    _dateWhenAdded.push(dateWhenAdded);
 
   }
 

@@ -80,9 +80,19 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
 
     $scope.watchStock = function(){
         Materialize.toast("Started watching " + stockObj.Symbol, 4000);
-        // var currentPortfolio = DBService.getCurrentPortfolio();
-        // var currentPortfolioId = currentPortfolio[0].portfolio_Id;
-        // DBService.addWatch(currentPortfolioId, stockObj.Symbol);
+        var isLive = DBService.getCurrentState($state.current.name);
+        var currentPortfolio = DBService.getCurrentPortfolio(isLive);
+        var currentPortfolioId = currentPortfolio[0].portfolio_Id;
+        var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+        var date;
+        if (isLive == 1){
+            date = new Date();
+        }else{
+            //figure out date for histoic state
+            date = new Date();
+        }
+
+        DBService.addWatch(currentPortfolioId, stockObj.Symbol, currentPrice, date);
     }
 
     function buyOrSellStock(buyOrSell, amountOfShares){

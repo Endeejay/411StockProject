@@ -4716,22 +4716,29 @@ small {
   #toast-container {
     min-width: 100%;
     bottom: 0%;
+    top: 90%;
+    right: 0%;
+    left: 0%;
   }
 }
 
 @media only screen and (min-width: 601px) and (max-width: 992px) {
   #toast-container {
-    left: 5%;
-    bottom: 7%;
-    max-width: 90%;
+    min-width: 100%;
+    bottom: 0%;
+    top: 90%;
+    right: 0%;
+    left: 0%;
   }
 }
 
 @media only screen and (min-width: 993px) {
   #toast-container {
-    top: 10%;
-    right: 7%;
-    max-width: 86%;
+    min-width: 100%;
+    bottom: 0%;
+    top: 90%;
+    right: 0%;
+    left: 0%;
   }
 }
 
@@ -4781,13 +4788,15 @@ small {
 
 @media only screen and (min-width: 601px) and (max-width: 992px) {
   .toast {
-    float: left;
+    width: 100%;
+    border-radius: 0;
   }
 }
 
 @media only screen and (min-width: 993px) {
   .toast {
-    float: right;
+    width: 100%;
+    border-radius: 0;
   }
 }
 

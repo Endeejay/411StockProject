@@ -1,25 +1,24 @@
 <title>Portfolio</title>
 <div ui-view name="portfolioContent">
   <h2>Portfolio</h2>
-    <h3>
-      This page will display your portfolio after a simulation.
-    </h3>
   </div>
 </div>
-<button class="waves-effect waves-light col s4 green btn" ng-click="createPortfolio()">Create Portfolio</button>
+<!--<button class="centered waves-effect waves-light col s4 green btn" ng-click="createPortfolio()">Create Portfolio</button>-->
 <table>
   <thead class="bordered highlight">
     <tr>
-      <th data-field="name">Portfolio Name</th>
-      <th data-field="startDate">Start Date</th>
-      <th data-field="endDate">End Date</th>
+      <th class="teal-text" data-field="name">Portfolio Id</th>
+      <th class="teal-text" data-field="startDate">Start Date</th>
+      <th class="teal-text" data-field="endDate">End Date</th>
+      <th class="teal-text" data-field="currency">Total Money</th>
     <tr>
   </thead>
   <tbody>
       <tr ng-repeat="portfolio in userPortfolios">
-        <td>{{portfolio.portfolio_name}}</td>
-        <td>{{portfolio.start_date}}</td>
-        <td>{{portfolio.end_date}}</td>
+        <td class="white-text">{{portfolio.portfolio_Id}}</td>
+        <td class="white-text">{{portfolio.start_date}}</td>
+        <td class="white-text">{{portfolio.end_date}}</td>
+        <td class="white-text">{{"$" + portfolio.currency}}</td>        
       </tr>
   </tbody>
 </table>

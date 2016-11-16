@@ -1,9 +1,5 @@
-stockApp.controller('WatchController', ['$scope', 'WatchService', 'DBService', function WatchController($scope, WatchService, DBService) {
-	
-	$scope.usersWatchedStocks = DBService.getAllWatchForPortfolio(0);
-	
-	$scope.addWatch = function(){
-		DBService.addWatch(0, 'GOOGL');
-	}
-
+stockApp.controller('WatchController', ['$scope', '$stateParams', '$state', 'WatchService', 'DBService', function WatchController($scope, $stateParams, $state, WatchService, DBService) {
+	var isLive = DBService.getCurrentState($state.current.name);
+	$scope.currentPortfolio = DBService.getCurrentPortfolio(isLive);
+	$scope.usersWatchedStocks = DBService.getAllWatchForPortfolio($scope.currentPortfolio[0].portfolio_Id);
 }]);
