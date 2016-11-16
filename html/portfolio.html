@@ -7,18 +7,37 @@
 <table>
   <thead class="bordered highlight">
     <tr>
-      <th class="teal-text" data-field="name">Portfolio Id</th>
-      <th class="teal-text" data-field="startDate">Start Date</th>
-      <th class="teal-text" data-field="endDate">End Date</th>
+      <th class="teal-text" data-field="name">Portfolio Name</th>
+<!--       <th class="teal-text" data-field="startDate">Start Date</th>
+      <th class="teal-text" data-field="endDate">End Date</th> -->
       <th class="teal-text" data-field="currency">Total Money</th>
     <tr>
   </thead>
   <tbody>
       <tr ng-repeat="portfolio in userPortfolios">
         <td class="white-text">{{portfolio.portfolio_Id}}</td>
-        <td class="white-text">{{portfolio.start_date}}</td>
-        <td class="white-text">{{portfolio.end_date}}</td>
-        <td class="white-text">{{"$" + portfolio.currency}}</td>        
+<!--         <td class="white-text">{{portfolio.start_date}}</td>
+        <td class="white-text">{{portfolio.end_date}}</td> -->
+        <td class="white-text">{{"$" + portfolio.currency}}</td> 
+          <table>
+              <thead class="bordered highlight">
+                <tr>
+                  <th class="teal-text">Stock Name</th>
+                  <th class="teal-text">Transaction Date</th>
+                  <th class="teal-text">Stock Price</th>
+                  <th class="teal-text">Number of Shares</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="transaction in portfolioTransactions">
+                  <td class="white-text">{{transaction.exchange_short_name}}</td>
+                  <td class="white-text">{{transaction.trade_time.substring(0,10)}}</td>
+                  <td class="white-text">{{transaction.stock_value}}</td>
+                  <td class="white-text">{{transaction.number_of_shares}}</td>
+                </tr>          
+              </tbody>
+            </tr>
+          </table>       
       </tr>
   </tbody>
 </table>

@@ -43,7 +43,6 @@ a:hover {
   width: 100px;
 }
 
-
 .selectScreen {
   display: inline;
 }
@@ -59,3 +58,15 @@ a:hover {
   margin: 20px;
 }
 
+
+.modal.modal-fixed-footer {
+  position: fixed;
+  top: 50%;
+  left: 0%;
+}
+
+@media only screen and (max-width: 992px) {
+  .modal {
+    width: 50%;
+  }
+}
