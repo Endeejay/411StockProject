@@ -19,5 +19,14 @@ stockApp.controller('HomeController', ['$scope','$state','DBService', function H
   }
   else{
     //ask if you want to start a new session
+    $(document).ready(function() {
+      $('#portfolioPopup').openModal();
+    });
   }
+
+  $scope.createPortfolio = function () {
+    DBService.addPortfolio("", isLive, null, null, 5000);    
+  }
+
 }]);
+

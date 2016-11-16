@@ -12,6 +12,7 @@ this.addTransaction = addTransaction;
 this.addWatch = addWatch;
 this.getAllPortfoliosForUser = getAllPortfoliosForUser;
 this.getAllWatchForPortfolio = getAllWatchForPortfolio;
+this.getAllTransactionsForPortfolio = getAllTransactionsForPortfolio;
 this.getMostRecentTransaction = getMostRecentTransaction;
 this.isPortfolioNull = isPortfolioNull;
 this.checkIfPortfolioIdForLiveOrHistoricExists = checkIfPortfolioIdForLiveOrHistoricExists;
@@ -249,6 +250,12 @@ function getAllWatchForPortfolio(portfolioId){
   var field = "watch";
   var userWatchedStocks = getRelevantDataByPortfolioId(field, portfolioId);
   return userWatchedStocks;
+}
+
+function getAllTransactionsForPortfolio(portfolioId){
+  var field = "transaction";
+  var portfolioTransactions = getRelevantDataByPortfolioId(field, portfolioId);
+  return portfolioTransactions;
 }
 
 function addWatch(portfolioId, symbol, priceWhenAdded, dateWhenAdded){

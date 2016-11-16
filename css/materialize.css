@@ -5354,13 +5354,14 @@ button.btn-floating {
 .modal.modal-fixed-footer {
   padding: 0;
   height: 70%;
+  
 }
 
 .modal.modal-fixed-footer .modal-content {
   position: absolute;
   height: calc(100% - 56px);
   max-height: 100%;
-  width: 100%;
+  max-width: 100%;
   overflow-y: auto;
 }
 
