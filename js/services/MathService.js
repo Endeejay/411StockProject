@@ -35,6 +35,7 @@ function totalShareCount(oldShares, newShares, isBuyOrSell){
 
 function calculateNewCurrencyValue(currentCurrency, valueOfPurchase, isBuyOrSell){
 	var newCurrency;
+	currentCurrency = parseInt(currentCurrency);
 	if(isBuyOrSell == 1){
 		newCurrency = currentCurrency - valueOfPurchase;
 	}else{
@@ -50,7 +51,7 @@ function totalTransactionPrice(shares,priceOfStock){
 function checkCurrencyEnoughForPurchase(priceOfTransaction,currency){
 	var currencyInt = parseInt(currency);
 	var isEnough = false;
-	if (priceOfTransaction < currencyInt){
+	if (priceOfTransaction <= currencyInt){
 		isEnough = true;
 	}
 	return isEnough;

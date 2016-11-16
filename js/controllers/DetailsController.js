@@ -51,7 +51,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     }
 
     $scope.sellStock = function(){
-        var sharesInput = document.getElementById("sharesBuy").value;
+        var sharesInput = document.getElementById("sharesSell").value;
         sharesInput = parseInt(sharesInput);
         var isLive = DBService.getCurrentState($state.current.name);
         var currentPrice = MathService.getMostRecentStockPrice(stockObj);
@@ -64,7 +64,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
             if (sharesInput == 1){
               Materialize.toast('Successfully sold ' + sharesInput + ' share of ' + stockObj.Symbol, 4000);
             }
-            else if (sharesInput > 1){
+            else if (sharesInput >= 1){
               Materialize.toast('Successfully sold ' + sharesInput + ' shares of ' + stockObj.Symbol, 4000);
             }
         }else{
@@ -91,19 +91,19 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
         var currentPortfolio = DBService.getCurrentPortfolio(isLive);
         var currentPrice = MathService.getMostRecentStockPrice(stockObj);
         var totalSharesAtTransaction = DBService.getTotalShares(currentPortfolio[0].portfolio_Id, stockObj.Symbol);
+        var totalSharesAfterTransaction = getTotalSharesAfterTransaction(totalSharesAtTransaction, amountOfShares, buyOrSell);
         //this only works in live, we need to figure out date for historic
         var date;
-        if (isLive = 1){
+        if (isLive == 1){
             date = new Date();
         }else{
             //figure out date for histoic state
             date = new Date();
         }
         
-        DBService.addTransaction(currentPortfolio[0].portfolio_Id,stockObj.Name,stockObj.Symbol,date,currentPrice,totalSharesAtTransaction,amountOfShares,buyOrSell,currentPortfolio[0].currency);
+        DBService.addTransaction(currentPortfolio[0].portfolio_Id, stockObj.Name, stockObj.Symbol, date, currentPrice, totalSharesAfterTransaction, amountOfShares, buyOrSell, currentPortfolio[0].currency);
         var totalTransactionPrice = MathService.totalTransactionPrice(amountOfShares, currentPrice);
-        var isBuyOrSell = buyOrSell;
-        var newCurrency = MathService.calculateNewCurrencyValue(currentPortfolio[0].currency,totalTransactionPrice,isBuyOrSell);
+        var newCurrency = MathService.calculateNewCurrencyValue(currentPortfolio[0].currency, totalTransactionPrice, buyOrSell);
     
         DBService.setPortfolioValues(currentPortfolio[0].portfolio_Id,"currency",newCurrency);
         
@@ -125,5 +125,15 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
             haveEnoughShares = false;
         }
         return haveEnoughShares;
+    }
+
+    function getTotalSharesAfterTransaction(currentShares, sharesAtTransaction, buyOrSell){
+        var totalSharesAfterTransaction = 0;
+        if(buyOrSell == 1){
+            totalSharesAfterTransaction = currentShares + sharesAtTransaction;
+        }else{
+            totalSharesAfterTransaction = currentShares - sharesAtTransaction;
+        }
+        return totalSharesAfterTransaction;
     }
 });
