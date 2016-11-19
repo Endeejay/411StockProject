@@ -3,11 +3,13 @@
     <h3 style="color: white">Market</h3>
     <!-- <line-chart config="item"></line-chart>
     <line-chart config="item"></line-chart> -->
-
-
+    <div class="collection">
+        <a ng-repeat="stock in availableStocks | limitTo : 25" class="collection-item" ng-cloak>{{stock}}</a>
+    </div>
+            
   	<!--<tr ng-repeat="item in charts">-->
-  		<line-chart ng-repeat="item in charts" config='item'>
-      </line-chart>
+<!--   		<line-chart ng-repeat="item in charts" config='item'>
+      </line-chart> -->
   	<!--</tr>-->
   </div>
 </div>
