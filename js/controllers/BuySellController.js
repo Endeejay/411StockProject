@@ -1,8 +1,20 @@
-stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state','DBService', function BuySellController($scope, BuySellService, $state, DBService) {
-getName();
+stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', 'DBService', function BuySellController($scope, BuySellService, $state, APIService, DBService) {
+//getName();
+getStocks();
+
 // function changeTemplate(){
 //   $location.url('/historic.buy_sell');
 // }
+
+function getStocks(){
+  APIService.getAllStocks().then(function(data){
+    data = data.data;
+    $scope.availableStocks = data;
+    console.log(data);
+  }, function(error){
+    console.log(error);
+  });
+}
 
 function getName(){
  BuySellService.getAllStocks().then(function(data){

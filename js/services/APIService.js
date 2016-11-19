@@ -1,23 +1,31 @@
 stockApp.service('APIService',['$http','$q',function ($http, $q) {
 	this.getMultipleStocks = getMultipleStocks;
 	this.getSingleStock = getSingleStock;
+	this.getAllStocks = getAllStocks;
+
+	function getAllStocks(){
+		var promise = $http({method: 'GET',
+			url:'http://localhost:62238/api/Stock'
+		});
+
+		return promise;
+	}
 
 	function getMultipleStocks(stocks){
-		var queryString = "?symbols=";
+		var queryString = "?";
 
 		//build query string
 		for(var i =0; i<stocks.length; i++){
-			queryString = queryString + stocks[i] + '&symbols=';
+			if (i!=stocks.length){
+				queryString = queryString + "symbols=" + stocks[i] + '&';				
+			}
 		}	
 
-		$http({method: 'GET',
+		var promise = $http({method: 'GET',
 			url:'http://localhost:62238/api/Live/'+queryString
-		}).then(function success(response){
-			return response.data;
-		}, function error(response){
-			console.error(response);
-			return [];	
-		})
+		});
+
+		return promise;
 	}
 
 	function getSingleStock(stock){
