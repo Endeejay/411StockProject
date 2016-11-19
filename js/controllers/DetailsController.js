@@ -19,8 +19,139 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     $scope.CurrentPortfolioMoney = parseInt(currentPortfolio[0].currency);
     $scope.Shares = parseInt(DBService.getTotalShares(currentPortfolio[0].portfolio_Id, stockObj.Symbol));
 
-    makeChart();
-    function makeChart(){
+    // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // //Line chart code
+
+    // DetailsService.getLineData().then(function(data){
+    //     debugger;
+    //         data = data.data;
+    //         makeChart(data);
+    // }, function(error){
+    //     console.log(error);
+    // });
+
+    // function makeLineChart(){
+    //     angular.forEach(data, function(value, key) {
+    //         if(value.Symbol == stockObj.Symbol)
+    //         {
+    //             //changing our dates to utc dates
+    //             var UTCDates = [];
+    //             for(i=0;i<value.Dates.length;i++){
+    //             var parts = value.Dates[i].split('/');
+    //             var utcDate = Date.UTC(parts[2],parts[0]-1,parts[1]);
+    //             UTCDates.push(utcDate);
+    //             }
+    //             for(i=0;i<value.Prices.length;i++){
+    //             var netValue = value.Prices[i]-value.Prices[0];
+    //             if(netValue < 0){
+    //                 var color = '#f02d41';
+    //             }else if(netValue > 0){
+    //                 var color = '#2DF04E';
+    //             }else {
+    //                 var color = '#c3bcad'
+    //             }
+    //             }
+    //             //getting our dat array, and then bigArray and littleArray
+    //             var dat = $.map(UTCDates, function(v,i) {return [v,value.Prices[i]]; });
+    //             var bigArray=[];
+    //             var littleArray = [], size = 2;
+    //             //pusing our spliced array shit to the bigArray
+    //             while (dat.length > 0) {
+    //             bigArray.push(dat.splice(0,size));
+    //             }
+    //             //our chart item
+    //             $scope.linechart = {
+    //                 colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
+    //                 '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+    //                 chart: {
+    //                     renderTo: 'container',
+    //                     backgroundColor: '#3e3e40',
+    //                     borderColor: 'black',
+    //                     borderWidth: 2,
+    //                     marginLeft: 75,
+    //                     marginRight: 75,
+    //                     events: {
+    //                     click: function() {
+    //                         if($state.is("live.buy_sell")){
+    //                         $state.go('live.buy_sell.details', {stockObj: value});
+    //                         }
+    //                         else if($state.is("historic.buy_sell")){
+    //                         $state.go('historic.buy_sell.details', {stockObj: value});
+    //                         }
+    //                     }
+    //                     },
+    //                     style: {
+    //                     fontFamily: "'Roboto', sans-serif"
+    //                     }
+    //                 },
+    //                 title: {
+    //                     text: value.Name,
+    //                     style: {
+    //                     color: 'white'
+    //                     }
+    //                 },
+    //                 subtitle: {
+    //                     text: value.Symbol,
+    //                     style: {
+    //                     color: '#E0E0E3'
+    //                     }
+    //                 },
+    //                 yAxis: {
+    //                 type: 'string',
+    //                 title: {
+    //                     text: 'Prices (USD)',
+    //                     style: {
+    //                     color: 'white'
+    //                     }
+    //                 },
+    //                 labels: {
+    //                     style: {
+    //                     color: 'white'
+    //                     }
+    //                 }
+    //                 },
+    //                 xAxis: {
+    //                 type: 'datetime',
+    //                 labels: {
+    //                     format: '{value:%m/%d/%Y}',
+    //                     // rotation: 45,
+    //                     align: 'left',
+    //                     style: {
+    //                     color: 'white'
+    //                     }
+    //                 },
+    //                 title: {
+    //                     text: 'Dates',
+    //                     style: {
+    //                     color: 'white'
+    //                     }
+    //                 }
+    //                 },
+    //                 series: [{
+    //                     name: 'Price',
+    //                     showInLegend: false,
+    //                     type: 'line',
+    //                     data: bigArray,
+    //                     color: color
+    //                 }],
+    //                 credits: {
+    //                     enabled: false
+    //                 }
+    //             }
+    //         }
+    //     }); 
+    // }
+
+    //end of Line Chart
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //candlestick chart code
+    makeStockChart();
+    function makeStockChart(){
     DetailsService.getStockData().then(function(data){
     var chartData = [];
     var dataLength = data.length;
@@ -33,7 +164,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
             data[i][4] // close
       ]);
     }
-        $scope.chart = {
+        $scope.stockchart = {
           colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
             '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
           chart: {
@@ -199,6 +330,9 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
       })
     }
 
+    //end of candlestick chart code
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     getStock();
 
     //get the current price before performing functions so the user knows current price
@@ -240,7 +374,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
         }
 
         $scope.CurrentPortfolioMoney = parseInt(currentPortfolio[0].currency) - (parseInt(currentPrice) * sharesInput);
-        // $scope.Shares = parseInt($scope.Shares) + sharesInput;
+        $scope.Shares = parseInt($scope.Shares) + sharesInput;
       }
     }
 
@@ -273,7 +407,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
           }
 
           $scope.CurrentPortfolioMoney = parseInt(currentPortfolio[0].currency) + (parseInt(currentPrice) * sharesInput);
-          // $scope.Shares = parseInt($scope.Shares) - sharesInput;
+          $scope.Shares = parseInt($scope.Shares) - sharesInput;
         }
     }
 

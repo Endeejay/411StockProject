@@ -3,16 +3,20 @@
 
 <div class="row">
         <p>You are viewing {{stockObj.Symbol}}</p>
-        <p>You have <span ng-bind="CurrentPortfolioMoney"></span></p>
-        <!-- <p>You have <span ng-bind="Shares"></span></p> -->
+        <p>You have {{ CurrentPortfolioMoney | currency}}</p>
+         <p>You have {{ Shares }}</p> 
 </div>
 <div class="row">
-        <p>Price : ${{currentPrice}} per share</p>
+        <p>Price : {{currentPrice | currency}} per share</p>
 </div>
 <div class="row">
+
+<line-chart config='linechart'>
+</line-chart>
+
   <!-- detailed candlestick chart would be loaded here -->
 
-<stock-chart config='chart'>
+<stock-chart config='stockchart'>
 </stock-chart>
 
 </br>
