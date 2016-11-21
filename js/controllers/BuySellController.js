@@ -1,4 +1,4 @@
-stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', 'DBService', function BuySellController($scope, BuySellService, $state, APIService, DBService) {
+stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', function BuySellController($scope, BuySellService, $state, APIService) {
 //getName();
 getAvailableStocks();
 getStock();
@@ -18,7 +18,7 @@ function getAvailableStocks(){
   APIService.getAllStocks().then(function(data){
     data = data.data;
     $scope.availableStocks = data;
-    console.log(data);
+    //console.log(data);
   }, function(error){
     console.log(error);
   });

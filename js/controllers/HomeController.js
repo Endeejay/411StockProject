@@ -1,4 +1,4 @@
-stockApp.controller('HomeController', ['$scope','$state','DBService', function HomeController($scope, $state, DBService) {
+stockApp.controller('HomeController', ['$scope','$state','SQLDBService','FactoryService', function HomeController($scope, $state, SQLDBService, FactoryService) {
   $scope.message = "Home Data Page";
 
   /*live is 1, historic is 2*/
@@ -6,17 +6,13 @@ stockApp.controller('HomeController', ['$scope','$state','DBService', function H
   var currentState = $state.current.name;
 
   if(currentState === "live"){
-    isLive = 1;
+    isLive = 0;
   }
   else{
-    isLive = 2;
+    isLive = 1;
   }
-  if(DBService.isPortfolioNull()){
-    DBService.addPortfolio("", isLive, null, null, 5000);
+  if(SQLDBService.checkIfPortfolioIdForLiveOrHistoricExists(isLive) === false){
+    var portfolio = FactoryService.makePortfolioObject("name", isLive,"","",5000,1);
+    SQLDBService.createPortfolio(portfolio);
   }
-  else if(DBService.checkIfPortfolioIdForLiveOrHistoricExists(isLive) === false){
-    DBService.addPortfolio("", isLive, null, null, 5000);
-  }
-
 }]);
-

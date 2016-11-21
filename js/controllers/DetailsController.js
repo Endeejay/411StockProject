@@ -1,5 +1,5 @@
 
-stockApp.controller('DetailsController', function DetailsController($scope, $stateParams, $state, DBService, APIService, MathService, DetailsService) {
+stockApp.controller('DetailsController', function DetailsController($scope, $stateParams, $state, DBService, APIService, MathService, DetailsService, SQLDBService, FactoryService) {
 
     if($stateParams.stockObj == null){
     	if($state.is('live.buy_sell.details')){
@@ -12,12 +12,13 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     var stockObj = $stateParams.stockObj;
     $scope.stockObj = stockObj;
     $scope.stockReal = {};
-
-    var isLive = DBService.getCurrentState($state.current.name)
-    var currentPortfolio = DBService.getCurrentPortfolio(isLive);
+    var state = $state.current.name
+    var isLiveInt = FactoryService.getCurrentStateInt(state);
+    var currentStateString = state.substr(0, state.indexOf('.'));
+    var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
 
     $scope.CurrentPortfolioMoney = parseInt(currentPortfolio[0].currency);
-    $scope.Shares = parseInt(DBService.getTotalShares(currentPortfolio[0].portfolio_Id, stockObj.Symbol));
+    $scope.Shares = parseInt(DBService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol));
 
     // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -140,7 +141,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     //                 }
     //             }
     //         }
-    //     }); 
+    //     });
     // }
 
     //end of Line Chart
@@ -351,9 +352,12 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
       if(!sharesInput==0)
       {
         sharesInput = parseInt(sharesInput);
-        var isLive = DBService.getCurrentState($state.current.name);
+        debugger;
+        var state = $state.current.name
+        var isLiveInt = FactoryService.getCurrentStateInt(state);
+        var currentStateString = state.substr(0, state.indexOf('.'));
+        var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
         var currentPrice = MathService.getMostRecentStockPrice(stockObj);
-        var currentPortfolio = DBService.getCurrentPortfolio(isLive);
 
 
         if(checkTransactionForEnoughCurrency(sharesInput,currentPrice,currentPortfolio[0].currency)){
@@ -383,9 +387,11 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
         if(!sharesInput==0)
         {
           sharesInput = parseInt(sharesInput);
-          var isLive = DBService.getCurrentState($state.current.name);
+          var state = $state.current.name
+          var isLiveInt = FactoryService.getCurrentStateInt(state);
+          var currentStateString = state.substr(0, state.indexOf('.'));
+          var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
           var currentPrice = MathService.getMostRecentStockPrice(stockObj);
-          var currentPortfolio = DBService.getCurrentPortfolio(isLive);
 
           $scope.currentPrice = currentPrice;
 
@@ -413,43 +419,48 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
 
     $scope.watchStock = function(){
         Materialize.toast("Started watching " + stockObj.Symbol, 4000);
-        var isLive = DBService.getCurrentState($state.current.name);
-        var currentPortfolio = DBService.getCurrentPortfolio(isLive);
-        var currentPortfolioId = currentPortfolio[0].portfolio_Id;
+        var state = $state.current.name
+        var isLiveInt = FactoryService.getCurrentStateInt(state);
+        var currentStateString = state.substr(0, state.indexOf('.'));
+        var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
+
+        var currentPortfolioId = currentPortfolio[0].portfolioId;
         var currentPrice = MathService.getMostRecentStockPrice(stockObj);
-        var date;
-        if (isLive == 1){
-            date = new Date();
+        var date = "";
+        if (isLiveInt == 0){
+            date = new Date() + "";
         }else{
             //figure out date for histoic state
-            date = new Date();
+            date = new Date() + "";
         }
 
-        DBService.addWatch(currentPortfolioId, stockObj.Symbol, currentPrice, date);
+        var watch = FactoryService.makeWatchObject(currentPortfolioId, stockObj.Symbol, currentPrice, date);
+        SQLDBService.createWatch(watch);
     }
 
     function buyOrSellStock(buyOrSell, amountOfShares){
-        //fix this shit
-        var isLive = DBService.getCurrentState($state.current.name);
-        var currentPortfolio = DBService.getCurrentPortfolio(isLive);
+        var state = $state.current.name
+        var isLiveInt = FactoryService.getCurrentStateInt(state);
+        var currentStateString = state.substr(0, state.indexOf('.'));
+        var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
         var currentPrice = MathService.getMostRecentStockPrice(stockObj);
-        var totalSharesAtTransaction = DBService.getTotalShares(currentPortfolio[0].portfolio_Id, stockObj.Symbol);
+        var totalSharesAtTransaction = DBService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol);
         var totalSharesAfterTransaction = getTotalSharesAfterTransaction(totalSharesAtTransaction, amountOfShares, buyOrSell);
         //this only works in live, we need to figure out date for historic
         var date;
-        if (isLive == 1){
-            date = new Date();
+        if (isLiveInt == 1){
+            date = new Date() + "";
         }else{
             //figure out date for histoic state
-            date = new Date();
+            date = new Date() + "";
         }
 
-        DBService.addTransaction(currentPortfolio[0].portfolio_Id, stockObj.Name, stockObj.Symbol, date, currentPrice, totalSharesAfterTransaction, amountOfShares, buyOrSell, currentPortfolio[0].currency);
+        var transaction = FactoryService.makeTransactionObject(currentPortfolio[0].portfolioId, stockObj.Name, stockObj.Symbol, date, currentPrice, 50, totalSharesAfterTransaction, amountOfShares, buyOrSell, currentPortfolio[0].currency);
+        SQLDBService.createTransaction(transaction);
+
         var totalTransactionPrice = MathService.totalTransactionPrice(amountOfShares, currentPrice);
         var newCurrency = MathService.calculateNewCurrencyValue(currentPortfolio[0].currency, totalTransactionPrice, buyOrSell);
-
-        DBService.setPortfolioValues(currentPortfolio[0].portfolio_Id,"currency",newCurrency);
-
+        SQLDBService.updatePortfolio(currentPortfolio[0].portfolioId,"currency",newCurrency);
     }
 
     function checkTransactionForEnoughCurrency(shares, priceOfStock, currentCurrency){

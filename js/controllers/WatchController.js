@@ -1,5 +1,6 @@
-stockApp.controller('WatchController', ['$scope', '$stateParams', '$state', 'WatchService', 'DBService', function WatchController($scope, $stateParams, $state, WatchService, DBService) {
-	var isLive = DBService.getCurrentState($state.current.name);
-	$scope.currentPortfolio = DBService.getCurrentPortfolio(isLive);
-	$scope.usersWatchedStocks = DBService.getAllWatchForPortfolio($scope.currentPortfolio[0].portfolio_Id);
+stockApp.controller('WatchController', ['$scope', '$stateParams', '$state', 'WatchService', 'SQLDBService', function WatchController($scope, $stateParams, $state, WatchService, SQLDBService) {
+	var state = $state.current.name
+	var currentStateString = state.substr(0, state.indexOf('.'));
+	$scope.currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
+	$scope.usersWatchedStocks = SQLDBService.getWatch($scope.currentPortfolio[0].portfolioId);
 }]);

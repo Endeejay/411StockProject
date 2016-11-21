@@ -25,7 +25,7 @@ this.setTransactionValues = setTransactionValues;
 
 function getCurrentState(state){
   var isLive;
-  var currentState= state.substr(0, state.indexOf('.')); 
+  var currentState = state.substr(0, state.indexOf('.'));
   if(currentState === 'live'){
     isLive = 1;
   }else{
@@ -42,7 +42,7 @@ function getMostRecentTransaction(portfolioId, shortName){
   for(index in data){
     if(data[index].portfolio_Id == portfolioId){
       if(data[index].exchange_short_name == shortName){
-        info.push(data[index]);      
+        info.push(data[index]);
       }
     }
   }
@@ -68,7 +68,7 @@ function getTotalShares(portfolioId, exchangeShortName){
 
         }
       }
-    } 
+    }
   }
   return totalBuyShares-totalSellShares;
 }
@@ -92,7 +92,7 @@ function setTransactionValues(Id, exchangeShortName, objectField, value){
         data[index][objectField] = value;
       }
     }
-    
+
       portfolioId.push(data[index].portfolio_Id);
       exchangeName.push(data[index].exchange_name);
       exchangeShortName.push(data[index].exchange_short_name);
@@ -121,7 +121,7 @@ function setPortfolioValues(id, objectField, value){
     if(data[index].portfolio_Id == id){
       data[index][objectField] = value;
     }
-    
+
       portfolioId.push(data[index].portfolio_Id);
       portfolioName.push(data[index].portfolio_name);
       isLive.push(data[index].is_live);
@@ -379,7 +379,7 @@ function initJsonFiles(){
         "exchange_short_name": excahangeShortName,
         "trade_time" : tradeTime,
         "stock_value" : stockValue,
-        "total_shares_at_transaction" : totalSharesAtTransaction, 
+        "total_shares_at_transaction" : totalSharesAtTransaction,
         "number_of_shares" : numberOfShares,
         "buy_or_sell" : buyOrSell,
         "currency_at_transaction" : currencyAtTransaction

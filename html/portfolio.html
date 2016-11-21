@@ -5,10 +5,10 @@
 </div>
     <ul class="collapsible" data-collapsible="accordion">
       <li ng-repeat="portfolio in userPortfolios">
-        <div class="collapsible-header teal-text"><i class="material-icons">work</i>{{"Portfolio " + portfolio.portfolio_Id}}</div>
+        <div class="collapsible-header teal-text"><i class="material-icons">work</i>{{"Portfolio " + portfolio.portfolioId}}</div>
         <div class="collapsible-body">
           <table class="grey">
-            <thead>Transactions for Portfolio {{portfolio.portfolio_Id}}</thead>
+            <thead>Transactions for Portfolio {{portfolio.portfolioId}}</thead>
             <tr>
               <th>Stock Name</th>
               <th>Transaction Date</th>
@@ -16,10 +16,10 @@
               <th>Number of Shares</th>
             </tr>
             <tr ng-repeat="transaction in portfolioTransactions">
-               <td>{{transaction.exchange_short_name}}</td>
-               <td>{{transaction.trade_time | date: 'medium'}}</td>
-               <td>{{transaction.stock_value | currency}}</td>
-               <td>{{transaction.number_of_shares}}</td>
+               <td>{{transaction.exchangeShortName}}</td>
+               <td>{{transaction.tradeTime | date: 'medium'}}</td>
+               <td>{{transaction.stockValue | currency}}</td>
+               <td>{{transaction.numberOfShares}}</td>
             </tr>
           </table>
         </div>

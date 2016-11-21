@@ -1,4 +1,6 @@
-stockApp.controller('MainController', ['$scope', 'DBService', 'APIService', function MainController($scope, DBService, APIService) {
+stockApp.controller('MainController', ['$scope', 'SQLDBService', 'APIService','FactoryService', function MainController($scope, SQLDBService, APIService, FactoryService) {
 //	APIService.getMultipleStocks(['AAPL', 'GOOGL']);
-	DBService.initializeDBAtTheBeginningOfStockApp();
+//DBService.initializeDBAtTheBeginningOfStockApp();
+//SQLDBService.clearDB();
+SQLDBService.initDb();
 }]);
