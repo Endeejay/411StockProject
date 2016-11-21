@@ -1,5 +1,5 @@
   <h2>My Watchlist</h2>
-    <table>
+<!--     <table>
       <thead>
         <tr class="teal-text">
           <th>Portfolio Id</th>
@@ -12,7 +12,25 @@
         <tr ng-repeat="stocks in usersWatchedStocks">
           <td class="white-text">{{stocks.portfolio_Id}}</td>
           <td class="white-text">{{stocks.symbol}}</td>
-          <td class="white-text">{{"$" + stocks.price_when_added}}</td>
-          <td class="white-text">{{stocks.date_when_added.substring(0,10)}}</td>
+          <td class="white-text">{{stocks.price_when_added | currency}}</td>
+          <td class="white-text">{{stocks.date_when_added | date: 'medium'}}</td>
       </tbody>
-    </table>
+    </table> -->
+      <div class="row" ng-repeat="stocks in usersWatchedStocks">
+        <div class="col s12 m6">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">{{stocks.symbol}}</span>
+            </div>
+            <div class="card-action">
+              <a href="#">Remove</a>
+              <a href="#">Buy</a>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m6">
+        <p>Added on {{stocks.date_when_added | date: 'medium'}}</p>
+        <p>Price was {{stocks.price_when_added | currency}} when added</p>
+        </div>
+      </div>
+            

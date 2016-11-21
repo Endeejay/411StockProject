@@ -5,4 +5,8 @@ stockApp.controller('PortfolioController', ['$scope', '$stateParams', '$state', 
 	$scope.currentPortfolio = DBService.getCurrentPortfolio(isLive);
 	$scope.portfolioTransactions = DBService.getAllTransactionsForPortfolio($scope.currentPortfolio[0].portfolio_Id);
 
+	$(document).ready(function(){
+    	$('.collapsible').collapsible();
+ 	});
+     
 }]);
