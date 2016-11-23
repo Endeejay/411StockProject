@@ -1,6 +1,6 @@
 
 stockApp.controller('DetailsController', function DetailsController($scope, $stateParams, $state, DBService, APIService, MathService, DetailsService, SQLDBService, FactoryService) {
-    if($stateParams.stockObj == null){
+    if($stateParams.stockObj.Symbol == null ){
     	if($state.is('live.buy_sell.details')){
     		$state.go('live.buy_sell');
     	}
@@ -347,7 +347,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
 
     $scope.buyStock = function(){
       var sharesInput = document.getElementById("sharesBuy").value;
-      if(!sharesInput==0)
+      if(!sharesInput == 0 && stockObj.Symbol)
       {
         sharesInput = parseInt(sharesInput);
 
@@ -386,7 +386,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
 
     $scope.sellStock = function(){
         var sharesInput = document.getElementById("sharesSell").value;
-        if(!sharesInput==0)
+        if(!sharesInput == 0 && stockObj.Symbol)
         {
           sharesInput = parseInt(sharesInput);
           var state = $state.current.name
@@ -424,28 +424,30 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     }
 
     $scope.watchStock = function(){
-      var state = $state.current.name
-      var isLiveInt = FactoryService.getCurrentStateInt(state);
-      var currentStateString = state.substr(0, state.indexOf('.'));
-      var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
-      var currentPortfolioId = currentPortfolio[0].portfolioId;
+      if(stockObj.Symbol){
+        var state = $state.current.name
+        var isLiveInt = FactoryService.getCurrentStateInt(state);
+        var currentStateString = state.substr(0, state.indexOf('.'));
+        var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
+        var currentPortfolioId = currentPortfolio[0].portfolioId;
 
-      if(checkIfStockIsWatched(currentPortfolioId, stockObj.Symbol) === false){
-        Materialize.toast("Started watching " + stockObj.Symbol, 4000);
-        var currentPrice = MathService.getMostRecentStockPrice(stockObj);
-        var date = "";
-        if (isLiveInt == 0){
-            date = new Date() + "";
-        }else{
-            //figure out date for histoic state
-            date = new Date() + "";
+        if(checkIfStockIsWatched(currentPortfolioId, stockObj.Symbol) === false){
+          Materialize.toast("Started watching " + stockObj.Symbol, 4000);
+          var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+          var date = "";
+          if (isLiveInt == 0){
+              date = new Date() + "";
+          }else{
+              //figure out date for histoic state
+              date = new Date() + "";
+          }
+
+          var watch = FactoryService.makeWatchObject(currentPortfolioId, stockObj.Symbol, currentPrice, date);
+          SQLDBService.createWatch(watch);
         }
-
-        var watch = FactoryService.makeWatchObject(currentPortfolioId, stockObj.Symbol, currentPrice, date);
-        SQLDBService.createWatch(watch);
-      }
-      else{
-        Materialize.toast("Already watching " + stockObj.Symbol, 4000);
+        else{
+          Materialize.toast("Already watching " + stockObj.Symbol, 4000);
+        }
       }
     }
 
