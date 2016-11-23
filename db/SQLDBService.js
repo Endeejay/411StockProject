@@ -28,6 +28,7 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 	this.getPortfolioById = getPortfolioById;
 	this.updatePortfolio = updatePortfolio;
 	this.setTransactionTotalShares = setTransactionTotalShares;
+	this.removeFromWatch = removeFromWatch;
 	this.clearDB = clearDB;
 
 	function initDb(){
@@ -62,9 +63,15 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 
 	function createWatch(watch){
 		try{
-			var stmt = db.prepare("INSERT INTO watch (portfolioId, symbol, priceWhenAdded, dateWhenAdded) VALUES(:portfolioId, :symbol, :priceWhenAdded, :dateWhenAdded)");
-			stmt.run([watch.portfolioId, watch.symbol, watch.priceWhenAdded, watch.dateWhenAdded]);
-			saveDb();
+			var rows = db.exec("SELECT * FROM watch WHERE portfolioId = " + watch.portfolioId + " AND symbol = \'" + watch.symbol +"\'");
+			if(rows.length === 0){
+				var stmt = db.prepare("INSERT INTO watch (portfolioId, symbol, priceWhenAdded, dateWhenAdded) VALUES(:portfolioId, :symbol, :priceWhenAdded, :dateWhenAdded)");
+				stmt.run([watch.portfolioId, watch.symbol, watch.priceWhenAdded, watch.dateWhenAdded]);
+				saveDb();
+			}
+			else{
+				return FactoryService.tryCatchError("Already Watching " + watch.symbol);
+			}
 		}catch(e){
 			console.error(e);
 		}
@@ -201,6 +208,15 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 	function setTransactionTotalShares(id, shortName, value){
 		try{
 			db.exec("UPDATE transactions SET totalShares = \'" + value + "\' WHERE portfolioId = " + id + " AND exchangeShortName = \'" + shortName + "\'");
+			saveDb();
+		}catch(e){
+			console.error(e);
+		}
+	}
+
+	function removeFromWatch(portfolioId, symbol){
+		try{
+			db.exec("DELETE FROM watch WHERE portfolioId = " + portfolioId + " AND symbol = \'" + symbol + "\'");
 			saveDb();
 		}catch(e){
 			console.error(e);

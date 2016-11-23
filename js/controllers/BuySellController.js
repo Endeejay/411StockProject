@@ -1,16 +1,17 @@
 stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', function BuySellController($scope, BuySellService, $state, APIService) {
 //getName();
 getAvailableStocks();
-getStock();
+//getStock();
 // function changeTemplate(){
 //   $location.url('/historic.buy_sell');
 // }
-function getStock(){
-        APIService.getSingleStock('AAPL').then(function(data){
+$scope.getStock = function(symbol){
+         APIService.getSingleStock(symbol).then(function(data){
             //set stockReal to the stock object
-            $scope.stockReal = data.data[0];
+             $scope.stockReal = data.data[0];
+             showDetails($scope.stockReal);
             //subtract stock's opening price from most recent to get diff.
-            $scope.difference = $scope.stockReal.LastPrice - $scope.stockReal.Open;
+            //$scope.difference = $scope.stockReal.LastPrice - $scope.stockReal.Open;
         })
 }
 
@@ -24,13 +25,12 @@ function getAvailableStocks(){
   });
 }
 
-function showDetails(){
-  alert("yeezy");
+ function showDetails(stock){
   if($state.is("live.buy_sell")){
-    $state.go('live.buy_sell.details', {stockObj: symbol});
+    $state.go('live.buy_sell.details', {stockObj: stock});
   }
   else if($state.is("historic.buy_sell")){
-    $state.go('historic.buy_sell.details', {stockObj: symbol});
+    $state.go('historic.buy_sell.details', {stockObj: stock});
   }
 }
 

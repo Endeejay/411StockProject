@@ -6,9 +6,9 @@
 		//this is the amount that will be added to currency
 		//just a gather of the single amount functions
 	//total difference
-	//historic calculations need to include our final price and initial price already, since they 
+	//historic calculations need to include our final price and initial price already, since they
 	//do not have to be figured out on the fly
-stockApp.service('MathService',['DBService',function (DBService) {
+stockApp.service('MathService',['SQLDBService',function (SQLDBService) {
 
 this.stockTotal = stockTotal;
 this.netDiffPercent = netDiffPercent;
@@ -21,11 +21,24 @@ this.checkCurrencyEnoughForPurchase = checkCurrencyEnoughForPurchase;
 this.totalTransactionPrice = totalTransactionPrice;
 this.calculateNewCurrencyValue = calculateNewCurrencyValue;
 this.totalShareCount = totalShareCount;
+this.getTotalShares = getTotalShares;
 
+function getTotalShares(id, shortName){
+	var transactionsData = SQLDBService.getTransactionsByPortfolioIdAndShortName(id, shortName);
+	var shares = 0
+	for(index in transactionsData){
+		if(transactionsData[index].buyOrSell === 0){
+			shares += transactionsData[index].numberOfShares;
+		}else if(transactionsData[index].buyOrSell === 1){
+			shares -= transactionsData[index].numberOfShares;
+		}
+	}
+	return shares;
+}
 
 function totalShareCount(oldShares, newShares, isBuyOrSell){
 	var newShareTotal;
-	if(isBuyOrSell == 1){
+	if(isBuyOrSell == 0){
 		newShareTotal = oldShares + newShares;
 	}else{
 		newShareTotal = oldShares - newShares;
@@ -35,8 +48,8 @@ function totalShareCount(oldShares, newShares, isBuyOrSell){
 
 function calculateNewCurrencyValue(currentCurrency, valueOfPurchase, isBuyOrSell){
 	var newCurrency;
-	currentCurrency = parseInt(currentCurrency);
-	if(isBuyOrSell == 1){
+	currentCurrency = currentCurrency;
+	if(isBuyOrSell == 0){
 		newCurrency = currentCurrency - valueOfPurchase;
 	}else{
 		newCurrency = currentCurrency + valueOfPurchase;
@@ -49,7 +62,7 @@ function totalTransactionPrice(shares,priceOfStock){
 }
 
 function checkCurrencyEnoughForPurchase(priceOfTransaction,currency){
-	var currencyInt = parseInt(currency);
+	var currencyInt = currency;
 	var isEnough = false;
 	if (priceOfTransaction <= currencyInt){
 		isEnough = true;
@@ -77,7 +90,7 @@ function netDiffDollars(firstPrice,secondPrice){
 
 function allStockTotals(portfolio){
 	var runningTotal;
-	var price = 0; 
+	var price = 0;
 	//price is going to be the value that we are pulling from the api
 	var shares = 0;
 	//shares is a value that we are going to pull from the portfolio
@@ -86,7 +99,7 @@ function allStockTotals(portfolio){
 function allStockDiffPercent(portfolio){
 	var diff = 0;
 	var diffOverTotal = 0;
-	
+
 }
 
 function allStockDiffDollars(portfolio){
@@ -94,7 +107,7 @@ function allStockDiffDollars(portfolio){
 }
 
 function getMostRecentStockPrice(stockObj){
-	return stockObj.Prices[stockObj.Prices.length-1];
+	return stockObj.LastPrice;
 }
 
-}]);	
+}]);

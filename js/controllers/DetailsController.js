@@ -1,6 +1,5 @@
 
 stockApp.controller('DetailsController', function DetailsController($scope, $stateParams, $state, DBService, APIService, MathService, DetailsService, SQLDBService, FactoryService) {
-
     if($stateParams.stockObj == null){
     	if($state.is('live.buy_sell.details')){
     		$state.go('live.buy_sell');
@@ -17,8 +16,8 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     var currentStateString = state.substr(0, state.indexOf('.'));
     var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
 
-    $scope.CurrentPortfolioMoney = parseInt(currentPortfolio[0].currency);
-    $scope.Shares = parseInt(DBService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol));
+    $scope.CurrentPortfolioMoney = currentPortfolio[0].currency;
+    $scope.Shares = MathService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol);
 
     // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -343,7 +342,6 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     function getStock(){
         APIService.getSingleStock(stockObj.Symbol).then(function(data){
             $scope.stockReal = data.data[0];
-            console.log($scope.stockReal.LastPrice);
         })
     }
 
@@ -352,7 +350,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
       if(!sharesInput==0)
       {
         sharesInput = parseInt(sharesInput);
-        debugger;
+
         var state = $state.current.name
         var isLiveInt = FactoryService.getCurrentStateInt(state);
         var currentStateString = state.substr(0, state.indexOf('.'));
@@ -361,12 +359,19 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
 
 
         if(checkTransactionForEnoughCurrency(sharesInput,currentPrice,currentPortfolio[0].currency)){
-            buyOrSellStock(1,sharesInput);
             if (sharesInput == 1){
+              buyOrSellStock(0,sharesInput);
               Materialize.toast('Successfully purchased ' + sharesInput + ' share of ' + stockObj.Symbol, 4000);
+
+              $scope.CurrentPortfolioMoney = parseInt(currentPortfolio[0].currency) - (parseInt(currentPrice) * sharesInput);
+              $scope.Shares = parseInt($scope.Shares) + sharesInput;
             }
             else if (sharesInput > 1){
+              buyOrSellStock(0,sharesInput);
               Materialize.toast('Successfully purchased ' + sharesInput + ' shares of ' + stockObj.Symbol, 4000);
+
+              $scope.CurrentPortfolioMoney = parseInt(currentPortfolio[0].currency) - (currentPrice) * sharesInput;
+              $scope.Shares = parseInt($scope.Shares) + sharesInput;
             }
         }else{
             if (isNaN(sharesInput)) {
@@ -376,9 +381,6 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
                 Materialize.toast("You don't have enough money for this!", 4000);
             }
         }
-
-        $scope.CurrentPortfolioMoney = parseInt(currentPortfolio[0].currency) - (parseInt(currentPrice) * sharesInput);
-        $scope.Shares = parseInt($scope.Shares) + sharesInput;
       }
     }
 
@@ -396,12 +398,19 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
           $scope.currentPrice = currentPrice;
 
           if(checkIfStockIsBought(currentPortfolio, stockObj.Symbol, sharesInput)){
-              buyOrSellStock(2,sharesInput);
               if (sharesInput == 1){
+                buyOrSellStock(1,sharesInput);
                 Materialize.toast('Successfully sold ' + sharesInput + ' share of ' + stockObj.Symbol, 4000);
+
+                $scope.CurrentPortfolioMoney = currentPortfolio[0].currency + (currentPrice * sharesInput);
+                $scope.Shares = parseInt($scope.Shares) - sharesInput;
               }
               else if (sharesInput >= 1){
+                buyOrSellStock(1,sharesInput);
                 Materialize.toast('Successfully sold ' + sharesInput + ' shares of ' + stockObj.Symbol, 4000);
+
+                $scope.CurrentPortfolioMoney = currentPortfolio[0].currency + (currentPrice * sharesInput);
+                $scope.Shares = parseInt($scope.Shares) - sharesInput;
               }
           }else{
               if (isNaN(sharesInput)) {
@@ -411,20 +420,18 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
                   Materialize.toast("You can't sell things you don't own.", 4000);
               }
           }
-
-          $scope.CurrentPortfolioMoney = parseInt(currentPortfolio[0].currency) + (parseInt(currentPrice) * sharesInput);
-          $scope.Shares = parseInt($scope.Shares) - sharesInput;
         }
     }
 
     $scope.watchStock = function(){
-        Materialize.toast("Started watching " + stockObj.Symbol, 4000);
-        var state = $state.current.name
-        var isLiveInt = FactoryService.getCurrentStateInt(state);
-        var currentStateString = state.substr(0, state.indexOf('.'));
-        var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
+      var state = $state.current.name
+      var isLiveInt = FactoryService.getCurrentStateInt(state);
+      var currentStateString = state.substr(0, state.indexOf('.'));
+      var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
+      var currentPortfolioId = currentPortfolio[0].portfolioId;
 
-        var currentPortfolioId = currentPortfolio[0].portfolioId;
+      if(checkIfStockIsWatched(currentPortfolioId, stockObj.Symbol) === false){
+        Materialize.toast("Started watching " + stockObj.Symbol, 4000);
         var currentPrice = MathService.getMostRecentStockPrice(stockObj);
         var date = "";
         if (isLiveInt == 0){
@@ -436,6 +443,21 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
 
         var watch = FactoryService.makeWatchObject(currentPortfolioId, stockObj.Symbol, currentPrice, date);
         SQLDBService.createWatch(watch);
+      }
+      else{
+        Materialize.toast("Already watching " + stockObj.Symbol, 4000);
+      }
+    }
+
+    function checkIfStockIsWatched(portfolioId, symbol){
+      var watch = SQLDBService.getWatchByPortfolioId(portfolioId);
+      var hasWatch = false;
+      for(index in watch){
+        if(watch[index].symbol === symbol){
+          hasWatch = true;
+        }
+      }
+      return hasWatch;
     }
 
     function buyOrSellStock(buyOrSell, amountOfShares){
@@ -444,7 +466,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
         var currentStateString = state.substr(0, state.indexOf('.'));
         var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
         var currentPrice = MathService.getMostRecentStockPrice(stockObj);
-        var totalSharesAtTransaction = DBService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol);
+        var totalSharesAtTransaction = MathService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol);
         var totalSharesAfterTransaction = getTotalSharesAfterTransaction(totalSharesAtTransaction, amountOfShares, buyOrSell);
         //this only works in live, we need to figure out date for historic
         var date;
@@ -455,8 +477,9 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
             date = new Date() + "";
         }
 
-        var transaction = FactoryService.makeTransactionObject(currentPortfolio[0].portfolioId, stockObj.Name, stockObj.Symbol, date, currentPrice, 50, totalSharesAfterTransaction, amountOfShares, buyOrSell, currentPortfolio[0].currency);
+        var transaction = FactoryService.makeTransactionObject(currentPortfolio[0].portfolioId, stockObj.Name, stockObj.Symbol, date, currentPrice, totalSharesAfterTransaction, totalSharesAfterTransaction, amountOfShares, buyOrSell, currentPortfolio[0].currency);
         SQLDBService.createTransaction(transaction);
+        SQLDBService.setTransactionTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol, totalSharesAfterTransaction);
 
         var totalTransactionPrice = MathService.totalTransactionPrice(amountOfShares, currentPrice);
         var newCurrency = MathService.calculateNewCurrencyValue(currentPortfolio[0].currency, totalTransactionPrice, buyOrSell);
@@ -471,8 +494,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
 
     function checkIfStockIsBought(currentPortfolio, stockSymbol, amountWantedToSell){
         var haveEnoughShares;
-        var totalSharesAtTransaction = DBService.getTotalShares(currentPortfolio[0].portfolio_Id, stockSymbol);
-
+        var totalSharesAtTransaction = MathService.getTotalShares(currentPortfolio[0].portfolioId, stockSymbol)
         if(totalSharesAtTransaction >= amountWantedToSell){
             haveEnoughShares = true;
         }else{
@@ -483,7 +505,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
 
     function getTotalSharesAfterTransaction(currentShares, sharesAtTransaction, buyOrSell){
         var totalSharesAfterTransaction = 0;
-        if(buyOrSell == 1){
+        if(buyOrSell == 0){
             totalSharesAfterTransaction = currentShares + sharesAtTransaction;
         }else{
             totalSharesAfterTransaction = currentShares - sharesAtTransaction;

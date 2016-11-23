@@ -4,8 +4,9 @@
     <!-- <line-chart config="item"></line-chart>
     <line-chart config="item"></line-chart> -->
      <div class="collection">
-        <a ng-repeat="stock in availableStocks | limitTo: 10" class="collection-item" ng-click="showDetails()" ng-cloak>{{stock}}</a>
-    </div> 
+        <a ng-repeat="stock in availableStocks | limitTo: 10" ng-Click="getStock(stock)" class="collection-item" ng-cloak>{{stock}}</a>
+    </div>
+
      <!-- <ul class="pagination">
 	    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
 	    <li class="active"><a href="#!">1</a></li>

@@ -6,11 +6,15 @@ stockApp.controller('PortfolioController', ['$scope', '$stateParams', '$state', 
 //since we are just getting them all by ID the getCurrentPortfolio is not needed
 //when one of those buttons is clicked, the id is based on the button
 //then push the ID into getTransactionsByPortfolioId
-//-Tay Tay 
+//-Tay Tay
 	$scope.currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
 	$scope.portfolioTransactions = SQLDBService.getTransactionsByPortfolioId($scope.currentPortfolio[0].portfolioId);
 	$(document).ready(function(){
     	$('.collapsible').collapsible();
  	});
+
+	$scope.portfolioButton = function(){
+		$scope.portfolioTransactions = SQLDBService.getTransactionsByPortfolioId(this.portfolio.portfolioId);
+	}
 
 }]);
