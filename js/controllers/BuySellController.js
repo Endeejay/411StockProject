@@ -34,8 +34,6 @@ $scope.getStock = function(symbol){
 //         })
 // }
 
-$scope.stocks = [];
-
 function getAvailableStocks(){
   APIService.getAllStocks().then(function(data){
     data = data.data;

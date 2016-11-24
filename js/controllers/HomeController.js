@@ -1,6 +1,6 @@
 var parseString = require('xml2js').parseString;
 const shell = require('electron').shell;
-stockApp.controller('HomeController', ['$scope','$state','SQLDBService', 'FactoryService', 'APIService', 'DBService', function HomeController($scope, $state, SQLDBService, FactoryService, APIService, DBService) {
+stockApp.controller('HomeController', ['$scope','$state','SQLDBService', 'FactoryService', 'APIService', function HomeController($scope, $state, SQLDBService, FactoryService, APIService) {
   $scope.message = "Home Data Page";
 
   /*live is 1, historic is 2*/
@@ -9,14 +9,14 @@ stockApp.controller('HomeController', ['$scope','$state','SQLDBService', 'Factor
 
   if(currentState === "live"){
     isLive = 0;
-    getRssFeed();
+    getRssFeed(currentState);
   }
   else{
     isLive = 1;
   }
 
-  function getRssFeed(){
-    var portfolioId = DBService.getCurrentPortfolio().portfolioId;
+  function getRssFeed(state){
+    var portfolioId = SQLDBService.getCurrentPortfolio(state)[0].portfolioId;
     
     var watch = SQLDBService.getWatchByPortfolioId(portfolioId);
 
