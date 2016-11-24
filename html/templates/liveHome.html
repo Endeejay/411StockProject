@@ -2,5 +2,12 @@
   <div style="padding-top: 150px">
     <h2>Welcome to Electron Trader</h2>
     <h3>You are currently in the <strong>live</strong> testing environment.</h3>
+  </div>
+
+  <div>
+  	Top news stories
   </div>          
+  	<ul>
+  	 <li ng-repeat="article in rssFeed" ng-click="openPageInBrowser(article.link[0])"/><a href="">{{article.title[0]}}</a></li>
+  	</ul>
 </div>
