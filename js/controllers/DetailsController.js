@@ -479,7 +479,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
             date = new Date() + "";
         }
 
-        var transaction = FactoryService.makeTransactionObject(currentPortfolio[0].portfolioId, stockObj.Name, stockObj.Symbol, date, currentPrice, totalSharesAfterTransaction, totalSharesAfterTransaction, amountOfShares, buyOrSell, currentPortfolio[0].currency);
+        var transaction = FactoryService.makeTransactionObject(currentPortfolio[0].portfolioId, stockObj.Symbol, date, currentPrice, totalSharesAfterTransaction, totalSharesAfterTransaction, amountOfShares, buyOrSell, currentPortfolio[0].currency);
         SQLDBService.createTransaction(transaction);
         SQLDBService.setTransactionTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol, totalSharesAfterTransaction);
 

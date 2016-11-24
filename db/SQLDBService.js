@@ -3,14 +3,15 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 	const fs = require('fs');
 	const path = require('path');
 
-	//should use electron json storage to save the db in order to have better response time
-	const filebuffer = fs.readFileSync('db/electronTrader.sqlite');
-
-	if (filebuffer != null) {
+	if (fs.existsSync('db/electronTrader.sqlite') == true) {
+		const filebuffer = fs.readFileSync('db/electronTrader.sqlite');
 		var db = new SQL.Database(filebuffer);
-	} else {
+	}else{
 		var db = new SQL.Database();
+		initDb();
+		saveDb();
 	}
+
 	/***Function Mappings***/
 	this.initDb = initDb;
 	this.createPortfolio = createPortfolio;
@@ -224,10 +225,13 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 	}
 
 	function saveDb(){
-		try {
-			fs.unlinkSync('db/electronTrader.sqlite');
-		} catch (e) {
-			console.log("Unable to delete file; Exception: " + e);
+		if(fs.existsSync('db/electronTrader.sqlite') == true)
+		{
+			try {
+				fs.unlinkSync('db/electronTrader.sqlite');
+			} catch (e) {
+				console.log("Unable to delete file; Exception: " + e);
+			}
 		}
 		fs.writeFileSync("db/electronTrader.sqlite", new Buffer(db.export()));
 	}

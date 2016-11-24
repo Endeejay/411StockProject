@@ -46,15 +46,14 @@ jsonObject = [];
   {
     var transaction = {
       "portfolioId" : array[0].values[object][1],
-      "exchangeName" : array[0].values[object][2],
-      "exchangeShortName" : array[0].values[object][3],
-      "tradeTime" : array[0].values[object][4],
-      "stockValue" : array[0].values[object][5],
-      "totalShares" : array[0].values[object][6],
-      "totalSharesAtTransaction" : array[0].values[object][7],
-      "numberOfShares" : array[0].values[object][8],
-      "buyOrSell" : array[0].values[object][9],
-      "currencyAtTransaction" : array[0].values[object][10]
+      "symbol" : array[0].values[object][2],
+      "tradeTime" : array[0].values[object][3],
+      "stockValue" : array[0].values[object][4],
+      "totalShares" : array[0].values[object][5],
+      "totalSharesAtTransaction" : array[0].values[object][6],
+      "numberOfShares" : array[0].values[object][7],
+      "buyOrSell" : array[0].values[object][8],
+      "currencyAtTransaction" : array[0].values[object][9]
   };
   jsonObject.push(transaction);
   }
@@ -101,11 +100,10 @@ function makeWatchObject(portfolioId, symbol, priceWhenAdded, dateWhenAdded){
   return watch;
 }
 
-function makeTransactionObject(portfolioId, exchangeName, excahangeShortName, tradeTime, stockValue, totalShares, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction){
+function makeTransactionObject(portfolioId, symbol, tradeTime, stockValue, totalShares, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction){
   var transaction = {
     "portfolioId" : portfolioId,
-    "exchangeName": exchangeName,
-    "exchangeShortName": excahangeShortName,
+    "symbol": symbol,
     "tradeTime" : tradeTime,
     "stockValue" : stockValue,
     "totalShares": totalShares,
