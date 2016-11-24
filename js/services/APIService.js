@@ -20,7 +20,10 @@ stockApp.service('APIService',['$http','$q',function ($http, $q) {
 		//build query string
 		for(var i =0; i<stocks.length; i++){
 			if (i!=stocks.length){
-				queryString = queryString + "symbols=" + stocks[i] + '&';				
+				queryString = queryString + "symbols=" + stocks[i] + '&';
+				if(i = (stocks.length)-1){
+					queryString = queryString + "symbols=" + stocks[i];									
+				}				
 			}
 		}	
 
