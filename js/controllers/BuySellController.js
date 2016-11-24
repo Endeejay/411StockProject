@@ -27,10 +27,23 @@ $scope.getStock = function(symbol){
         })
 }
 
+// function getStocksAndCalculateDifference(symbols){
+//          APIService.getMultipleStocks(symbols).then(function(data){
+//             //set stockReal to the stock object
+//             console.log(data);
+//         })
+// }
+
+$scope.stocks = [];
+
 function getAvailableStocks(){
   APIService.getAllStocks().then(function(data){
     data = data.data;
     $scope.availableStocks = data;
+    // for (var i = 0; i < 10; i++) {
+    //   $scope.stocks.push($scope.availableStocks[i]);
+    // }
+    // getStocksAndCalculateDifference($scope.stocks);
     //console.log(data);
   }, function(error){
     console.log(error);

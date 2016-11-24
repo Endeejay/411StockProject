@@ -3092,7 +3092,7 @@ td, th {
 }
 
 .collection .collection-item {
-  background-color: #fff;
+  background-color: #212121;
   line-height: 1.5rem;
   padding: 10px 20px;
   margin: 0;
@@ -5394,7 +5394,7 @@ button.btn-floating {
   min-height: 3rem;
   line-height: 3rem;
   padding: 0 1rem;
-  background-color: #fff;
+  background-color: #212121;
   border-bottom: 1px solid #ddd;
 }
 
