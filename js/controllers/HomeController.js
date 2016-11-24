@@ -20,7 +20,7 @@ stockApp.controller('HomeController', ['$scope','$state','SQLDBService', 'Factor
     
     var watch = SQLDBService.getWatchByPortfolioId(portfolioId);
 
-    if(watch.length > 0){
+    if(watch.length > 1){
       APIService.getRssFeedFromWatch(watch).then(function(data){
         parseString(data.data, function (err, result){
           $scope.rssFeed = result.rss.channel[0].item;
