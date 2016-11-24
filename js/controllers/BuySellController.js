@@ -5,6 +5,18 @@ getAvailableStocks();
 // function changeTemplate(){
 //   $location.url('/historic.buy_sell');
 // }
+
+$scope.settings = {
+    currentPage: 0,
+    offset: 0,
+    pageLimit: 10,
+    pageLimits: ['10']
+};
+
+$scope.callback = function() {
+  console.log('pagination changed...');
+}
+
 $scope.getStock = function(symbol){
          APIService.getSingleStock(symbol).then(function(data){
             //set stockReal to the stock object
