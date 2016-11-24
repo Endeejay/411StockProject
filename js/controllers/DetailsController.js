@@ -468,6 +468,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
         var currentPrice = MathService.getMostRecentStockPrice(stockObj);
         var totalSharesAtTransaction = MathService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol);
         var totalSharesAfterTransaction = getTotalSharesAfterTransaction(totalSharesAtTransaction, amountOfShares, buyOrSell);
+        var totalTransactionPrice = MathService.totalTransactionPrice(amountOfShares, currentPrice);
         //this only works in live, we need to figure out date for historic
         var date;
         if (isLiveInt == 1){
@@ -477,11 +478,10 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
             date = new Date() + "";
         }
 
-        var transaction = FactoryService.makeTransactionObject(currentPortfolio[0].portfolioId, stockObj.Name, stockObj.Symbol, date, currentPrice, totalSharesAfterTransaction, totalSharesAfterTransaction, amountOfShares, buyOrSell, currentPortfolio[0].currency);
+        var transaction = FactoryService.makeTransactionObject(currentPortfolio[0].portfolioId, stockObj.Name, stockObj.Symbol, date, currentPrice, totalSharesAfterTransaction, totalSharesAfterTransaction, amountOfShares, buyOrSell, currentPortfolio[0].currency, totalTransactionPrice);
         SQLDBService.createTransaction(transaction);
         SQLDBService.setTransactionTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol, totalSharesAfterTransaction);
 
-        var totalTransactionPrice = MathService.totalTransactionPrice(amountOfShares, currentPrice);
         var newCurrency = MathService.calculateNewCurrencyValue(currentPortfolio[0].currency, totalTransactionPrice, buyOrSell);
         SQLDBService.updatePortfolio(currentPortfolio[0].portfolioId,"currency",newCurrency);
     }

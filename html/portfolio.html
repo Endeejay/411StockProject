@@ -7,19 +7,22 @@
       <li ng-repeat="portfolio in userPortfolios">
         <div id = "{{portfolio.portfolioId}}" ng-Click = "portfolioButton()" class="collapsible-header teal-text"><i class="material-icons">work</i>{{"Portfolio " + portfolio.portfolioId}}</div>
         <div class="collapsible-body">
-          <table class="grey">
+          <table class="pink">
             <thead>Transactions for Portfolio {{portfolio.portfolioId}}</thead>
             <tr>
+              <th>Date</th>
               <th>Stock Name</th>
-              <th>Transaction Date</th>
-              <th>Stock Price</th>
-              <th>Number of Shares</th>
+              <th>Test</th>
+<!--               <th>Stock Price</th>
+              <th>Number of Shares</th> -->
             </tr>
             <tr ng-repeat="transaction in portfolioTransactions">
+               <td>{{transaction.tradeTime.substr(4,11)}}</td>
                <td>{{transaction.exchangeShortName}}</td>
-               <td>{{transaction.tradeTime | date: 'medium'}}</td>
-               <td>{{transaction.stockValue | currency}}</td>
-               <td>{{transaction.numberOfShares}}</td>
+               <!--put total transaction amount here and then portfolio balance... people won't care about individual stock price or num of shares. -->
+               <td>{{transaction.totalPrice}}</td>
+<!--                <td>{{transaction.stockValue | currency}}</td>
+               <td>{{transaction.numberOfShares}}</td> -->
             </tr>
           </table>
         </div>

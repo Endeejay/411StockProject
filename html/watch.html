@@ -24,7 +24,7 @@
             </div>
             <div class="card-action">
               <a ng-click="remove(stock)">Remove</a>
-              <a ng-click="buy(stock)">Buy</a>
+              <a ng-click="buy(stock)" class="lime-text">Buy</a>
             </div>
           </div>
         </div>
@@ -32,4 +32,7 @@
         <p ng-show="stock.dateWhenAdded">Added on {{stock.dateWhenAdded | date: 'medium'}}</p>
         <p ng-show="stock.priceWhenAdded">Price was {{stock.priceWhenAdded | currency}} when added</p>
         </div>
+      </div>
+      <div class="centered" ng-if="!usersWatchedStocks.length">
+        <h1> mah nigga </h1>
       </div>

@@ -1,14 +1,25 @@
   <!-- detailed candlestick chart would be loaded here -->
 
 
+<div class="row" style="text-align: center;">
+	<p>Current Price: {{currentPrice | currency}}/share</p>
+</div>
 <div class="row">
+	<div class="chip col s5">
+	Current Portfolio Money: {{ CurrentPortfolioMoney | currency}}
+	</div>
+	<div class="chip col s5">
+	Shares owned of {{stockObj.Symbol}} : {{Shares}}
+	</div>
+</div>
+<!-- <div class="row">
         <p>You are viewing {{stockObj.Symbol}}</p>
-        <p>You have {{ CurrentPortfolioMoney | currency}}</p>
+     <p>You have </p>
          <p>You have {{ Shares }}</p> 
-</div>
-<div class="row">
+</div> -->
+<!-- <div class="row">
         <p>Price : {{currentPrice | currency}} per share</p>
-</div>
+</div> -->
 <div class="row">
 
 <line-chart config='linechart'>
@@ -23,23 +34,23 @@
 </br>
 
 <div class="row">
-    <div id="#buyBtn" class="col s2 light-green btn" ng-click="buyStock()">Buy</div>
+    <div id="#buyBtn" class="col s2 light-green btn waves-effect waves-light" ng-click="buyStock()">Buy</div>
     <div class = "input-field col s2">
    		<input id = "sharesBuy" type = "number" min ="1" class = "validate">
    		<label for = "sharesBuy">Shares</label>
     </div>
     <div class="col s1"></div>
-    <div id="#sellBtn" class="col s2 red btn" ng-click="sellStock()">Sell</div>
+    <div id="#sellBtn" class="col s2 red btn waves-effect waves-light" ng-click="sellStock()">Sell</div>
     <div class = "input-field col s2">
    		<input id = "sharesSell" type = "number" min ="1" class = "validate">
    		<label for = "sharesSell">Shares</label>
     </div>
+    <div class="col s3">
+	    <a id="#watchStock" ng-click="watchStock()" class="white-text"><i class="material-icons">star</i>Add to Watchlist</a>
+	</div>
 </div>
 <div class="row">
-    <a id="#watchStock" ng-click="watchStock()"><i class="material-icons prefix">star</i>Add to Watchlist</a>
-</div>
-<div class="row">
-    <!-- the ^ below refers to the parent of current state -->
-    <!--{{stockReal.LastPrice}} -->
-    <a ui-sref="^">Back to Market</a>
+	<div class="col s3">
+	    <a ui-sref="^">Back to Market</a>
+	</div>
 </div>
