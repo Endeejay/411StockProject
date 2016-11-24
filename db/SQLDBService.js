@@ -38,7 +38,7 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 			db.run("CREATE TABLE IF NOT EXISTS watch (id INTEGER PRIMARY KEY UNIQUE, portfolioId INT, symbol TEXT, priceWhenAdded INT, DateWhenAdded INT,FOREIGN KEY(portfolioId) REFERENCES portfolio(id))");
 			db.run("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY UNIQUE, portfolioId INT, symbol TEXT, tradeTime TEXT,stockValue INT, totalShares INT, totalSharesAtTransaction INT, numberOfShares INT, buyOrSell INT, currencyAtTransaction INT, totalPrice INT, FOREIGN KEY(portfolioId) REFERENCES portfolio(id))");
 		} catch (e) {
-			console.log(e);
+			console.error(e);
 		}
 	}
 

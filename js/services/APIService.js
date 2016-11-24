@@ -4,6 +4,7 @@ stockApp.service('APIService',['$http','$q',function ($http, $q) {
 	this.getAllStocks = getAllStocks;
 	this.getDifference = getDifference;
 	this.getRssFeed = getRssFeed;
+	this.getRssFeedFromWatch = getRssFeedFromWatch;
 
 	function getAllStocks(){
 		var promise = $http({method: 'GET',
@@ -25,6 +26,23 @@ stockApp.service('APIService',['$http','$q',function ($http, $q) {
 
 		var promise = $http({method: 'GET',
 			url:'http://localhost:62238/api/Live/'+queryString
+		});
+
+		return promise;
+	}
+
+	function getRssFeedFromWatch(watch){
+		var queryString = "?s=";
+		for(var i = 0; i<watch.length; i++){
+			if(i == 0)
+				queryString=queryString+watch[i].symbol;
+			else
+				queryString=queryString+','+watch[i].symbol;
+		}
+
+		var promise = $http({
+			method:'GET',
+			url: 'http://finance.yahoo.com/rss/industry'+queryString
 		});
 
 		return promise;

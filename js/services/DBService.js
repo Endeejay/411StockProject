@@ -23,6 +23,20 @@ this.getCurrentState = getCurrentState;
 this.getTotalShares = getTotalShares;
 this.setTransactionValues = setTransactionValues;
 
+this.setCurrentPortfolio = setCurrentPortfolio;
+this.getCurrentPortfolio = getCurrentPortfolio;
+
+function setCurrentPortfolio(portfolioId){
+  var currentPortfolio = {
+    "portfolioId" : portfolioId
+  };
+  set("currentPortfolio", currentPortfolio);
+}
+
+function getCurrentPortfolio(){
+  return get("currentPortfolio");
+}
+
 function getCurrentState(state){
   var isLive;
   var currentState = state.substr(0, state.indexOf('.'));
@@ -131,21 +145,6 @@ function setPortfolioValues(id, objectField, value){
   }
   var newPortfolioJson = makePortfolioJson(portfolioId, portfolioName, isLive, startDate, endDate, currency);
   set("portfolio", newPortfolioJson);
-}
-
-function getCurrentPortfolio(state){
-  var data = getJsonArray("portfolio");
-  var stateJsonInfo = [];
-  var jsonInfo = [];
-  for(index in data){
-    if(data[index].is_live == state){
-      stateJsonInfo.push(data[index]);
-    }
-  }
-  jsonInfo.push(stateJsonInfo[stateJsonInfo.length - 1])
-
-  return jsonInfo;
-
 }
 
 function getPortfolioById(portfolioId){
