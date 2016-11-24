@@ -35,7 +35,7 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 		try {
 			db.run("CREATE TABLE IF NOT EXISTS portfolio (id INTEGER PRIMARY KEY UNIQUE, portfolioName TEXT, isLive INT, startDate TEXT, endDate TEXT, currency INT, active INT)");
 			db.run("CREATE TABLE IF NOT EXISTS watch (id INTEGER PRIMARY KEY UNIQUE, portfolioId INT, symbol TEXT, priceWhenAdded INT, DateWhenAdded INT,FOREIGN KEY(portfolioId) REFERENCES portfolio(id))");
-			db.run("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY UNIQUE, portfolioId INT, exchangeName TEXT, exchangeShortName TEXT, tradeTime TEXT,stockValue INT, totalShares INT, totalSharesAtTransaction INT, numberOfShares INT, buyOrSell INT, currencyAtTransaction INT, FOREIGN KEY(portfolioId) REFERENCES portfolio(id))");
+			db.run("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY UNIQUE, portfolioId INT, symbol TEXT, tradeTime TEXT,stockValue INT, totalShares INT, totalSharesAtTransaction INT, numberOfShares INT, buyOrSell INT, currencyAtTransaction INT, FOREIGN KEY(portfolioId) REFERENCES portfolio(id))");
 		} catch (e) {
 			console.log(e);
 		}
@@ -53,8 +53,8 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 
 	function createTransaction(transaction){
 		try{
-			var stmt = db.prepare("INSERT INTO transactions (portfolioId, exchangeName, exchangeShortName, tradeTime, stockValue, totalShares, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction) VALUES(:portfolioId, :exchangeName, :exchangeShortName, :tradeTime, :stockValue, :totalShares, :totalSharesAtTransaction, :numberOfShares, :buyOrSell, :currencyAtTransaction)");
-			stmt.run([transaction.portfolioId, transaction.exchangeName, transaction.exchangeShortName, transaction.tradeTime, transaction.stockValue, transaction.totalShares, transaction.totalSharesAtTransaction, transaction.numberOfShares, transaction.buyOrSell, transaction.currencyAtTransaction]);
+			var stmt = db.prepare("INSERT INTO transactions (portfolioId, symbol, tradeTime, stockValue, totalShares, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction) VALUES(:portfolioId, :exchangeName, :exchangeShortName, :tradeTime, :stockValue, :totalShares, :totalSharesAtTransaction, :numberOfShares, :buyOrSell, :currencyAtTransaction)");
+			stmt.run([transaction.portfolioId, transaction.symbol, transaction.tradeTime, transaction.stockValue, transaction.totalShares, transaction.totalSharesAtTransaction, transaction.numberOfShares, transaction.buyOrSell, transaction.currencyAtTransaction]);
 			saveDb();
 		}catch(e){
 			console.error(e);
@@ -121,13 +121,13 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 		return transactionsJsons;
 	}
 
-	function getTransactionsByPortfolioIdAndShortName(portfolioId, shortName){
+	function getTransactionsByPortfolioIdAndShortName(portfolioId, symbol){
 		var transactionsJsons;
 		try{
-			var rows = db.exec("SELECT * FROM transactions WHERE portfolioId = " + portfolioId + " AND exchangeShortName = \'" + shortName + "\'");
+			var rows = db.exec("SELECT * FROM transactions WHERE portfolioId = " + portfolioId + " AND symbol = \'" + symbol + "\'");
 			transactionsJsons = FactoryService.changeSqlArrayToTransactionJsonObject(rows);
 		}catch(e){
-			return FactoryService.tryCatchError("There are no transactions with shortName of \'"+ shortName + "\' for portfolioId: " + portfolioId);
+			return FactoryService.tryCatchError("There are no transactions with symbol of \'"+ symbol + "\' for portfolioId: " + portfolioId);
 		}
 		return transactionsJsons;
 	}
@@ -143,13 +143,13 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 		return watchJsons;
 	}
 
-	function getMostRecentTransaction(portfolioId, shortName){
+	function getMostRecentTransaction(portfolioId, symbol){
 		var transactionsJsons;
 		try{
-			var rows = db.exec("SELECT * FROM transactions WHERE portfolioId = " + portfolioId + " AND exchangeShortName = \'" + shortName + "\' ORDER BY id DESC LIMIT 1");
+			var rows = db.exec("SELECT * FROM transactions WHERE portfolioId = " + portfolioId + " AND symbol = \'" + symbol + "\' ORDER BY id DESC LIMIT 1");
 			transactionsJsons = FactoryService.changeSqlArrayToTransactionJsonObject(rows);
 		}catch(e){
-			return FactoryService.tryCatchError("There are no transactions with shortName: " + shortName + " in portfolio " + portfolioId);
+			return FactoryService.tryCatchError("There are no transactions with symbol: " + symbol + " in portfolio " + portfolioId);
 		}
 		return transactionsJsons;
 	}
@@ -205,9 +205,9 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 		}
 	}
 
-	function setTransactionTotalShares(id, shortName, value){
+	function setTransactionTotalShares(id, symbol, value){
 		try{
-			db.exec("UPDATE transactions SET totalShares = \'" + value + "\' WHERE portfolioId = " + id + " AND exchangeShortName = \'" + shortName + "\'");
+			db.exec("UPDATE transactions SET totalShares = \'" + value + "\' WHERE portfolioId = " + id + " AND symbol = \'" + symbol + "\'");
 			saveDb();
 		}catch(e){
 			console.error(e);
