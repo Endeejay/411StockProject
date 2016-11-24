@@ -8,13 +8,20 @@ stockApp.controller('PortfolioController', ['$scope', '$stateParams', '$state', 
 //then push the ID into getTransactionsByPortfolioId
 //-Tay Tay
 	$scope.currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
-	$scope.portfolioTransactions = SQLDBService.getTransactionsByPortfolioId($scope.currentPortfolio[0].portfolioId);
+	// $scope.portfolioTransactions = SQLDBService.getTransactionsByPortfolioId($scope.currentPortfolio[0].portfolioId);
+
 	$(document).ready(function(){
     	$('.collapsible').collapsible();
  	});
 
 	$scope.portfolioButton = function(){
 		$scope.portfolioTransactions = SQLDBService.getTransactionsByPortfolioId(this.portfolio.portfolioId);
+		//if the transaction was a purchase, we need to display the total as a negative amount. 
+	    for(index in $scope.portfolioTransactions){
+			if($scope.portfolioTransactions[index].buyOrSell == 0) {
+				$scope.portfolioTransactions[index].totalPrice = ($scope.portfolioTransactions[index].totalPrice)*-1;
+			}
+		}
 	}
 
 }]);

@@ -7,20 +7,32 @@
       <li ng-repeat="portfolio in userPortfolios">
         <div id = "{{portfolio.portfolioId}}" ng-Click = "portfolioButton()" class="collapsible-header teal-text"><i class="material-icons">work</i>{{"Portfolio " + portfolio.portfolioId}}</div>
         <div class="collapsible-body">
-          <table class="grey">
-            <thead>Transactions for Portfolio {{portfolio.portfolioId}}</thead>
+          <table class="white striped">
+            <thead>
             <tr>
+              <th>Transactions for Portfolio {{portfolio.portfolioId}}</th>
+            </tr>
+            <tr>
+              <th>Date</th>
               <th>Stock Name</th>
-              <th>Transaction Date</th>
               <th>Stock Price</th>
               <th>Number of Shares</th>
+              <th>Total Price</th>
+              <!--<th>Balance</th -->
             </tr>
-            <tr ng-repeat="transaction in portfolioTransactions">
-               <td>{{transaction.exchangeShortName}}</td>
-               <td>{{transaction.tradeTime | date: 'medium'}}</td>
-               <td>{{transaction.stockValue | currency}}</td>
-               <td>{{transaction.numberOfShares}}</td>
-            </tr>
+            </thead>
+            <tbody>
+               <tr ng-repeat="transaction in portfolioTransactions">
+                 <td>{{transaction.tradeTime.substr(4,11)}}</td>
+                 <td>{{transaction.symbol}}</td>
+                 <td>{{transaction.stockValue | currency}}</td>
+                 <td>{{transaction.numberOfShares}}</td>
+                 <!--show the total as red if bought, green if sold -->
+                 <td ng-style="transaction.totalPrice < 0 ? { color: 'red' } : {color: 'green'}" >{{transaction.totalPrice | currency}}</td>
+                 <!--We'll also want to show what the portfolio's balance was here -->
+                 <!--<td>{{portfolioBalanceAtTransTime or something}}</td -->
+              </tr>  
+            </tbody>
           </table>
         </div>
       </li>

@@ -1,13 +1,12 @@
 <div ui-view name="content">
-  <div style="padding-top: 150px">
+<!--   <div style="padding-top: 150px">
     <h2>Welcome to Electron Trader</h2>
     <h3>You are currently in the <strong>live</strong> testing environment.</h3>
-  </div>
+  </div> -->
 
-  <div>
-  	Top news stories
-  </div>          
-  	<ul>
-  	 <li ng-repeat="article in rssFeed" ng-click="openPageInBrowser(article.link[0])"/><a href="">{{article.title[0]}}</a></li>
-  	</ul>
+<!--I'll make this look better eventually... -->
+<h3 class="white-text">Top Market News</h3>
+  <div class="collection">
+      <a class="collection-item" ng-repeat="article in rssFeed" ng-click="openPageInBrowser(article.link[0])">{{article.title[0]}}</a>
+  </div>         
 </div>

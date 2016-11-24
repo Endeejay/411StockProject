@@ -53,7 +53,8 @@ jsonObject = [];
       "totalSharesAtTransaction" : array[0].values[object][6],
       "numberOfShares" : array[0].values[object][7],
       "buyOrSell" : array[0].values[object][8],
-      "currencyAtTransaction" : array[0].values[object][9]
+      "currencyAtTransaction" : array[0].values[object][9],
+      "totalPrice" : array[0].values[object][10]
   };
   jsonObject.push(transaction);
   }
@@ -100,7 +101,7 @@ function makeWatchObject(portfolioId, symbol, priceWhenAdded, dateWhenAdded){
   return watch;
 }
 
-function makeTransactionObject(portfolioId, symbol, tradeTime, stockValue, totalShares, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction){
+function makeTransactionObject(portfolioId, symbol, tradeTime, stockValue, totalShares, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction, totalPrice){
   var transaction = {
     "portfolioId" : portfolioId,
     "symbol": symbol,
@@ -110,7 +111,8 @@ function makeTransactionObject(portfolioId, symbol, tradeTime, stockValue, total
     "totalSharesAtTransaction" : totalSharesAtTransaction,
     "numberOfShares" : numberOfShares,
     "buyOrSell" : buyOrSell,
-    "currencyAtTransaction" : currencyAtTransaction
+    "currencyAtTransaction" : currencyAtTransaction,
+    "totalPrice" : totalPrice
   };
 
   return transaction;

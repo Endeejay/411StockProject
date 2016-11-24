@@ -17,6 +17,11 @@ stockApp.controller('HomeController', ['$scope','$state','SQLDBService','Factory
           $scope.rssFeed = result.rss.channel[0].item;
         });
       });
+
+    $(document).ready(function(){
+      $('.carousel').carousel();
+    });
+    
     }
     
     isLive = 0;
@@ -33,5 +38,6 @@ stockApp.controller('HomeController', ['$scope','$state','SQLDBService','Factory
     var portfolio = FactoryService.makePortfolioObject("name", isLive,"","",5000,1);
     SQLDBService.createPortfolio(portfolio);
   }
+
 
 }]);

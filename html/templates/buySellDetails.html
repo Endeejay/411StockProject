@@ -1,13 +1,20 @@
-  <!-- detailed candlestick chart would be loaded here -->
-
-
+<div class="row"></div>
 <div class="row">
-        <p>You are viewing {{stockObj.Symbol}}</p>
-        <p>You have {{ CurrentPortfolioMoney | currency}}</p>
-         <p>You have {{ Shares }}</p> 
-</div>
-<div class="row">
-        <p>Price : {{currentPrice | currency}} per share</p>
+	<div class="col s4">
+		<div class="chip">
+		      Portfolio Balance: <a class="green-text">{{ CurrentPortfolioMoney | currency}}</a>
+		</div>
+	</div>
+	<div class="col s4">
+		<div class="chip">
+		      You own <a class="orange-text">{{ Shares }}</a> shares of {{stockObj.Symbol}}
+		</div>
+	</div>
+	<div class="col s4">
+		<div class="chip">
+		     Price : <a class="red-text">{{currentPrice | currency}}</a> per share
+		</div>
+	</div>
 </div>
 <div class="row">
 
@@ -34,9 +41,9 @@
    		<input id = "sharesSell" type = "number" min ="1" class = "validate">
    		<label for = "sharesSell">Shares</label>
     </div>
-</div>
-<div class="row">
-    <a id="#watchStock" ng-click="watchStock()"><i class="material-icons prefix">star</i>Add to Watchlist</a>
+    <div class="col s3">
+        <a id="#watchStock" ng-click="watchStock()" class="white-text"><i class="material-icons">star</i>Add to Watchlist</a>
+    </div>
 </div>
 <div class="row">
     <!-- the ^ below refers to the parent of current state -->
