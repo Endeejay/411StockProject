@@ -4,17 +4,16 @@
     <!-- <line-chart config="item"></line-chart>
     <line-chart config="item"></line-chart> -->
     <div class="row">
-    <!--let's make this work -->
       <form>
         <div class="input-field">
-          <input id="search" type="search" required>
+          <input ng-model="query" id="search" type="search" required>
           <label for="search"><i class="material-icons">search</i></label>
           <i class="material-icons">close</i>
         </div>
       </form>
     </div>
      <div class="collection">
-        <a ng-repeat="stock in availableStocks | limitTo:settings.pageLimit:settings.offset" ng-Click="getStock(stock)" class="collection-item" ng-cloak>{{stock}}</a>
+        <a ng-repeat="stock in availableStocks | filter:query | limitTo:settings.pageLimit:settings.offset" ng-Click="getStock(stock)" class="collection-item" ng-cloak>{{stock}}</a>
     </div>
 
     <!--need to clean up / make this materialize style -->
