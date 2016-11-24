@@ -54,7 +54,7 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 
 	function createTransaction(transaction){
 		try{
-			var stmt = db.prepare("INSERT INTO transactions (portfolioId, symbol, tradeTime, stockValue, totalShares, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction) VALUES(:portfolioId, :exchangeName, :exchangeShortName, :tradeTime, :stockValue, :totalShares, :totalSharesAtTransaction, :numberOfShares, :buyOrSell, :currencyAtTransaction)");
+			var stmt = db.prepare("INSERT INTO transactions (portfolioId, symbol, tradeTime, stockValue, totalShares, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction) VALUES(:portfolioId, :symbol, :tradeTime, :stockValue, :totalShares, :totalSharesAtTransaction, :numberOfShares, :buyOrSell, :currencyAtTransaction)");
 			stmt.run([transaction.portfolioId, transaction.symbol, transaction.tradeTime, transaction.stockValue, transaction.totalShares, transaction.totalSharesAtTransaction, transaction.numberOfShares, transaction.buyOrSell, transaction.currencyAtTransaction]);
 			saveDb();
 		}catch(e){
