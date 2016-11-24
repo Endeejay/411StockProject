@@ -3,12 +3,9 @@ stockApp.controller('PortfolioController', ['$scope', '$stateParams', '$state', 
 
 	var state = $state.current.name
 	var currentStateString = state.substr(0, state.indexOf('.'));
-//since we are just getting them all by ID the getCurrentPortfolio is not needed
-//when one of those buttons is clicked, the id is based on the button
-//then push the ID into getTransactionsByPortfolioId
-//-Tay Tay
+	var isLive = FactoryService.getCurrentStateInt(state);
+	$scope.portfolioState = currentStateString;
 	$scope.currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
-	// $scope.portfolioTransactions = SQLDBService.getTransactionsByPortfolioId($scope.currentPortfolio[0].portfolioId);
 
 	$(document).ready(function(){
     	$('.collapsible').collapsible();
@@ -16,12 +13,18 @@ stockApp.controller('PortfolioController', ['$scope', '$stateParams', '$state', 
 
 	$scope.portfolioButton = function(){
 		$scope.portfolioTransactions = SQLDBService.getTransactionsByPortfolioId(this.portfolio.portfolioId);
-		//if the transaction was a purchase, we need to display the total as a negative amount. 
+		//if the transaction was a purchase, we need to display the total as a negative amount.
 	    for(index in $scope.portfolioTransactions){
 			if($scope.portfolioTransactions[index].buyOrSell == 0) {
 				$scope.portfolioTransactions[index].totalPrice = ($scope.portfolioTransactions[index].totalPrice)*-1;
 			}
 		}
+	}
+
+	$scope.createPortfolio = function(){
+		var portfolio = FactoryService.makePortfolioObject("name", isLive,"","",5000,1);
+    SQLDBService.createPortfolio(portfolio);
+		$scope.userPortfolios = SQLDBService.getPortfolios();
 	}
 
 }]);
