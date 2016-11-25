@@ -27,22 +27,24 @@ $scope.getStock = function(symbol){
         })
 }
 
-// function getStocksAndCalculateDifference(symbols){
-//          APIService.getMultipleStocks(symbols).then(function(data){
-//             //set stockReal to the stock object
-//             console.log(data);
-//         })
-// }
+function getStockAndCalculateDifference(symbol){
+         APIService.getSingleStock(symbol).then(function(data){
+            //set stockReal to the stock object
+            console.log("calc diff" , data.data[0].ChangePercent);
+        })
+}
 
+$scope.stocks = [];
 function getAvailableStocks(){
   APIService.getAllStocks().then(function(data){
     data = data.data;
     $scope.availableStocks = data;
-    // for (var i = 0; i < 10; i++) {
-    //   $scope.stocks.push($scope.availableStocks[i]);
-    // }
-    // getStocksAndCalculateDifference($scope.stocks);
-    //console.log(data);
+    for (var i = $scope.settings.currentPage; i < $scope.settings.currentPage + 10; i++) {
+      $scope.stocks.push($scope.availableStocks[i]);
+    }
+    $scope.stocks.forEach(function(element) {
+      getStockAndCalculateDifference(element);
+    });
   }, function(error){
     console.log(error);
   });
