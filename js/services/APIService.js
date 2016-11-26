@@ -15,22 +15,23 @@ stockApp.service('APIService',['$http','$q',function ($http, $q) {
 	}
 
 	function getMultipleStocks(stocks){
-		var queryString = "?";
+		var queryString = "?symbols=";
 
 		//build query string
 		for(var i =0; i<stocks.length; i++){
-			if (i!=stocks.length){
-				queryString = queryString + "symbols=" + stocks[i] + '&';
-				if(i = (stocks.length)-1){
-					queryString = queryString + "symbols=" + stocks[i];									
-				}				
+			if (i!=stocks.length && i!=stocks.length -1){
+				queryString = queryString + stocks[i] + "&symbols=";		
 			}
+			else if(i = stocks.length - 1) {
+				queryString = queryString + stocks[i];
+			}
+
 		}	
+		// console.log("queryString = ", queryString);
 
 		var promise = $http({method: 'GET',
 			url:'http://localhost:62238/api/Live/'+queryString
 		});
-
 		return promise;
 	}
 

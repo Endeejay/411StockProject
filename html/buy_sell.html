@@ -3,7 +3,6 @@
     <h2 style="color: white">Market</h2>
     <!-- <line-chart config="item"></line-chart>
     <line-chart config="item"></line-chart> -->
-    {{stocks}}
     <div class="row">
       <form>
         <div class="input-field">
@@ -13,8 +12,8 @@
         </div>
       </form>
     </div>
-     <div class="collection">
-        <a ng-repeat="stock in availableStocks | filter:query | limitTo:settings.pageLimit:settings.offset" ng-Click="getStock(stock)" class="collection-item" ng-cloak>{{stock}}</a>
+    <div class="collection">
+        <a ng-repeat="data in stocksData | filter:query" ng-click="getStock(data.Symbol)" class="collection-item">{{data.Symbol}}<div class="row">{{data.Name}}</div><div class="col s1" ng-style="data.ChangePercent < 0 ? { color: 'red' } : {color: 'green'}">{{data.ChangePercent | number}}</div></a>
     </div>
 
     <!--need to clean up / make this materialize style -->
@@ -25,19 +24,6 @@
       page-limits="settings.pageLimits"
       on-update="callback()"
       total="availableStocks.length">
-    </simple-pagination>
-
-     <!-- <ul class="pagination">
-	    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-	    <li class="active"><a href="#!">1</a></li>
-	    <li class="waves-effect"><a href="#!">2</a></li>
-	    <li class="waves-effect"><a href="#!">3</a></li>
-	    <li class="waves-effect"><a href="#!">4</a></li>
-	    <li class="waves-effect"><a href="#!">5</a></li>
-	    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-  	</ul> -->
-  	<!-- <tr ng-repeat="item in charts"> -->
-   		<!-- <line-chart ng-repeat="item in charts" config='item'></line-chart> -->
-  	<!-- </tr> -->
+    </simple-pagination> 
   </div>
 </div>
