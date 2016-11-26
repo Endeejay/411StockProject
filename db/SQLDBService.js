@@ -36,7 +36,7 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 		try {
 			db.run("CREATE TABLE IF NOT EXISTS portfolio (id INTEGER PRIMARY KEY UNIQUE, portfolioName TEXT, isLive INT, startDate TEXT, endDate TEXT, currency INT, active INT)");
 			db.run("CREATE TABLE IF NOT EXISTS watch (id INTEGER PRIMARY KEY UNIQUE, portfolioId INT, symbol TEXT, priceWhenAdded INT, DateWhenAdded INT,FOREIGN KEY(portfolioId) REFERENCES portfolio(id))");
-			db.run("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY UNIQUE, portfolioId INT, symbol TEXT, tradeTime TEXT,stockValue INT, totalShares INT, totalSharesAtTransaction INT, numberOfShares INT, buyOrSell INT, currencyAtTransaction INT, totalPrice INT, FOREIGN KEY(portfolioId) REFERENCES portfolio(id))");
+			db.run("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY UNIQUE, portfolioId INT, symbol TEXT, tradeTime TEXT,stockValue INT, totalShares INT, totalSharesAtTransaction INT, numberOfShares INT, buyOrSell INT, currencyAtTransaction INT, totalPrice INT, portfolioBalance INT, FOREIGN KEY(portfolioId) REFERENCES portfolio(id))");
 		} catch (e) {
 			console.error(e);
 		}
@@ -54,8 +54,8 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 
 	function createTransaction(transaction){
 		try{
-			var stmt = db.prepare("INSERT INTO transactions (portfolioId, symbol, tradeTime, stockValue, totalShares, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction, totalPrice) VALUES(:portfolioId, :symbol, :tradeTime, :stockValue, :totalShares, :totalSharesAtTransaction, :numberOfShares, :buyOrSell, :currencyAtTransaction, :totalPrice)");
-			stmt.run([transaction.portfolioId, transaction.symbol, transaction.tradeTime, transaction.stockValue, transaction.totalShares, transaction.totalSharesAtTransaction, transaction.numberOfShares, transaction.buyOrSell, transaction.currencyAtTransaction, transaction.totalPrice]);
+			var stmt = db.prepare("INSERT INTO transactions (portfolioId, symbol, tradeTime, stockValue, totalShares, totalSharesAtTransaction, numberOfShares, buyOrSell, currencyAtTransaction, totalPrice, portfolioBalance) VALUES(:portfolioId, :symbol, :tradeTime, :stockValue, :totalShares, :totalSharesAtTransaction, :numberOfShares, :buyOrSell, :currencyAtTransaction, :totalPrice, :portfolioBalance)");
+			stmt.run([transaction.portfolioId, transaction.symbol, transaction.tradeTime, transaction.stockValue, transaction.totalShares, transaction.totalSharesAtTransaction, transaction.numberOfShares, transaction.buyOrSell, transaction.currencyAtTransaction, transaction.totalPrice, transaction.portfolioBalance]);
 			saveDb();
 		}catch(e){
 			console.error(e);

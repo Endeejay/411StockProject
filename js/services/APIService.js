@@ -2,7 +2,6 @@ stockApp.service('APIService',['$http','$q',function ($http, $q) {
 	this.getMultipleStocks = getMultipleStocks;
 	this.getSingleStock = getSingleStock;
 	this.getAllStocks = getAllStocks;
-	this.getDifference = getDifference;
 	this.getRssFeed = getRssFeed;
 	this.getRssFeedFromWatch = getRssFeedFromWatch;
 
@@ -27,7 +26,7 @@ stockApp.service('APIService',['$http','$q',function ($http, $q) {
 			}
 
 		}	
-		// console.log("queryString = ", queryString);
+ 		// console.log("queryString = ", queryString);
 
 		var promise = $http({method: 'GET',
 			url:'http://localhost:62238/api/Live/'+queryString
@@ -71,8 +70,4 @@ stockApp.service('APIService',['$http','$q',function ($http, $q) {
 		return promise;
 	}
 
-	function getDifference(stock){
-		var diff;
-		var stockObj = getSingleStock(stock);
-	}
 }]);
