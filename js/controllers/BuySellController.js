@@ -31,6 +31,7 @@ $scope.getStock = function(symbol){
 $scope.stocksData = [];
 function getStocksAndCalculateDifference(symbols){
          APIService.getMultipleStocks(symbols).then(function(data){
+          $scope.stocksData = [];
             console.log("calc diff" , data.data);
             for (index in data.data) {
               console.log(index, data.data[index]);
@@ -42,9 +43,10 @@ function getStocksAndCalculateDifference(symbols){
 $scope.stocks = [];
 function getAvailableStocks(){
   APIService.getAllStocks().then(function(data){
+    $scope.stocks = [];
     data = data.data;
     $scope.availableStocks = data;
-    for (var i = $scope.settings.currentPage; i < $scope.settings.currentPage + 10; i++) {
+    for (var i = ($scope.settings.currentPage*5); i < ($scope.settings.currentPage*5 + 5); i++) {
       $scope.stocks.push($scope.availableStocks[i]);
     }
     console.log("$scope.stocks =",$scope.stocks);
