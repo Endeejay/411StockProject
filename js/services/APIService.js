@@ -75,23 +75,21 @@ stockApp.service('APIService',['$http','$q',function ($http, $q) {
 		var stockObj = getSingleStock(stock);
 	}
 
-	function getOriginalStockPrice(stockName, startDate){
+	function getOriginalStockPrice(stockSymbol, startDate){
 
-		var currentDate = new Date();
-		var testChart = new
-		{
-			Normalized: false,
-			NumberOfDays: currentDate - startDate,
-			DataPeriod: "Day",
-			Elements: {
-				Element1: {
-							Symbol : "AAPL",
-							Type : "price",
-							Params : {"ohlc"}
+		var testChart = {
+			normalized: false,
+			numberOfDays: MathService.getDateLength(startDate),
+			dataPeriod: "Day",
+			elements: {
+				element1: {
+							symbol : stockSymbol,
+							type : "price",
+							params : {"ohlc"}
 						  },
-				Element2: {
-							Symbol: "AAPL",
-							Type: "volume"
+				element2: {
+							symbol: stockSymbol,
+							type: "volume"
 						  }
 			}
 		};

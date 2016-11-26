@@ -162,12 +162,13 @@ function setChart(stock){
 
 
 function setPercentChange(stock){
-  if($state.is("live.buy_sell")){
-    $state.go('live.buy_sell.details', {stockObj: stock});
-  }
-  else if($state.is("historic.buy_sell")){
-    $state.go('historic.buy_sell.details', {stockObj: stock});
-  }
+    var state = $state.current.name
+    var isLiveInt = FactoryService.getCurrentStateInt(state);
+    var currentStateString = state.substr(0, state.indexOf('.'));
+    var currentPortfolio = SQLDBService.getPortfolioById(isLiveInt);
+
+    $scope.CurrentPortfolioMoney = currentPortfolio[0].currency;
+    $scope.Shares = MathService.getOriginalStockPrice(stock.Symbol, currentPortfolio[0].startDate);
 }
 
 function getName(){
