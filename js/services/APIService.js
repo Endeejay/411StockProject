@@ -74,4 +74,67 @@ stockApp.service('APIService',['$http','$q',function ($http, $q) {
 		var diff;
 		var stockObj = getSingleStock(stock);
 	}
+
+	function getOriginalStockPrice(stockName, startDate){
+
+		var currentDate = new Date();
+		var testChart = new
+		{
+			Normalized: false,
+			NumberOfDays: currentDate - startDate,
+			DataPeriod: "Day",
+			Elements: {
+				Element1: {
+							Symbol : "AAPL",
+							Type : "price",
+							Params : {"ohlc"}
+						  },
+				Element2: {
+							Symbol: "AAPL",
+							Type: "volume"
+						  }
+			}
+		};
+
+		var queryString = stock;
+
+		var promise =  $http({method: 'GET',
+			url:'http://localhost:62238/api/Charts?params='+stock
+		});
+
+		return promise;
+	}
+
+	function getChart(stock){
+
+		var testChart = new
+		{
+			Normalized: false,
+			NumberOfDays: 200,
+			DataPeriod: "Day",
+			Elements: {
+				Element1: {
+							Symbol : "AAPL",
+							Type : "price",
+							Params : {"ohlc"}
+						  },
+				Element2: {
+							Symbol: "AAPL",
+							Type: "volume"
+						  }
+			}
+		};
+
+		var queryString = "?symbols=" + stock;
+
+		var promise =  $http({method: 'GET',
+			url:'http://localhost:62238/api/Charts?params='+queryString
+		});
+
+		var request = new RestRequest("InteractiveChart/json?parameters={parameters}");
+		var json = SimpleJson.SerializeObject(chart);
+		request.AddParameter("parameters", json, ParameterType.UrlSegment);
+		var response = client.Execute(request);
+		return response.Content;
+	}
 }]);

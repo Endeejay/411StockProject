@@ -13,7 +13,19 @@
       </form>
     </div>
      <div class="collection">
-        <a ng-repeat="stock in availableStocks | filter:query | limitTo:settings.pageLimit:settings.offset" ng-Click="getStock(stock)" class="collection-item" ng-cloak>{{stock}}</a>
+       <table id="table-sparkline">
+         <tr ng-repeat="stock in availableStocks | filter:query | limitTo:settings.pageLimit:settings.offset" ng-Click="getStock(stock)" class="collection-item" ng-cloak>
+           <td>
+              {{ stock.stockName }}
+           </td>
+              <line-chart config='linechart'>
+              </line-chart>
+           </td>
+           <td>
+             {{ stock.percentChange }}
+           </td>
+         </tr>
+      </table>
     </div>
 
     <!--need to clean up / make this materialize style -->
