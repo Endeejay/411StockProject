@@ -85,7 +85,7 @@ stockApp.service('APIService',['$http','$q',function ($http, $q) {
 				element1: {
 							symbol : stockSymbol,
 							type : "price",
-							params : {"ohlc"}
+							params : {format: "ohlc"}
 						  },
 				element2: {
 							symbol: stockSymbol,

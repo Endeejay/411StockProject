@@ -167,8 +167,9 @@ function setPercentChange(stock){
     var currentStateString = state.substr(0, state.indexOf('.'));
     var currentPortfolio = SQLDBService.getPortfolioById(isLiveInt);
 
-    $scope.CurrentPortfolioMoney = currentPortfolio[0].currency;
-    $scope.Shares = MathService.getOriginalStockPrice(stock.Symbol, currentPortfolio[0].startDate);
+    var originalStartingPrice = MathService.getOriginalStockPrice(stock.Symbol, currentPortfolio[0].startDate);
+    var currentPrice = MathService.getMostRecentStockPrice(stock);
+    var percentage = ((currentPrice-originalStartingPrice)/originalStartingPrice)*100
 }
 
 function getName(){
