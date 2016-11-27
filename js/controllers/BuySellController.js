@@ -13,8 +13,9 @@ $scope.settings = {
     pageLimits: ['10']
 };
 
-$scope.callback = function() {
-  console.log("pagination callback function");
+$scope.callback = function(page) {
+  console.log("page = ", page);
+  $scope.page = page;
   getAvailableStocks();
 }
 
@@ -34,7 +35,7 @@ function getStocksAndCalculateDifference(symbols){
           $scope.stocksData = [];
             console.log("calc diff" , data.data);
             for (index in data.data) {
-              console.log(index, data.data[index]);
+              //console.log(index, data.data[index]);
               $scope.stocksData.push(data.data[index]);
             }
         })
@@ -46,10 +47,10 @@ function getAvailableStocks(){
     $scope.stocks = [];
     data = data.data;
     $scope.availableStocks = data;
-    for (var i = ($scope.settings.currentPage*5); i < ($scope.settings.currentPage*5 + 5); i++) {
+    for (var i = ($scope.page*5); i < ($scope.page*5 + 5); i++) {
       $scope.stocks.push($scope.availableStocks[i]);
     }
-    console.log("$scope.stocks =",$scope.stocks);
+    //console.log("$scope.stocks =",$scope.stocks);
     getStocksAndCalculateDifference($scope.stocks);
   }, function(error){
     console.log(error);
