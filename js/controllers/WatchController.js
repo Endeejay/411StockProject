@@ -4,6 +4,16 @@ stockApp.controller('WatchController', ['$scope', '$stateParams', '$state', 'Wat
 	$scope.currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
 	$scope.usersWatchedStocks = SQLDBService.getWatchByPortfolioId($scope.currentPortfolio[0].portfolioId);
 
+	$scope.page = 1;
+	getWatchForCurrentPage();
+
+
+	$scope.callback = function(page) {
+  		console.log("pagination callback function");
+  		$scope.page = page;
+  		getWatchForCurrentPage();
+	}
+
 	$scope.remove = function(stock){
 		Materialize.toast("Removed " + stock.symbol + " from watchlist.", 4000);
 		SQLDBService.removeFromWatch(stock.portfolioId, stock.symbol);
@@ -20,5 +30,14 @@ stockApp.controller('WatchController', ['$scope', '$stateParams', '$state', 'Wat
 					$state.go('historic.buy_sell.details', {stockObj: $scope.stockReal});
 				}
 		})
+	}
+
+	function getWatchForCurrentPage(){
+		$scope.currentWatch = [];
+		for(var i = (($scope.page - 1) * 3); i < (($scope.page - 1) * 3 + 3); i++){
+			if($scope.usersWatchedStocks[i] != undefined)
+				$scope.currentWatch.push($scope.usersWatchedStocks[i]);
+		}
+		console.log($scope.currentWatch);
 	}
 }]);
