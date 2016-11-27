@@ -13,6 +13,7 @@ $scope.settings = {
     pageLimits: ['10']
 };
 
+$scope.page = 1;
 $scope.callback = function(page) {
   console.log("page = ", page);
   $scope.page = page;
