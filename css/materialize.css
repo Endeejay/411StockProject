@@ -6634,6 +6634,7 @@ select:disabled {
    ========================================================================== */
 .range-field {
   position: relative;
+  width:50%;
 }
 
 input[type=range],

@@ -18,6 +18,14 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
             }
           }
         })
+        .state('datePicker', {
+          views: {
+            content: {
+              templateUrl: 'templates/historicHome.html',
+              controller: 'DatePickerController'
+            }
+          } 
+        })
         .state('historic', {
           views: {
             header: {
@@ -25,6 +33,10 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
             },
             nav: {
               templateUrl: 'templates/historicNavbar.html'
+            },
+            slider: {
+              templateUrl: 'templates/datePickSlider.html',
+              controller: 'SliderController'
             },
             content: {
               templateUrl: 'templates/historicHome.html',
@@ -54,7 +66,8 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
         .state('historic.user', {
             views: {
               "content@": {
-                templateUrl: 'user.html'
+                templateUrl: 'user.html',
+                controller: 'UserController'
               }
             }
         })

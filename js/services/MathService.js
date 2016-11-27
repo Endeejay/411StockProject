@@ -23,6 +23,8 @@ this.calculateNewCurrencyValue = calculateNewCurrencyValue;
 this.totalShareCount = totalShareCount;
 this.getTotalShares = getTotalShares;
 
+
+
 function getTotalShares(id, shortName){
 	var transactionsData = SQLDBService.getTransactionsByPortfolioIdAndShortName(id, shortName);
 	var shares = 0

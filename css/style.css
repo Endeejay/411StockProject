@@ -58,6 +58,9 @@ a:hover {
   margin: 20px;
 }
 
+.col s6{
+  margin: 0;
+}
 
 .modal.modal-fixed-footer {
   position: fixed;

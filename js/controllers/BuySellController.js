@@ -1,10 +1,13 @@
-stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', function BuySellController($scope, BuySellService, $state, APIService) {
+stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', 'YahooService', 'FactoryService', function BuySellController($scope, BuySellService, $state, APIService, YahooService, FactoryService) {
+this.displayStockAndNetDifference = displayStockAndNetDifference;
 //getName();
 getAvailableStocks();
 //getStock();
 // function changeTemplate(){
 //   $location.url('/historic.buy_sell');
 // }
+var state = $state.current.name
+var currentStateString = state.substr(0, state.indexOf('.'));
 
 $scope.settings = {
     currentPage: 0,
@@ -13,9 +16,19 @@ $scope.settings = {
     pageLimits: ['10']
 };
 
-$scope.callback = function() {
-  console.log('pagination changed...');
-}
+// $scope.callback = callback;
+// function callback() {
+//   debugger;
+//   var stocks = $scope.filteredStock;
+//   if(currentStateString === 'live'){
+//       var currentDate = new Date();
+//       var date = FactoryService.formatDate(currentDate);
+//       YahooService.getAllStocks(stocks, "2016/11/25", "2016/11/26", displayStockAndNetDifference);
+
+//     }
+    
+//   console.log('pagination changed...');
+// }
 
 $scope.getStock = function(symbol){
          APIService.getSingleStock(symbol).then(function(data){
@@ -38,6 +51,7 @@ function getAvailableStocks(){
   APIService.getAllStocks().then(function(data){
     data = data.data;
     $scope.availableStocks = data;
+    
     // for (var i = 0; i < 10; i++) {
     //   $scope.stocks.push($scope.availableStocks[i]);
     // }
@@ -179,4 +193,16 @@ function makeChart(data){
 });
 }
 
+function displayStockAndNetDifference(stocks){
+  $scope.netDiff = [];
+  debugger;
+  for (index in stocks){
+    var difference = stocks[index][0].close - stocks[index][0].open;
+    difference = difference.toFixed(2);
+    $scope.netDiff.push(difference);
+  };
+  $scope.netDifference = stocks;
+  debugger;
+  //$scope.availableStocks = stocks[];
+}
 }]);

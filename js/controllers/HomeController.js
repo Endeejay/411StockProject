@@ -3,7 +3,7 @@ const shell = require('electron').shell;
 stockApp.controller('HomeController', ['$scope','$state','SQLDBService', 'FactoryService', 'APIService', function HomeController($scope, $state, SQLDBService, FactoryService, APIService) {
   $scope.message = "Home Data Page";
 
-  /*live is 1, historic is 2*/
+  /*live is 0, historic is 1*/
   var isLive;
   var currentState = $state.current.name;
 

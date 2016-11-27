@@ -8,6 +8,16 @@ this.changeSqlArrayToTransactionJsonObject = changeSqlArrayToTransactionJsonObje
 this.changeSqlArrayToWatchJsonObject = changeSqlArrayToWatchJsonObject;
 this.tryCatchError = tryCatchError;
 this.getCurrentStateInt = getCurrentStateInt;
+this.formatDate = formatDate;
+
+function formatDate(date){
+var month = date.getUTCMonth() + 1; //months from 1-12
+var day = date.getUTCDate();
+var year = date.getUTCFullYear();
+
+return year + '/' + month + '/' + day + "";
+    
+}
 
 function getCurrentStateInt(state){
   var isLive;

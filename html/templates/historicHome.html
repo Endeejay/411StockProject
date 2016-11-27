@@ -1,8 +1,12 @@
 <div ui-view name="content">
   <div style="padding-top: 150px">
-    <h2>Welcome to Electron Trader</h2>
-    <h3>You are currently in the <strong>historic</strong> testing envirionment.</h3>
-    <div class = "row">
+    <!-- <h2>Welcome to Electron Trader</h2>
+    <h3>You are currently in the <strong>historic</strong> testing envirionment.</h3> -->
+    <input type="date" class="datepicker" id = "startDate">
+    <input type="date" class="datepicker" id = "endDate">
+
+    <a id="#histBtn" ng-click="onClick()" class="waves-effect waves-light btn-large z-depth-3" style="font-weight: bold">Historic Data</a>
+    <!-- <div class = "row">
       <div class = "col s4">
         <h3>What is "Historic"?</h3>
         <p>Historic testing (AKA Backtesting):</p>
@@ -16,5 +20,5 @@
         <p>Our historic environment will work similarly to our live environment, we will apply a set of investments over the range of dates that you select.</p>
         <p>
      </div>      
-  </div>
+  </div> -->
 </div>
