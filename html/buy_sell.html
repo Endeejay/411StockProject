@@ -12,8 +12,25 @@
         </div>
       </form>
     </div>
+<<<<<<< HEAD
+     <div class="collection">
+       <table id="table-sparkline">
+         <tr ng-repeat="stock in availableStocks | filter:query | limitTo:settings.pageLimit:settings.offset" ng-Click="getStock(stock)" class="collection-item" ng-cloak>
+           <td>
+              {{ stock.stockName }}
+           </td>
+              <line-chart config='linechart'>
+              </line-chart>
+           </td>
+           <td>
+             {{ stock.percentChange }}
+           </td>
+         </tr>
+      </table>
+=======
     <div class="collection">
         <a ng-repeat="data in stocksData | filter:query" ng-click="getStock(data.Symbol)" class="collection-item">{{data.Symbol}}<div class="row">{{data.Name}}</div><div class="col s1" ng-style="data.ChangePercent < 0 ? { color: 'red' } : {color: 'green'}">{{data.ChangePercent | number}}</div></a>
+>>>>>>> master
     </div>
 
     <!--need to clean up / make this materialize style -->
