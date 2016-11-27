@@ -14,7 +14,8 @@ $scope.settings = {
 };
 
 $scope.callback = function() {
-  console.log('pagination changed...');
+  console.log("pagination callback function");
+  getAvailableStocks();
 }
 
 $scope.getStock = function(symbol){
@@ -27,17 +28,25 @@ $scope.getStock = function(symbol){
         })
 }
 
-// function getStocksAndCalculateDifference(symbols){
-//          APIService.getMultipleStocks(symbols).then(function(data){
-//             //set stockReal to the stock object
-//             console.log(data);
-//         })
-// }
+$scope.stocksData = [];
+function getStocksAndCalculateDifference(symbols){
+         APIService.getMultipleStocks(symbols).then(function(data){
+          $scope.stocksData = [];
+            console.log("calc diff" , data.data);
+            for (index in data.data) {
+              console.log(index, data.data[index]);
+              $scope.stocksData.push(data.data[index]);
+            }
+        })
+}
 
+$scope.stocks = [];
 function getAvailableStocks(){
   APIService.getAllStocks().then(function(data){
+    $scope.stocks = [];
     data = data.data;
     $scope.availableStocks = data;
+<<<<<<< HEAD
     // for (var i = 0; i < 10; i++) {
     //   $scope.stocks.push($scope.availableStocks[i]);
     // }
@@ -47,6 +56,13 @@ function getAvailableStocks(){
       setChart(value);
       setPercentChange(value);
     });
+=======
+    for (var i = ($scope.settings.currentPage*5); i < ($scope.settings.currentPage*5 + 5); i++) {
+      $scope.stocks.push($scope.availableStocks[i]);
+    }
+    console.log("$scope.stocks =",$scope.stocks);
+    getStocksAndCalculateDifference($scope.stocks);
+>>>>>>> master
   }, function(error){
     console.log(error);
   });
