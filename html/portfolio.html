@@ -19,7 +19,7 @@
               <th>Stock Price</th>
               <th>Number of Shares</th>
               <th>Total Price</th>
-              <!--<th>Balance</th -->
+              <th>Balance</th>
             </tr>
             </thead>
             <tbody>
@@ -29,10 +29,9 @@
                  <td>{{transaction.stockValue | currency}}</td>
                  <td>{{transaction.numberOfShares}}</td>
                  <!--show the total as red if bought, green if sold -->
-                 <td ng-style="transaction.totalPrice < 0 ? { color: 'red' } : {color: 'green'}" >{{transaction.totalPrice | currency}}</td>
-                 <!--We'll also want to show what the portfolio's balance was here -->
-                 <!--<td>{{portfolioBalanceAtTransTime or something}}</td -->
-              </tr>
+                 <td ng-style="transaction.totalPrice < 0 ? { color: 'red' } : {color: 'green'}" >{{transaction.totalPrice | number}}</td>
+                 <td>{{transaction.portfolioBalance | currency}}</td>
+              </tr>  
             </tbody>
           </table>
         </div>
