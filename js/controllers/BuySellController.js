@@ -6,16 +6,9 @@ getAvailableStocks();
 //   $location.url('/historic.buy_sell');
 // }
 
-$scope.settings = {
-    currentPage: 0,
-    offset: 0,
-    pageLimit: 10,
-    pageLimits: ['10']
-};
-
 $scope.page = 1;
 $scope.callback = function(page) {
-  console.log("page = ", page);
+  // console.log("page = ", page);
   $scope.page = page;
   getAvailableStocks();
 }
@@ -36,7 +29,7 @@ function getStocksAndCalculateDifference(symbols){
           $scope.stocksData = [];
             console.log("calc diff" , data.data);
             for (index in data.data) {
-              //console.log(index, data.data[index]);
+              //console.log(index, data.data[index]); 
               $scope.stocksData.push(data.data[index]);
             }
         })
