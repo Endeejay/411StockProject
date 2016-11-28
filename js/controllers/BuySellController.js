@@ -46,23 +46,11 @@ function getAvailableStocks(){
     $scope.stocks = [];
     data = data.data;
     $scope.availableStocks = data;
-<<<<<<< HEAD
-    // for (var i = 0; i < 10; i++) {
-    //   $scope.stocks.push($scope.availableStocks[i]);
-    // }
-    // getStocksAndCalculateDifference($scope.stocks);
-    //console.log(data);
-    angular.forEach(data, function(value, key) {
-      setChart(value);
-      setPercentChange(value);
-    });
-=======
     for (var i = ($scope.settings.currentPage*5); i < ($scope.settings.currentPage*5 + 5); i++) {
       $scope.stocks.push($scope.availableStocks[i]);
     }
     console.log("$scope.stocks =",$scope.stocks);
     getStocksAndCalculateDifference($scope.stocks);
->>>>>>> master
   }, function(error){
     console.log(error);
   });
@@ -77,18 +65,29 @@ function getAvailableStocks(){
   }
 }
 
+function getName(){
+ BuySellService.getAllStocks().then(function(data){
+   data = data.data;
+   makeChart(data)
+  }, function(error){
+    console.log(error);
+  });
+}
 
-function setChart(stock){
-  APIService.getChart()
+// var chartArray = [];
+$scope.charts = [];
 
-  var UTCDates = [];
-    for(i=0;i<stock.Dates.length;i++){
-      var parts = stock.Dates[i].split('/');
+function makeChart(data){
+  angular.forEach(data, function(value, key) {
+    //changing our dates to utc dates
+    var UTCDates = [];
+    for(i=0;i<value.Dates.length;i++){
+      var parts = value.Dates[i].split('/');
       var utcDate = Date.UTC(parts[2],parts[0]-1,parts[1]);
       UTCDates.push(utcDate);
     }
-    for(i=0;i<stock.Prices.length;i++){
-      var netValue = stock.Prices[i]-stock.Prices[0];
+    for(i=0;i<value.Prices.length;i++){
+      var netValue = value.Prices[i]-value.Prices[0];
       if(netValue < 0){
         var color = '#f02d41';
       }else if(netValue > 0){
@@ -98,14 +97,14 @@ function setChart(stock){
       }
     }
     //getting our dat array, and then bigArray and littleArray
-    var dat = $.map(UTCDates, function(v,i) {return [v,stock.Prices[i]]; });
+    var dat = $.map(UTCDates, function(v,i) {return [v,value.Prices[i]]; });
     var bigArray=[];
     var littleArray = [], size = 2;
     //pusing our spliced array shit to the bigArray
     while (dat.length > 0) {
       bigArray.push(dat.splice(0,size));
     }
-
+    //our chart item
     var item = {
         colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
           '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
@@ -116,18 +115,28 @@ function setChart(stock){
             borderWidth: 2,
             marginLeft: 75,
             marginRight: 75,
+            events: {
+              click: function() {
+                if($state.is("live.buy_sell")){
+                  $state.go('live.buy_sell.details', {stockObj: value});
+                }
+                else if($state.is("historic.buy_sell")){
+                  $state.go('historic.buy_sell.details', {stockObj: value});
+                }
+              }
+            },
             style: {
               fontFamily: "'Roboto', sans-serif"
             }
         },
         title: {
-            text: stock.Name,
+            text: value.Name,
             style: {
               color: 'white'
             }
         },
         subtitle: {
-            text: stock.Symbol,
+            text: value.Symbol,
             style: {
               color: '#E0E0E3'
             }
@@ -174,61 +183,7 @@ function setChart(stock){
             enabled: false
         }
       }
-}
-
-
-function setPercentChange(stock){
-    var state = $state.current.name
-    var isLiveInt = FactoryService.getCurrentStateInt(state);
-    var currentStateString = state.substr(0, state.indexOf('.'));
-    var currentPortfolio = SQLDBService.getPortfolioById(isLiveInt);
-
-    var originalStartingPrice = MathService.getOriginalStockPrice(stock.Symbol, currentPortfolio[0].startDate);
-    var currentPrice = MathService.getMostRecentStockPrice(stock);
-    var percentage = ((currentPrice-originalStartingPrice)/originalStartingPrice)*100
-}
-
-function getName(){
- BuySellService.getAllStocks().then(function(data){
-   data = data.data;
-   makeChart(data)
-  }, function(error){
-    console.log(error);
-  });
-}
-
-// var chartArray = [];
-$scope.charts = [];
-
-function makeChart(data){
-  angular.forEach(data, function(value, key) {
-    //changing our dates to utc dates
-    var UTCDates = [];
-    for(i=0;i<value.Dates.length;i++){
-      var parts = value.Dates[i].split('/');
-      var utcDate = Date.UTC(parts[2],parts[0]-1,parts[1]);
-      UTCDates.push(utcDate);
-    }
-    for(i=0;i<value.Prices.length;i++){
-      var netValue = value.Prices[i]-value.Prices[0];
-      if(netValue < 0){
-        var color = '#f02d41';
-      }else if(netValue > 0){
-        var color = '#2DF04E';
-      }else {
-        var color = '#c3bcad'
-      }
-    }
-    //getting our dat array, and then bigArray and littleArray
-    var dat = $.map(UTCDates, function(v,i) {return [v,value.Prices[i]]; });
-    var bigArray=[];
-    var littleArray = [], size = 2;
-    //pusing our spliced array shit to the bigArray
-    while (dat.length > 0) {
-      bigArray.push(dat.splice(0,size));
-    }
-    
-    $scope.charts.push(item);
+      $scope.charts.push(item);
 });
 }
 

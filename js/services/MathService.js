@@ -22,7 +22,6 @@ this.totalTransactionPrice = totalTransactionPrice;
 this.calculateNewCurrencyValue = calculateNewCurrencyValue;
 this.totalShareCount = totalShareCount;
 this.getTotalShares = getTotalShares;
-this.getDateLength = getDateLength;
 
 function getTotalShares(id, shortName){
 	var transactionsData = SQLDBService.getTransactionsByPortfolioIdAndShortName(id, shortName);
@@ -109,16 +108,6 @@ function allStockDiffDollars(portfolio){
 
 function getMostRecentStockPrice(stockObj){
 	return stockObj.LastPrice;
-}
-
-function getDateLength(startDate){
-	var currentDateTimeUTC = Date.UTC(now.getFullYear(),now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
-	var startDateUTC = new Date(startDate).toISOString();
-
-	var differenceDate = currentDateTimeUTC.valueOf() - startDateUTC.valueOf();
-	var dayDifference = parseInt(differenceDate/86400000);
-
-	return dayDifference;
 }
 
 }]);
