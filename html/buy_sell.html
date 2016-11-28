@@ -13,7 +13,7 @@
       </form>
     </div>
     <div class="collection">
-        <a ng-repeat="data in stocksData | filter:query" ng-click="getStock(data.Symbol)" class="collection-item"><div>{{data.Symbol}}<button id="stockPercent" class="secondary-content" ng-class="{green: data.ChangePercent[0] == '+', red: data.ChangePercent[0] == '-'}">{{data.ChangePercent | number:2}}</button></div></a>
+        <a ng-repeat="data in stocksData | filter:query" ng-click="getStock(data.Symbol)" class="collection-item"><div>{{data.Symbol}}<button id="stockPercent" class="secondary-content" ng-class="{green: data.ChangePercent[0] == '+', red: data.ChangePercent[0] == '-'}">{{data.ChangePercent}}</button></div></a>
     </div>
     <div paging
       page="1"
