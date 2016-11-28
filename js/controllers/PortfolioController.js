@@ -18,9 +18,6 @@ stockApp.controller('PortfolioController', ['$scope', '$stateParams', '$state', 
 			if($scope.portfolioTransactions[index].buyOrSell == 0) {
 				$scope.portfolioTransactions[index].totalPrice = ($scope.portfolioTransactions[index].totalPrice)*-1;
 			}
-			else {
-				$scope.portfolioTransactions[index].totalPrice = "+" + $scope.portfolioTransactions[index].totalPrice;
-			}
 		}
 	}
 

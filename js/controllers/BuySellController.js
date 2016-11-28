@@ -6,25 +6,20 @@ getAvailableStocks();
 //   $location.url('/historic.buy_sell');
 // }
 
-$scope.settings = {
-    currentPage: 0,
-    offset: 0,
-    pageLimit: 10,
-    pageLimits: ['10']
-};
-
-$scope.callback = function() {
-  console.log("pagination callback function");
+$scope.page = 1;
+$scope.pageSize = 5;
+$scope.callback = function(page) {
+  // console.log("page = ", page);
+  $scope.page = page;
   getAvailableStocks();
 }
+
 
 $scope.getStock = function(symbol){
          APIService.getSingleStock(symbol).then(function(data){
             //set stockReal to the stock object
              $scope.stockReal = data.data[0];
              showDetails($scope.stockReal);
-            //subtract stock's opening price from most recent to get diff.
-            //$scope.difference = $scope.stockReal.LastPrice - $scope.stockReal.Open;
         })
 }
 
@@ -34,7 +29,7 @@ function getStocksAndCalculateDifference(symbols){
           $scope.stocksData = [];
             console.log("calc diff" , data.data);
             for (index in data.data) {
-              console.log(index, data.data[index]);
+              //console.log(index, data.data[index]); 
               $scope.stocksData.push(data.data[index]);
             }
         })
@@ -46,10 +41,10 @@ function getAvailableStocks(){
     $scope.stocks = [];
     data = data.data;
     $scope.availableStocks = data;
-    for (var i = ($scope.settings.currentPage*5); i < ($scope.settings.currentPage*5 + 5); i++) {
+    for (var i = ($scope.page*5); i < ($scope.page*5 + 5); i++) {
       $scope.stocks.push($scope.availableStocks[i]);
     }
-    console.log("$scope.stocks =",$scope.stocks);
+    //console.log("$scope.stocks =",$scope.stocks);
     getStocksAndCalculateDifference($scope.stocks);
   }, function(error){
     console.log(error);
