@@ -1,5 +1,5 @@
 // app.js
-var stockApp = angular.module('stockApp', ['ui.router','app.directives.makeCharts', 'angularSimplePagination', 'bw.paging']);
+var stockApp = angular.module('stockApp', ['ui.router','app.directives.makeCharts','bw.paging']);
 
 stockApp.run(['$rootScope', '$state',
   function($rootScope, $state, $stateParams) {
