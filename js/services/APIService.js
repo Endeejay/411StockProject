@@ -69,8 +69,6 @@ stockApp.service('APIService',['$http','$q',function ($http, $q) {
 
 		return promise;
 	}
-
-
 	function getDifference(promise){
 
 	}
