@@ -7,19 +7,19 @@ getAvailableStocks();
 // }
 
 $scope.page = 1;
+$scope.pageSize = 5;
 $scope.callback = function(page) {
   // console.log("page = ", page);
   $scope.page = page;
   getAvailableStocks();
 }
 
+
 $scope.getStock = function(symbol){
          APIService.getSingleStock(symbol).then(function(data){
             //set stockReal to the stock object
              $scope.stockReal = data.data[0];
              showDetails($scope.stockReal);
-            //subtract stock's opening price from most recent to get diff.
-            //$scope.difference = $scope.stockReal.LastPrice - $scope.stockReal.Open;
         })
 }
 
