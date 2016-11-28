@@ -1,5 +1,11 @@
   <h2>My Watchlist</h2>
-      <div class="row" ng-repeat="stock in usersWatchedStocks">
+  <!--Show some content if nothing is watched yet -->
+  <div ng-hide="usersWatchedStocks.length>0">
+            <h2 class="orange-text">You aren't watching any stocks.</h2>
+  </div>
+
+  <div class="collection">
+      <div class="row collection-item" ng-repeat="stock in currentWatch">
         <div class="col s12 m6">
           <div class="card blue-grey darken-1" ng-show="stock.symbol">
             <div class="card-content white-text">
@@ -12,14 +18,19 @@
           </div>
         </div>
         <div class="col s12 m6">
-        <p></p>
-        <li ng-show="stock.dateWhenAdded">Added on {{stock.dateWhenAdded.substr(0,15)}}</li>
-        <li ng-show="stock.priceWhenAdded">Price was {{stock.priceWhenAdded | currency}} when added</li>
+          <p></p>
+          <li ng-show="stock.dateWhenAdded">Added on {{stock.dateWhenAdded.substr(0,15)}}</li>
+          <li ng-show="stock.priceWhenAdded">Price was {{stock.priceWhenAdded | currency}} when added</li>
+      <!--example of what would be displayed if the price has changed since adding to watch --> 
+      <!--<li ng-show="priceChange(stock)">Price has changed {{percent}} since adding </li>-->
         </div>
-
-      <!--Show some content if nothing is watched yet -->
-      <div ng-hide="stock.symbol">
-          <h2 class="orange-text">You aren't watching any stocks.</h2>
       </div>
+    </div>
 
-      </div>
+     <div paging
+      page="1"
+      page-size="3"
+      total="usersWatchedStocks.length"
+      paging-action="callback(page)"
+      show-prev-next="true">
+    </div>

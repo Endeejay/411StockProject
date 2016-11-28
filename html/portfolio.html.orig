@@ -28,7 +28,12 @@
                  <td>{{transaction.symbol}}</td>
                  <td>{{transaction.stockValue | currency}}</td>
                  <td>{{transaction.numberOfShares}}</td>
+                 <!--show the total as red if bought, green if sold -->
+<<<<<<< HEAD
+                 <td ng-style="transaction.totalPrice < 0 ? { color: 'red' } : {color: 'green'}" >{{transaction.totalPrice | number}}</td>
+=======
                  <td ng-style="transaction.totalPrice < 0 ? { color: 'red' } : {color: 'green'}" ><a style="color: green" ng-show="transaction.totalPrice > 0">+</a>{{transaction.totalPrice | number}}</td>
+>>>>>>> master
                  <td>{{transaction.portfolioBalance | currency}}</td>
               </tr>  
             </tbody>

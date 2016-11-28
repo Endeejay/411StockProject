@@ -35,6 +35,16 @@ a:hover {
   cursor: pointer;
 }
 
+#stockPercent {
+  border-radius: 4px;
+  text-decoration: none;
+  letter-spacing: .5px;
+  border: none;
+  text-align: center;
+  color: white;
+}
+
+
 #histBtn, #liveBtn {
   width: 200px;
 }

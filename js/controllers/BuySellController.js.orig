@@ -1,4 +1,5 @@
 stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', 'YahooService', 'FactoryService', function BuySellController($scope, BuySellService, $state, APIService, YahooService, FactoryService) {
+this.displayStockAndNetDifference = displayStockAndNetDifference;
 //getName();
 getAvailableStocks();
 //getStock();
@@ -8,13 +9,37 @@ getAvailableStocks();
 var state = $state.current.name
 var currentStateString = state.substr(0, state.indexOf('.'));
 
+<<<<<<< HEAD
+$scope.settings = {
+    currentPage: 0,
+    offset: 0,
+    pageLimit: 10,
+    pageLimits: ['10']
+};
 
+// $scope.callback = callback;
+// function callback() {
+//   debugger;
+//   var stocks = $scope.filteredStock;
+//   if(currentStateString === 'live'){
+//       var currentDate = new Date();
+//       var date = FactoryService.formatDate(currentDate);
+//       YahooService.getAllStocks(stocks, "2016/11/25", "2016/11/26", displayStockAndNetDifference);
+
+//     }
+    
+//   console.log('pagination changed...');
+// }
+
+$scope.callback = function() {
+  console.log("pagination callback function");
+=======
 $scope.page = 1;
 $scope.pageSize = 5;
-
 $scope.callback = function(page) {
   // console.log("page = ", page);
   $scope.page = page;
+>>>>>>> master
   getAvailableStocks();
 }
 
@@ -33,8 +58,11 @@ function getStocksAndCalculateDifference(symbols){
           $scope.stocksData = [];
             console.log("calc diff" , data.data);
             for (index in data.data) {
+<<<<<<< HEAD
               console.log(index, data.data[index]);
+=======
               //console.log(index, data.data[index]); 
+>>>>>>> master
               $scope.stocksData.push(data.data[index]);
             }
         })
@@ -46,10 +74,23 @@ function getAvailableStocks(){
     $scope.stocks = [];
     data = data.data;
     $scope.availableStocks = data;
+<<<<<<< HEAD
+
+    
+    // for (var i = 0; i < 10; i++) {
+    //   $scope.stocks.push($scope.availableStocks[i]);
+    // }
+    // getStocksAndCalculateDifference($scope.stocks);
+    for (var i = ($scope.settings.currentPage*5); i < ($scope.settings.currentPage*5 + 5); i++) {
+      $scope.stocks.push($scope.availableStocks[i]);
+    }
+    console.log("$scope.stocks =",$scope.stocks);
+=======
     for (var i = ($scope.page*5); i < ($scope.page*5 + 5); i++) {
       $scope.stocks.push($scope.availableStocks[i]);
     }
     //console.log("$scope.stocks =",$scope.stocks);
+>>>>>>> master
     getStocksAndCalculateDifference($scope.stocks);
   }, function(error){
     console.log(error);
@@ -75,7 +116,7 @@ function getName(){
 }
 
 // var chartArray = [];
-// $scope.charts = [];
+$scope.charts = [];
 
 // function makeChart(data){
 //   angular.forEach(data, function(value, key) {
@@ -186,4 +227,17 @@ function getName(){
 //       $scope.charts.push(item);
 // });
 // }
+
+function displayStockAndNetDifference(stocks){
+  $scope.netDiff = [];
+  debugger;
+  for (index in stocks){
+    var difference = stocks[index][0].close - stocks[index][0].open;
+    difference = difference.toFixed(2);
+    $scope.netDiff.push(difference);
+  };
+  $scope.netDifference = stocks;
+  debugger;
+  //$scope.availableStocks = stocks[];
+}
 }]);
