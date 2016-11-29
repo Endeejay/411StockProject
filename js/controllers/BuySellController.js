@@ -1,4 +1,4 @@
-stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', 'YahooService', 'FactoryService', function BuySellController($scope, BuySellService, $state, APIService, YahooService, FactoryService) {
+stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', 'FactoryService', function BuySellController($scope, BuySellService, $state, APIService, FactoryService) {
 var state = $state.current.name
 var currentStateString = state.substr(0, state.indexOf('.'));
 $scope.availableStocks = [];
