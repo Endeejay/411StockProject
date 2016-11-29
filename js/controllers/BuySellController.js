@@ -1,17 +1,17 @@
-stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', function BuySellController($scope, BuySellService, $state, APIService) {
-//getName();
-getAvailableStocks();
-//getStock();
-// function changeTemplate(){
-//   $location.url('/historic.buy_sell');
-// }
+stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', 'YahooService', 'FactoryService', function BuySellController($scope, BuySellService, $state, APIService, YahooService, FactoryService) {
+var state = $state.current.name
+var currentStateString = state.substr(0, state.indexOf('.'));
+$scope.availableStocks = [];
 
 $scope.page = 1;
-$scope.pageSize = 5;
+getAvailableStocks();
+getStocksForCurrentPage();
+
+
 $scope.callback = function(page) {
   // console.log("page = ", page);
   $scope.page = page;
-  getAvailableStocks();
+  getStocksForCurrentPage();
 }
 
 
@@ -23,29 +23,24 @@ $scope.getStock = function(symbol){
         })
 }
 
-$scope.stocksData = [];
-function getStocksAndCalculateDifference(symbols){
-         APIService.getMultipleStocks(symbols).then(function(data){
-          $scope.stocksData = [];
-            console.log("calc diff" , data.data);
-            for (index in data.data) {
-              //console.log(index, data.data[index]); 
-              $scope.stocksData.push(data.data[index]);
-            }
-        })
+
+function getStocksForCurrentPage(){
+      for (var i = (($scope.page-1) * 5); i < (($scope.page-1)* 5 + 5); i++) {
+          APIService.getSingleStock($scope.availableStocks[i]).then(function(data){
+              $scope.availableStocks[i].ChangePercent = data.data[0].ChangePercent;
+              //works
+              console.log(data.data[0].ChangePercent);
+              //doesn't
+              console.log($scope.availableStocks[i].ChangePercent);
+          })
+      }
 }
 
-$scope.stocks = [];
 function getAvailableStocks(){
   APIService.getAllStocks().then(function(data){
-    $scope.stocks = [];
     data = data.data;
     $scope.availableStocks = data;
-    for (var i = ($scope.page*5); i < ($scope.page*5 + 5); i++) {
-      $scope.stocks.push($scope.availableStocks[i]);
-    }
     //console.log("$scope.stocks =",$scope.stocks);
-    getStocksAndCalculateDifference($scope.stocks);
   }, function(error){
     console.log(error);
   });
@@ -60,14 +55,6 @@ function getAvailableStocks(){
   }
 }
 
-function getName(){
- BuySellService.getAllStocks().then(function(data){
-   data = data.data;
-   makeChart(data)
-  }, function(error){
-    console.log(error);
-  });
-}
 
 // var chartArray = [];
 $scope.charts = [];

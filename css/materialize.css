@@ -3157,7 +3157,7 @@ td, th {
 }
 
 .collection a.collection-item:not(.active):hover {
-  background-color: #ddd;
+  background-color: #37474f;
 }
 
 .collection.with-header .collection-header {

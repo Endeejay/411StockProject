@@ -3,10 +3,11 @@
     <h2>Welcome to Electron Trader</h2>
     <h3>You are currently in the <strong>live</strong> testing environment.</h3>
   </div> -->
-
 <!--I'll make this look better eventually... -->
 <h3 class="white-text">Top Market News</h3>
   <div class="collection">
-      <a class="collection-item" ng-repeat="article in rssFeed" ng-click="openPageInBrowser(article.link[0])">{{article.title[0]}}</a>
+      <a class="collection-item" ng-repeat="article in rssFeed" ng-click="openPageInBrowser(article.link[0])">{{article.title[0]}}
+      <div class="grey-text"> {{article.pubDate[0]}}</div>
+      </a>
   </div>         
 </div>
