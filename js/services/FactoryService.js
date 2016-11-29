@@ -9,14 +9,30 @@ this.changeSqlArrayToWatchJsonObject = changeSqlArrayToWatchJsonObject;
 this.tryCatchError = tryCatchError;
 this.getCurrentStateInt = getCurrentStateInt;
 this.formatDate = formatDate;
+this.formatDatePickerDate = formatDatePickerDate;
+this.formatDateToMMDDYYYY = formatDateToMMDDYYYY;
+
+function formatDateToMMDDYYYY(date){
+  var year = date.substring(0,4);
+  var MMDD = date.substring(5,10);
+  var newDate = MMDD + '/' + year;
+  
+  return newDate;
+}
+
+function formatDatePickerDate(date, charToChange, charToChangeTo) {
+  for(i = 0; i< date.length; i++){
+    date = date.replace(charToChange,charToChangeTo);
+  }
+  return date;
+}
 
 function formatDate(date){
-var month = date.getUTCMonth() + 1; //months from 1-12
-var day = date.getUTCDate();
-var year = date.getUTCFullYear();
+  var month = date.getUTCMonth() + 1; //months from 1-12
+  var day = date.getUTCDate();
+  var year = date.getUTCFullYear();
 
-return year + '/' + month + '/' + day + "";
-    
+  return year + '/' + month + '/' + day + "";
 }
 
 function getCurrentStateInt(state){
@@ -41,8 +57,9 @@ for (object in array[0].values)
     "isLive" : array[0].values[object][2],
     "startDate" : array[0].values[object][3],
     "endDate" : array[0].values[object][4],
-    "currency" : array[0].values[object][5],
-    "active" : array[0].values[object][6]
+    "currentDate" : array[0].values[object][5],
+    "currency" : array[0].values[object][6],
+    "active" : array[0].values[object][7]
   };
   jsonObject.push(portfolio);
   }
@@ -88,12 +105,13 @@ jsonObject = [];
 return jsonObject;
 }
 
-function makePortfolioObject(portfolioName, isLive, startDate, endDate, currency, active){
+function makePortfolioObject(portfolioName, isLive, startDate, endDate, currentDate, currency, active){
   var portfolio = {
     "portfolioName" : portfolioName,
     "isLive" : isLive,
     "startDate" : startDate,
     "endDate" : endDate,
+    "currentDate" : currentDate,
     "currency" : currency,
     "active" : active
   };

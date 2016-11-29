@@ -1,5 +1,6 @@
 
 stockApp.controller('DetailsController', function DetailsController($scope, $stateParams, $state, DBService, APIService, MathService, DetailsService, SQLDBService, FactoryService) {
+    
     if($stateParams.stockObj.Symbol == null ){
     	if($state.is('live.buy_sell.details')){
     		$state.go('live.buy_sell');
@@ -476,7 +477,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
 
         //this only works in live, we need to figure out date for historic
         var date;
-        if (isLiveInt == 1){
+        if (isLiveInt == 0){
             date = new Date() + "";
         }else{
             //figure out date for histoic state

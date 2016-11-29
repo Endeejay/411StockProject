@@ -1,4 +1,16 @@
-
 <div ui-view name="slider">
 	<p>Slim Bandito</p>
+	<div class = "row">
+	<!-- displaying the beginning date and ending date so that the user knows where they can select -->
+		<div class = "col s4">
+			<p>Starting Date: {{startingDate}}</p>
+			<p>Ending Date: {{endingDate}}</p>
+		</div>
+		<div class = "col s4">
+			<input type = "date" value = {{currentDateValue}} class = "datepicker" id = "currentDatePicker">
+		</div>
+		<div class = "col s4">
+			<a id="#histBtn" ng-click="currentDateSet()" class="waves-effect waves-light btn-large z-depth-3" style="font-weight: bold">Set New Current Date</a>
+		</div>
+	</div>
 </div>

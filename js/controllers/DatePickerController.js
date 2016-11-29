@@ -5,28 +5,21 @@ stockApp.controller('DatePickerController', ['$scope','$state', 'SQLDBService', 
 		var endDate = document.getElementById("endDate").value;
 
 		if(startDate && endDate){
-			var startDateDate = Date.parse(startDate);
-			var endDateDate = Date.parse(endDate);
-		
-			if(endDateDate > startDateDate){
+			if(Date.parse(endDate) > Date.parse(startDate)){
+				startDate = FactoryService.formateDatePickerDate(startDate, "-", "/");
+				endDate = FactoryService.formateDatePickerDate(endDate, "-", "/");
 
-				for(i = 0; i< startDate.length; i++){
-					startDate = startDate.replace("-","/");
-					endDate = endDate.replace("-","/");
-				}
-				
-		    	var portfolio = FactoryService.makePortfolioObject("name", 1, startDate, endDate, 5000, 1);
+		    	var portfolio = FactoryService.makePortfolioObject("name", 1, startDate, endDate, startDate, 5000, 1);
 		    	SQLDBService.createPortfolio(portfolio);
 		    	$state.go('historic.user');
-	    	}
-	    	else{
+	    	}else{
 	    		Materialize.toast('Time doesn\'t travel backwards!', 4000);
 	    	}
-	  	}
-	  	else{
+	  	}else{
 	  		Materialize.toast('You need two dates to enter historic!', 4000);
 	  	}
 	}
+
 	 $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
         selectYears: 15 // Creates a dropdown of 15 years to control year

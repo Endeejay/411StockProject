@@ -45,7 +45,7 @@ stockApp.controller('HomeController', ['$scope','$state','SQLDBService', 'Factor
   };
 
   if(SQLDBService.checkIfPortfolioIdForLiveOrHistoricExists(isLive) === false){
-    var portfolio = FactoryService.makePortfolioObject("name", isLive,"","",5000,1);
+    var portfolio = FactoryService.makePortfolioObject("name", isLive, "", "", "", 5000, 1);
     SQLDBService.createPortfolio(portfolio);
   }
 

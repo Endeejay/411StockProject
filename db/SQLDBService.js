@@ -34,7 +34,7 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 
 	function initDb(){
 		try {
-			db.run("CREATE TABLE IF NOT EXISTS portfolio (id INTEGER PRIMARY KEY UNIQUE, portfolioName TEXT, isLive INT, startDate TEXT, endDate TEXT, currency INT, active INT)");
+			db.run("CREATE TABLE IF NOT EXISTS portfolio (id INTEGER PRIMARY KEY UNIQUE, portfolioName TEXT, isLive INT, startDate TEXT, endDate TEXT, currentDate TEXT, currency INT, active INT)");
 			db.run("CREATE TABLE IF NOT EXISTS watch (id INTEGER PRIMARY KEY UNIQUE, portfolioId INT, symbol TEXT, priceWhenAdded INT, DateWhenAdded INT,FOREIGN KEY(portfolioId) REFERENCES portfolio(id))");
 			db.run("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY UNIQUE, portfolioId INT, symbol TEXT, tradeTime TEXT,stockValue INT, totalShares INT, totalSharesAtTransaction INT, numberOfShares INT, buyOrSell INT, currencyAtTransaction INT, totalPrice INT, portfolioBalance INT, FOREIGN KEY(portfolioId) REFERENCES portfolio(id))");
 		} catch (e) {
@@ -44,8 +44,8 @@ stockApp.service('SQLDBService', ["FactoryService", function(FactoryService){
 
 	function createPortfolio(portfolio){
 		try{
-			var stmt = db.prepare("INSERT INTO portfolio (portfolioName, isLive, startDate, endDate, currency, active) VALUES(:portfolioName, :isLive, :startDate, :endDate, :currency, :active)");
-			stmt.run([portfolio.portfolioName, portfolio.isLive, portfolio.startDate, portfolio.endDate, portfolio.currency, portfolio.active]);
+			var stmt = db.prepare("INSERT INTO portfolio (portfolioName, isLive, startDate, endDate, currentDate, currency, active) VALUES(:portfolioName, :isLive, :startDate, :endDate, :currentDate, :currency, :active)");
+			stmt.run([portfolio.portfolioName, portfolio.isLive, portfolio.startDate, portfolio.endDate, portfolio.currentDate, portfolio.currency, portfolio.active]);
 			saveDb();
 		}catch(e){
 			console.error(e);
