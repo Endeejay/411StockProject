@@ -1,6 +1,5 @@
 
-stockApp.controller('DetailsController', function DetailsController($scope, $stateParams, $state, DBService, APIService, MathService, DetailsService, SQLDBService, FactoryService) {
-    
+stockApp.controller('DetailsController', function DetailsController($scope, $q, $stateParams, $state, DBService, APIService, MathService, DetailsService, SQLDBService, FactoryService, ChartDateService, YahooService) {
     if($stateParams.stockObj.Symbol == null ){
     	if($state.is('live.buy_sell.details')){
     		$state.go('live.buy_sell');
@@ -12,6 +11,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     var stockObj = $stateParams.stockObj;
     $scope.stockObj = stockObj;
     $scope.stockReal = {};
+    $scope.chartData = [];
     var state = $state.current.name
     var isLiveInt = FactoryService.getCurrentStateInt(state);
     var currentStateString = state.substr(0, state.indexOf('.'));
@@ -24,125 +24,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
 
     // //Line chart code
 
-    // DetailsService.getLineData().then(function(data){
-    //     debugger;
-    //         data = data.data;
-    //         makeChart(data);
-    // }, function(error){
-    //     console.log(error);
-    // });
 
-    // function makeLineChart(){
-    //     angular.forEach(data, function(value, key) {
-    //         if(value.Symbol == stockObj.Symbol)
-    //         {
-    //             //changing our dates to utc dates
-    //             var UTCDates = [];
-    //             for(i=0;i<value.Dates.length;i++){
-    //             var parts = value.Dates[i].split('/');
-    //             var utcDate = Date.UTC(parts[2],parts[0]-1,parts[1]);
-    //             UTCDates.push(utcDate);
-    //             }
-    //             for(i=0;i<value.Prices.length;i++){
-    //             var netValue = value.Prices[i]-value.Prices[0];
-    //             if(netValue < 0){
-    //                 var color = '#f02d41';
-    //             }else if(netValue > 0){
-    //                 var color = '#2DF04E';
-    //             }else {
-    //                 var color = '#c3bcad'
-    //             }
-    //             }
-    //             //getting our dat array, and then bigArray and littleArray
-    //             var dat = $.map(UTCDates, function(v,i) {return [v,value.Prices[i]]; });
-    //             var bigArray=[];
-    //             var littleArray = [], size = 2;
-    //             //pusing our spliced array shit to the bigArray
-    //             while (dat.length > 0) {
-    //             bigArray.push(dat.splice(0,size));
-    //             }
-    //             //our chart item
-    //             $scope.linechart = {
-    //                 colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
-    //                 '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
-    //                 chart: {
-    //                     renderTo: 'container',
-    //                     backgroundColor: '#3e3e40',
-    //                     borderColor: 'black',
-    //                     borderWidth: 2,
-    //                     marginLeft: 75,
-    //                     marginRight: 75,
-    //                     events: {
-    //                     click: function() {
-    //                         if($state.is("live.buy_sell")){
-    //                         $state.go('live.buy_sell.details', {stockObj: value});
-    //                         }
-    //                         else if($state.is("historic.buy_sell")){
-    //                         $state.go('historic.buy_sell.details', {stockObj: value});
-    //                         }
-    //                     }
-    //                     },
-    //                     style: {
-    //                     fontFamily: "'Roboto', sans-serif"
-    //                     }
-    //                 },
-    //                 title: {
-    //                     text: value.Name,
-    //                     style: {
-    //                     color: 'white'
-    //                     }
-    //                 },
-    //                 subtitle: {
-    //                     text: value.Symbol,
-    //                     style: {
-    //                     color: '#E0E0E3'
-    //                     }
-    //                 },
-    //                 yAxis: {
-    //                 type: 'string',
-    //                 title: {
-    //                     text: 'Prices (USD)',
-    //                     style: {
-    //                     color: 'white'
-    //                     }
-    //                 },
-    //                 labels: {
-    //                     style: {
-    //                     color: 'white'
-    //                     }
-    //                 }
-    //                 },
-    //                 xAxis: {
-    //                 type: 'datetime',
-    //                 labels: {
-    //                     format: '{value:%m/%d/%Y}',
-    //                     // rotation: 45,
-    //                     align: 'left',
-    //                     style: {
-    //                     color: 'white'
-    //                     }
-    //                 },
-    //                 title: {
-    //                     text: 'Dates',
-    //                     style: {
-    //                     color: 'white'
-    //                     }
-    //                 }
-    //                 },
-    //                 series: [{
-    //                     name: 'Price',
-    //                     showInLegend: false,
-    //                     type: 'line',
-    //                     data: bigArray,
-    //                     color: color
-    //                 }],
-    //                 credits: {
-    //                     enabled: false
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
 
     //end of Line Chart
 
@@ -151,184 +33,394 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //candlestick chart code
-    makeStockChart();
-    function makeStockChart(){
-    DetailsService.getStockData().then(function(data){
-    var chartData = [];
-    var dataLength = data.length;
-    for (var i = 0; i < 10; i += 1) {
-        chartData.push([
-            data[i][0], // the date
-            data[i][1], // open
-            data[i][2], // high
-            data[i][3], // low
-            data[i][4] // close
-      ]);
-    }
-        $scope.stockchart = {
-          colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
-            '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
-          chart: {
-            zoomType: 'x',
-            backgroundColor: '#3e3e40',
-            // events: {
-            //     selection: function (event) {
-            //         if (event.xAxis) {
-            //             $report.html('Last selection:<br/>min: ' + Highcharts.dateFormat('%Y-%m-%d', event.xAxis[0].min) +
-            //                 ', max: ' + Highcharts.dateFormat('%Y-%m-%d', event.xAxis[0].max));
-            //         } else {
-            //             $report.html('Selection reset');
-            //         }
-            //     }
-            // },
-            style: {
-               fontFamily: "'Roboto', sans-serif"
-            },
-            plotBorderColor: '#606063'
-          },
-          rangeSelector: {
-              selected: 1,
-              buttonTheme: {
-                 fill: '#505053',
-                 stroke: '#000000',
-                 style: {
-                    color: '#CCC'
-                 },
-                 states: {
-                    hover: {
-                       fill: '#707073',
-                       stroke: '#000000',
-                       style: {
-                          color: 'white'
-                       }
-                    },
-                    select: {
-                       fill: '#000003',
-                       stroke: '#000000',
-                       style: {
-                          color: 'white'
-                       }
-                    }
-                 }
-              },
-              inputBoxBorderColor: '#505053',
-              inputStyle: {
-                 backgroundColor: '#333',
-                 color: 'silver'
-              },
-              labelStyle: {
-                 color: 'silver'
-              }
-          },
-          title: {
-              text: stockObj.Name,
-              style: {
-                 color: '#E0E0E3',
-                 textTransform: 'uppercase',
-                 fontSize: '20px'
-              }
-          },
-          subtitle: {
-              text: stockObj.Symbol,
-              style: {
-                 color: '#E0E0E3',
-                 textTransform: 'uppercase'
-              }
-          },
-          xAxis: {
-            type: 'datetime',
-            labels: {
-              format: '{value:%m/%d/%Y}',
-              // rotation: 45,
-              align: 'left',
-                style: {
-                   color: '#E0E0E3'
-                }
-             },
-             lineColor: '#707073',
-             minorGridLineColor: '#505053',
-             tickColor: '#707073',
-             title: {
-                style: {
-                   color: '#A0A0A3'
 
-                }
-             }
-          },
-          yAxis: {
-            type: 'string',
-            title: {
-              text: 'Prices (USD)',
-              style: {
-                color: 'white'
-              }
-            },
-            labels: {
-              style: {
-                color: 'white'
-              }
-            }
-          },
-          plotOptions: {
-            series: {
-               dataLabels: {
-                  color: '#B0B0B3'
-               },
-               marker: {
-                  lineColor: '#333'
-               }
-            },
-            boxplot: {
-               fillColor: '#505053'
-            },
-            candlestick: {
-               lineColor: 'white',
-               color: '#f02d41',
-               upColor: '#2DF04E'
-            },
-            errorbar: {
-               color: 'white'
-            }
-         },
-          tooltip: {
-             valueDecimals: 2,
-             backgroundColor: 'rgba(0, 0, 0, 0.85)',
-             style: {
-                color: '#F0F0F0'
-             }
-          },
-          legend: {
-             enabled: false
-          },
-          navigation: {
-             buttonOptions: {
-                symbolStroke: '#DDDDDD',
-                theme: {
-                   fill: '#505053'
-                }
-             }
-          },
-          series: [{
-              type: 'candlestick',
-              name: stockObj.Name,
-              data: chartData,
-              dataGrouping: {
-              units: [
-                [
-                  'week', // unit name
-                  [1] // allowed multiples
-                ], [
-                'month',
-                    [1, 2, 3, 4, 6]
-                  ]
-                ]
-              }
-            }],
-            scrollbar: {
-                enabled: false
-            }
-        };
-      })
+    
+    makeCharts(stockObj,10);
+
+    
+    function makeCharts(stockObj, dataLength) {
+        $scope.stockChart = {};
+        var startDate = ChartDateService.getStartDate(currentPortfolio);
+        var endDate = ChartDateService.getEndDate(currentPortfolio);
+        
+        
+        YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(returningData) {
+    
+            $scope.$apply(function() {
+
+                //line
+
+                /////////////////////////////////////////////////////////////////////////////////////////
+
+                var chartData = setLineChartData(returningData, dataLength);
+
+                $scope.lineChart = {
+                    colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
+                        '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+                    chart: {
+                        zoomType: 'x',
+                        backgroundColor: '#3e3e40',
+                        // events: {
+                        //     selection: function (event) {
+                        //         if (event.xAxis) {
+                        //             $report.html('Last selection:<br/>min: ' + Highcharts.dateFormat('%Y-%m-%d', event.xAxis[0].min) +
+                        //                 ', max: ' + Highcharts.dateFormat('%Y-%m-%d', event.xAxis[0].max));
+                        //         } else {
+                        //             $report.html('Selection reset');
+                        //         }
+                        //     }
+                        // },
+                        style: {
+                        fontFamily: "'Roboto', sans-serif"
+                        },
+                        plotBorderColor: '#606063'
+                    },
+                    rangeSelector: {
+                        selected: 1,
+                        buttonTheme: {
+                            fill: '#505053',
+                            stroke: '#000000',
+                            style: {
+                                color: '#CCC'
+                            },
+                            states: {
+                                hover: {
+                                fill: '#707073',
+                                stroke: '#000000',
+                                style: {
+                                    color: 'white'
+                                }
+                                },
+                                select: {
+                                fill: '#000003',
+                                stroke: '#000000',
+                                style: {
+                                    color: 'white'
+                                }
+                                }
+                            }
+                        },
+                        inputBoxBorderColor: '#505053',
+                        inputStyle: {
+                            backgroundColor: '#333',
+                            color: 'silver'
+                        },
+                        labelStyle: {
+                            color: 'silver'
+                        }
+                    },
+                    title: {
+                        text: stockObj.Name,
+                        style: {
+                            color: '#E0E0E3',
+                            textTransform: 'uppercase',
+                            fontSize: '20px'
+                        }
+                    },
+                    subtitle: {
+                        text: stockObj.Symbol,
+                        style: {
+                            color: '#E0E0E3',
+                            textTransform: 'uppercase'
+                        }
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        labels: {
+                        format: '{value:%m/%d/%Y}',
+                        // rotation: 45,
+                        align: 'left',
+                            style: {
+                            color: '#E0E0E3'
+                            }
+                        },
+                        lineColor: '#707073',
+                        minorGridLineColor: '#505053',
+                        tickColor: '#707073',
+                        title: {
+                            style: {
+                            color: '#A0A0A3'
+
+                            }
+                        }
+                    },
+                    yAxis: {
+                        type: 'string',
+                        title: {
+                        text: 'Prices (USD)',
+                        style: {
+                            color: 'white'
+                        }
+                        },
+                        labels: {
+                        style: {
+                            color: 'white'
+                        }
+                        }
+                    },
+                    plotOptions: {
+                        series: {
+                        dataLabels: {
+                            color: '#B0B0B3'
+                        },
+                        marker: {
+                            lineColor: '#333'
+                        }
+                        },
+                        boxplot: {
+                        fillColor: '#505053'
+                        },
+                        candlestick: {
+                        lineColor: 'white',
+                        color: '#f02d41',
+                        upColor: '#2DF04E'
+                        },
+                        errorbar: {
+                        color: 'white'
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                        style: {
+                            color: '#F0F0F0'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    navigation: {
+                        buttonOptions: {
+                            symbolStroke: '#DDDDDD',
+                            theme: {
+                            fill: '#505053'
+                            }
+                        }
+                    },
+                    series: [{
+                        type: 'line',
+                        name: stockObj.Name,
+                        data: chartData,
+                        dataGrouping: {
+                        units: [
+                            [
+                            'week', // unit name
+                            [1] // allowed multiples
+                            ], [
+                            'month',
+                                [1, 2, 3, 4, 6]
+                            ]
+                            ]
+                        }
+                        }],
+                        scrollbar: {
+                            enabled: false
+                        }
+                    }
+
+                /////////////////////////////////////////////////////////////////////////////////////////
+
+                //Candlestick
+
+                //////////////////////////////////////////////////////////////////////////////////////////
+                var chartData = setStockChartData(returningData, dataLength);
+
+                $scope.stockChart = {
+                    colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
+                        '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+                    chart: {
+                        zoomType: 'x',
+                        backgroundColor: '#3e3e40',
+                        // events: {
+                        //     selection: function (event) {
+                        //         if (event.xAxis) {
+                        //             $report.html('Last selection:<br/>min: ' + Highcharts.dateFormat('%Y-%m-%d', event.xAxis[0].min) +
+                        //                 ', max: ' + Highcharts.dateFormat('%Y-%m-%d', event.xAxis[0].max));
+                        //         } else {
+                        //             $report.html('Selection reset');
+                        //         }
+                        //     }
+                        // },
+                        style: {
+                        fontFamily: "'Roboto', sans-serif"
+                        },
+                        plotBorderColor: '#606063'
+                    },
+                    rangeSelector: {
+                        selected: 1,
+                        buttonTheme: {
+                            fill: '#505053',
+                            stroke: '#000000',
+                            style: {
+                                color: '#CCC'
+                            },
+                            states: {
+                                hover: {
+                                fill: '#707073',
+                                stroke: '#000000',
+                                style: {
+                                    color: 'white'
+                                }
+                                },
+                                select: {
+                                fill: '#000003',
+                                stroke: '#000000',
+                                style: {
+                                    color: 'white'
+                                }
+                                }
+                            }
+                        },
+                        inputBoxBorderColor: '#505053',
+                        inputStyle: {
+                            backgroundColor: '#333',
+                            color: 'silver'
+                        },
+                        labelStyle: {
+                            color: 'silver'
+                        }
+                    },
+                    title: {
+                        text: stockObj.Name,
+                        style: {
+                            color: '#E0E0E3',
+                            textTransform: 'uppercase',
+                            fontSize: '20px'
+                        }
+                    },
+                    subtitle: {
+                        text: stockObj.Symbol,
+                        style: {
+                            color: '#E0E0E3',
+                            textTransform: 'uppercase'
+                        }
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        labels: {
+                        format: '{value:%m/%d/%Y}',
+                        // rotation: 45,
+                        align: 'left',
+                            style: {
+                            color: '#E0E0E3'
+                            }
+                        },
+                        lineColor: '#707073',
+                        minorGridLineColor: '#505053',
+                        tickColor: '#707073',
+                        title: {
+                            style: {
+                            color: '#A0A0A3'
+
+                            }
+                        }
+                    },
+                    yAxis: {
+                        type: 'string',
+                        title: {
+                        text: 'Prices (USD)',
+                        style: {
+                            color: 'white'
+                        }
+                        },
+                        labels: {
+                        style: {
+                            color: 'white'
+                        }
+                        }
+                    },
+                    plotOptions: {
+                        series: {
+                        dataLabels: {
+                            color: '#B0B0B3'
+                        },
+                        marker: {
+                            lineColor: '#333'
+                        }
+                        },
+                        boxplot: {
+                        fillColor: '#505053'
+                        },
+                        candlestick: {
+                        lineColor: 'white',
+                        color: '#f02d41',
+                        upColor: '#2DF04E'
+                        },
+                        errorbar: {
+                        color: 'white'
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                        style: {
+                            color: '#F0F0F0'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    navigation: {
+                        buttonOptions: {
+                            symbolStroke: '#DDDDDD',
+                            theme: {
+                            fill: '#505053'
+                            }
+                        }
+                    },
+                    series: [{
+                        type: 'candlestick',
+                        name: stockObj.Name,
+                        data: chartData,
+                        dataGrouping: {
+                        units: [
+                            [
+                            'week', // unit name
+                            [1] // allowed multiples
+                            ], [
+                            'month',
+                                [1, 2, 3, 4, 6]
+                            ]
+                            ]
+                        }
+                        }],
+                        scrollbar: {
+                            enabled: false
+                        }
+                    }    
+            })
+        });
+    }
+
+    function setLineChartData(data, dataLength){
+        var DataArray = [];
+        var TotalDataLength = data.length;
+        for (var i = 0; i < dataLength; i += 1) {
+            DataArray.push([
+                Date.parse(data[i].date), // the date
+                
+                data[i].adjClose, //price
+            ]);
+        }
+
+        return DataArray;
+    }
+    
+    function setStockChartData(data, dataLength){
+        var DataArray = [];
+        var TotalDataLength = data.length;
+        for (var i = 0; i < dataLength; i += 1) {
+            DataArray.push([
+                Date.parse(data[i].date), // the date
+                
+                data[i].open, // open
+                data[i].high, // high
+                data[i].low, // low
+                data[i].close // close
+            ]);
+        }
+
+        return DataArray;
     }
 
     //end of candlestick chart code
@@ -477,7 +569,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
 
         //this only works in live, we need to figure out date for historic
         var date;
-        if (isLiveInt == 0){
+        if (isLiveInt == 1){
             date = new Date() + "";
         }else{
             //figure out date for histoic state

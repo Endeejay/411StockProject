@@ -12,14 +12,12 @@ var yahooFinance = require('yahoo-finance');
 // var util = require('util');
 
 function getAStock (symbol, startDate, endDate, callBackFunction) {
-	yahooFinance.historical({
+	return yahooFinance.historical({
 		symbol: symbol,
 		from: startDate,
 		to: endDate,
-		period: 'd'
-	}).then(function(quotes){
-		callBackFunction(quotes);
-	});
+		// period: 'd'
+	})
 }
 
 function getAllStocks (symbols, startDate, endDate, callBackFunction) {

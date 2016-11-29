@@ -3,6 +3,7 @@ stockApp.controller('MainController', ['$scope', '$state', 'SQLDBService', 'APIS
 //DBService.initializeDBAtTheBeginningOfStockApp();
 //SQLDBService.clearDB();
 SQLDBService.initDb();
+
 $scope.historicClick = function(){
 	if(SQLDBService.checkIfPortfolioIdForLiveOrHistoricExists(1) === false){
     	$state.go('datePicker');

@@ -11,6 +11,7 @@ this.getCurrentStateInt = getCurrentStateInt;
 this.formatDate = formatDate;
 this.formatDatePickerDate = formatDatePickerDate;
 this.formatDateToMMDDYYYY = formatDateToMMDDYYYY;
+this.formatDateForYahoo = formatDateForYahoo;
 
 function formatDateToMMDDYYYY(date){
   var year = date.substring(0,4);
@@ -33,6 +34,14 @@ function formatDate(date){
   var year = date.getUTCFullYear();
 
   return year + '/' + month + '/' + day + "";
+}
+
+function formatDateForYahoo(date){
+  var month = date.getUTCMonth() + 1; //months from 1-12
+  var day = date.getUTCDate();
+  var year = date.getUTCFullYear();
+
+  return year + '-' + month + '-' + day + "";
 }
 
 function getCurrentStateInt(state){
