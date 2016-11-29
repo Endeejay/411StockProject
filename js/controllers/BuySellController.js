@@ -23,15 +23,11 @@ $scope.getStock = function(symbol){
         })
 }
 
-
 function getStocksForCurrentPage(){
       for (var i = (($scope.page-1) * 5); i < (($scope.page-1)* 5 + 5); i++) {
           APIService.getSingleStock($scope.availableStocks[i]).then(function(data){
-              $scope.availableStocks[i].ChangePercent = data.data[0].ChangePercent;
-              //works
-              console.log(data.data[0].ChangePercent);
-              //doesn't
-              console.log($scope.availableStocks[i].ChangePercent);
+              //kinda works
+              $scope.availableStocks[i] = data.data[0];
           })
       }
 }
