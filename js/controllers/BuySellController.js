@@ -30,9 +30,26 @@ function getStocksForCurrentPage(){
           symbols.push($scope.availableStocks[i].Symbol);
       }
       APIService.getMultipleStocks(symbols).then(function (data){
-        //replaces objects already in collection since regular way threw errors
-        Array.prototype.splice.apply($scope.availableStocks, [($scope.page-1) * 5, data.data.length].concat(data.data));
+        //replaces items if it successfully gets it back from api
+        for(var i = 0 ; i<data.data.length; i++){
+          var index = getIndex(data.data[i]);         
+          if(index != null){
+             //replaces objects already in collection since regular way threw errors
+             Array.prototype.splice.apply($scope.availableStocks, [index, 1].concat(data.data[i]));
+          }
+        }
       });
+}
+
+function getIndex(stock){
+  var index = null;
+  for(var i = (($scope.page-1) * 5); i < (($scope.page-1)* 5 + 5); i++){
+    if($scope.availableStocks[i].Symbol == stock.Symbol){
+      index = i;
+      break;
+    }
+  }
+  return index;
 }
 
 function getAvailableStocks(){
