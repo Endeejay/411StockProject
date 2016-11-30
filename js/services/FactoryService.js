@@ -14,6 +14,7 @@ this.formatDateToMMDDYYYY = formatDateToMMDDYYYY;
 this.formatDateForYahoo = formatDateForYahoo;
 this.getPreviousDay = getPreviousDay;
 this.getDateMinusOneDay = getDateMinusOneDay;
+this.getDateAddDate = getDateAddDate;
 
 function getPreviousDay(date){
   var isoDate = formatDatePickerDate(date, "/", "-");
@@ -187,6 +188,17 @@ function getDateMinusOneDay(date){
   var yearMinusOne = date.getFullYear();
   var month = date.getMonth() + 1;
   var day = date.getDate()-1;
+
+  var returnDate = yearMinusOne + "-" + month + "-" + day;
+
+  return returnDate;
+}
+
+function getDateAddDate(date){
+
+  var yearMinusOne = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate() + 1;
 
   var returnDate = yearMinusOne + "-" + month + "-" + day;
 

@@ -16,25 +16,25 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
     var currentStateString = state.substr(0, state.indexOf('.'));
     var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
     if(currentPortfolio[0].isLive == 0){
-        var currentPrice = MathService.getMostRecentStockPrice(stockObj);
-        $scope.currentPrice = currentPrice;
+        $scope.currentPrice = MathService.getMostRecentStockPrice(stockObj);
+        
     }
     else{
         var getStartDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
-        var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
+        var startDate = FactoryService.formatDateForYahoo(getStartDate1);
 
         var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
-        var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+        var endDate = FactoryService.getDateAddDate(getEndDate1);
 
 
         YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
             $scope.$apply(function() {
-                var currentPrice = data[data.length-1].adjClose;
-                $scope.currentPrice = currentPrice;
+                $scope.currentPrice = data[data.length-1].adjClose;
+                
             })
         });
     }
-    var currentPrice = $scope.currentPrice;
+    // var currentPrice = $scope.currentPrice;
 
     $scope.CurrentPortfolioMoney = currentPortfolio[0].currency;
     $scope.Shares = MathService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol);
@@ -480,10 +480,10 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
     }
     else{
         var getStartDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
-        var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
+        var startDate = FactoryService.formatDateForYahoo(getStartDate1);
 
         var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
-        var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+        var endDate = FactoryService.getDateAddDate(getEndDate1);
 
 
         YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
@@ -517,10 +517,10 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
         }
         else{
             var getStartDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
-            var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
+            var startDate = FactoryService.formatDateForYahoo(getStartDate1);
 
             var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
-            var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+            var endDate = FactoryService.getDateAddDate(getEndDate1);
 
 
             YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
@@ -574,10 +574,10 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
             }
             else{
                 var getStartDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
-                var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
+                var startDate = FactoryService.formatDateForYahoo(getStartDate1);
 
                 var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
-                var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+                var endDate = FactoryService.getDateAddDate(getEndDate1);
 
 
                 YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
@@ -631,10 +631,10 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
             }
             else{
                 var getStartDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
-                var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
+                var startDate = FactoryService.formatDateForYahoo(getStartDate1);
 
                 var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
-                var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+                var endDate = FactoryService.getDateAddDate(getEndDate1);
 
 
                 YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
@@ -684,10 +684,10 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
         }
         else{
             var getStartDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
-            var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
+            var startDate = FactoryService.formatDateForYahoo(getStartDate1);
 
             var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
-            var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+            var endDate = FactoryService.getDateAddDate(getEndDate1);
 
 
             YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
