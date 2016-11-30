@@ -13,10 +13,7 @@ this.formatDatePickerDate = formatDatePickerDate;
 this.formatDateToMMDDYYYY = formatDateToMMDDYYYY;
 this.formatDateForYahoo = formatDateForYahoo;
 this.getPreviousDay = getPreviousDay;
-<<<<<<< HEAD
 this.getDateMinusOneDay = getDateMinusOneDay;
-=======
->>>>>>> master
 
 function getPreviousDay(date){
   var isoDate = formatDatePickerDate(date, "/", "-");

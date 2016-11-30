@@ -6,7 +6,6 @@ stockApp.controller('DatePickerController', ['$scope','$state', 'SQLDBService', 
 
 		if(startDate && endDate){
 			if(Date.parse(endDate) > Date.parse(startDate)){
-				debugger;
 				startDate = FactoryService.formatDatePickerDate(startDate, "-", "/");
 				endDate = FactoryService.formatDatePickerDate(endDate, "-", "/");
 
