@@ -2,18 +2,15 @@ stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 
 var state = $state.current.name
 var currentStateString = state.substr(0, state.indexOf('.'));
 $scope.availableStocks = [];
-
 $scope.page = 1;
 getAvailableStocks();
-getStocksForCurrentPage();
-
 
 $scope.callback = function(page) {
   // console.log("page = ", page);
   $scope.page = page;
+  console.log($scope.page);
   getStocksForCurrentPage();
 }
-
 
 $scope.getStock = function(symbol){
          APIService.getSingleStock(symbol).then(function(data){
@@ -24,18 +21,35 @@ $scope.getStock = function(symbol){
 }
 
 function getStocksForCurrentPage(){
+      var symbols = []
       for (var i = (($scope.page-1) * 5); i < (($scope.page-1)* 5 + 5); i++) {
-          APIService.getSingleStock($scope.availableStocks[i]).then(function(data){
-              //kinda works
-              $scope.availableStocks[i] = data.data[0];
-          })
+          symbols.push($scope.availableStocks[i].Symbol);
       }
+      APIService.getMultipleStocks(symbols).then(function (data){
+        //replaces objects already in collection since regular way threw errors
+        Array.prototype.splice.apply($scope.availableStocks, [($scope.page-1) * 5, data.data.length].concat(data.data));
+      });
 }
 
 function getAvailableStocks(){
   APIService.getAllStocks().then(function(data){
-    data = data.data;
-    $scope.availableStocks = data;
+    for (var index in data.data) {
+      var stockObj = {
+                      Name: " ",
+                      Symbol: data.data[index], 
+                      LastPrice: -1, 
+                      Change: -1, 
+                      ChangePercent: " ", 
+                      Timestamp: " ", 
+                      Volume: -1, 
+                      High: -1, 
+                      Low: -1, 
+                      Open: -1, 
+                      Close: -1
+                    };
+      $scope.availableStocks.push(stockObj);
+    }
+    getStocksForCurrentPage();
     //console.log("$scope.stocks =",$scope.stocks);
   }, function(error){
     console.log(error);
