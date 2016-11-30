@@ -53,7 +53,7 @@ function getStocksForCurrentPage(){
          $scope.availableStocks[i] = data.data[0];
       })
   }
-  }
+}
 
 function getStocksAndCalculateDifference(symbols){
   if(currentStateString === 'live'){

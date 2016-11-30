@@ -65,12 +65,13 @@ stockApp.controller('PortfolioController', ['$scope', '$stateParams', '$state', 
 	}
 
 	$scope.createPortfolio = function(){
-		var portfolio = FactoryService.makePortfolioObject("name", isLive,"","", "",5000,1);
-    	SQLDBService.createPortfolio(portfolio);
-		$scope.userPortfolios = SQLDBService.getPortfolios();
 		if($state.is('historic.portfolio')){
     		$state.go('datePicker');
-    	}
+    	}else{
+			var portfolio = FactoryService.makePortfolioObject("name", isLive,"","", "",5000,1);
+	    	SQLDBService.createPortfolio(portfolio);
+			$scope.userPortfolios = SQLDBService.getPortfolios();
+		}
 	}
 
 	function setPortfolioValue(value, index){

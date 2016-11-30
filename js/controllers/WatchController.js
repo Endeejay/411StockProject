@@ -18,6 +18,8 @@ stockApp.controller('WatchController', ['$scope', '$stateParams', '$state', 'Wat
 		Materialize.toast("Removed " + stock.symbol + " from watchlist.", 4000);
 		SQLDBService.removeFromWatch(stock.portfolioId, stock.symbol);
 		$scope.usersWatchedStocks = SQLDBService.getWatchByPortfolioId($scope.currentPortfolio[0].portfolioId);
+		getWatchForCurrentPage();
+		$state.go($state.current.name);
 	}
 
 	$scope.buy = function(stock){

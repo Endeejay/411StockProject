@@ -29,6 +29,8 @@ stockApp.controller('SliderController', ['$scope', '$state', 'SQLDBService', 'Sl
 		}else{
 			Materialize.toast('You have set your current date to '+ FactoryService.formatDateToMMDDYYYY(formattedCurrentDate), 4000);
 			SQLDBService.updatePortfolio(portfolioId, 'currentDate', formattedCurrentDate);
+			$state.go($state.current.name);
 		}	
+
 	}
 }]);

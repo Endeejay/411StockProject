@@ -3,8 +3,6 @@ stockApp.service('YahooService', [function () {
 this.getAStock = getAStock;
 this.getMultipleStocks = getMultipleStocks;
 
-
-
 var yahooFinance = require('yahoo-finance');
 // var SYMBOL = 'AAPL';
 // var firstDate = '2012-01-01';
@@ -16,7 +14,6 @@ function getAStock (symbol, startDate, endDate, callBackFunction) {
 		symbol: symbol,
 		from: startDate,
 		to: endDate,
-
 		period: 'd'
 	});
 }

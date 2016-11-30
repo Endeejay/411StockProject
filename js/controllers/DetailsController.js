@@ -1,4 +1,3 @@
-
 stockApp.controller('DetailsController', function DetailsController($scope, $q, $stateParams, $state, DBService, APIService, MathService, DetailsService, SQLDBService, FactoryService, ChartDateService, YahooService) {
     if($stateParams.stockObj.Symbol == null ){
     	if($state.is('live.buy_sell.details')){
@@ -26,7 +25,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
         var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
         var endDate = FactoryService.getDateAddDate(getEndDate1);
 
-
+        
         YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
             $scope.$apply(function() {
                 $scope.currentPrice = data[data.length-1].adjClose;
