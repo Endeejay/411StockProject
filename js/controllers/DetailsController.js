@@ -92,7 +92,6 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
         var endDate = ChartDateService.getEndDate(currentPortfolio);
         
         YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(returningData) {
-    
             $scope.$apply(function() {
 
                 //line

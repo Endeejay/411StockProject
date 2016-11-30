@@ -11,7 +11,7 @@ stockApp.controller('DatePickerController', ['$scope','$state', 'SQLDBService', 
 
 		    	var portfolio = FactoryService.makePortfolioObject("name", 1, startDate, endDate, startDate, 5000, 1);
 		    	SQLDBService.createPortfolio(portfolio);
-		    	$state.go('historic.user');
+		    	$state.go('historic.portfolio');
 	    	}else{
 	    		Materialize.toast('Time doesn\'t travel backwards!', 4000);
 	    	}
