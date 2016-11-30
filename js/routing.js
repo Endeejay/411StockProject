@@ -63,14 +63,6 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
           },
           params: {stockObj: Object}
         })
-        .state('historic.user', {
-            views: {
-              "content@": {
-                templateUrl: 'user.html',
-                controller: 'UserController'
-              }
-            }
-        })
         .state('historic.portfolio', {
             views: {
               "content@": {
@@ -116,13 +108,6 @@ stockApp.config(function($stateProvider, $urlRouterProvider) {
              }
            },
            params: {stockObj: Object}
-        })
-        .state('live.user', {
-            views: {
-              "content@": {
-                templateUrl: 'user.html'
-              }
-            }
         })
         .state('live.portfolio', {
             views: {

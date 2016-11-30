@@ -3,9 +3,8 @@
   <div ng-hide="usersWatchedStocks.length>0">
       <h2 class="orange-text">You aren't watching any stocks.</h2>
   </div>
-
   <div class="collection">
-      <div class="row collection-item" ng-repeat="stock in currentWatch">
+      <div class="row collection-item" ng-repeat="stock in currentWatch" ng-show="usersWatchedStocks.length > 0 && stock.symbol">
         <div class="col s12 m6">
           <div class="card blue-grey darken-1" ng-show="stock.symbol">
             <div class="card-content white-text">
@@ -27,7 +26,7 @@
       </div>
     </div>
 
-     <div paging
+     <div ng-hide="usersWatchedStocks.length = 0" paging
       page="1"
       page-size="3"
       total="usersWatchedStocks.length"

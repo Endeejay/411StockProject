@@ -9,7 +9,7 @@ $scope.historicClick = function(){
     	$state.go('datePicker');
   }
   else{
-  	$state.go('historic.user');
+  	$state.go('historic.portfolio');
   }
 }
 }]);
