@@ -22,8 +22,11 @@ this.totalTransactionPrice = totalTransactionPrice;
 this.calculateNewCurrencyValue = calculateNewCurrencyValue;
 this.totalShareCount = totalShareCount;
 this.getTotalShares = getTotalShares;
+this.getDifferenceHistoric = getDifferenceHistoric;
 
-
+function getDifferenceHistoric(data){
+	return data.close-data.open;
+}
 
 function getTotalShares(id, shortName){
 	var transactionsData = SQLDBService.getTransactionsByPortfolioIdAndShortName(id, shortName);

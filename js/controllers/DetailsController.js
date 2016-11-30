@@ -440,7 +440,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
               date = new Date() + "";
           }else{
               //figure out date for histoic state
-              date = new Date() + "";
+              date = currentPortfolio[0].currentDate;
           }
 
           var watch = FactoryService.makeWatchObject(currentPortfolioId, stockObj.Symbol, currentPrice, date);
@@ -468,20 +468,21 @@ stockApp.controller('DetailsController', function DetailsController($scope, $sta
         var isLiveInt = FactoryService.getCurrentStateInt(state);
         var currentStateString = state.substr(0, state.indexOf('.'));
         var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
-        var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+        var currentPrice;
         var totalSharesAtTransaction = MathService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol);
         var totalSharesAfterTransaction = getTotalSharesAfterTransaction(totalSharesAtTransaction, amountOfShares, buyOrSell);
         var totalTransactionPrice = MathService.totalTransactionPrice(amountOfShares, currentPrice);
         var newCurrency = MathService.calculateNewCurrencyValue(currentPortfolio[0].currency, totalTransactionPrice, buyOrSell);
-
-
-        //this only works in live, we need to figure out date for historic
         var date;
+
         if (isLiveInt == 0){
             date = new Date() + "";
-        }else{
+
+        }else if(isLiveInt == 1){
             //figure out date for histoic state
-            date = new Date() + "";
+            date = currentPortfolio[0].currentDate;
+        }else{
+          //throw an error
         }
 
         var transaction = FactoryService.makeTransactionObject(currentPortfolio[0].portfolioId, stockObj.Symbol, date, currentPrice, totalSharesAfterTransaction, totalSharesAfterTransaction, amountOfShares, buyOrSell, currentPortfolio[0].currency, totalTransactionPrice, newCurrency);

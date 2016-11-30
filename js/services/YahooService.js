@@ -1,7 +1,7 @@
 stockApp.service('YahooService', [function () {
 
 this.getAStock = getAStock;
-this.getAllStocks = getAllStocks;
+this.getMultipleStocks = getMultipleStocks;
 
 
 
@@ -12,24 +12,20 @@ var yahooFinance = require('yahoo-finance');
 // var util = require('util');
 
 function getAStock (symbol, startDate, endDate, callBackFunction) {
-	yahooFinance.historical({
+	return yahooFinance.historical({
 		symbol: symbol,
 		from: startDate,
 		to: endDate,
 		period: 'd'
-	}).then(function(quotes){
-		callBackFunction(quotes);
 	});
 }
 
-function getAllStocks (symbols, startDate, endDate, callBackFunction) {
-	yahooFinance.historical({
+function getMultipleStocks (symbols, startDate, endDate, callBackFunction) {
+	return yahooFinance.historical({
 		symbols: symbols,
 		from: startDate,
 		to: endDate,
 		period: 'd'
-	}).then(function(quotes){
-		callBackFunction(quotes);
-	});
+	 });
 }
 }]);

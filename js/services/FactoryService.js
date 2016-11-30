@@ -11,6 +11,39 @@ this.getCurrentStateInt = getCurrentStateInt;
 this.formatDate = formatDate;
 this.formatDatePickerDate = formatDatePickerDate;
 this.formatDateToMMDDYYYY = formatDateToMMDDYYYY;
+this.formatDateToYYYYMMDD = formatDateToYYYYMMDD;
+this.getPreviousDay = getPreviousDay;
+this.makeObjectForMarketPage = makeObjectForMarketPage;
+
+function makeObjectForMarketPage(symbol, difference){
+  difference = parseFloat(difference.toFixed(2));
+  if(difference > 0){
+    difference = "+"+difference;
+  }
+  difference +="";
+
+  var stockObj = {
+    "Symbol" : symbol,
+    "ChangePercent" : difference
+  }
+  return stockObj;
+}
+
+function getPreviousDay(date){
+  var isoDate = formatDatePickerDate(date, "/", "-");
+  var currentDate = new Date(isoDate).toISOString();
+  var yesterday = new Date(currentDate);
+  var hyesterday = yesterday.toLocaleDateString();
+  hyesterday = formatDateToYYYYMMDD(hyesterday);
+  return hyesterday;
+}
+
+function formatDateToYYYYMMDD(date){
+  var MMDD = date.substring(0,5);
+  var year = date.substring(6,10);
+  var newDate = year + '/' + MMDD;
+  return newDate;
+}
 
 function formatDateToMMDDYYYY(date){
   var year = date.substring(0,4);

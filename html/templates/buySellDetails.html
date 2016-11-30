@@ -6,9 +6,11 @@
 		</div>
 	</div>
 	<div class="col s4">
+  <div ng-if = "live">
 		<div class="chip">
-		      You own <a class="orange-text">{{ Shares }}</a> shares of {{stockObj.Symbol}}
+		  You own <a class="orange-text">{{ Shares }}</a> shares of {{stockObj.Symbol}}
 		</div>
+  </div>
 	</div>
 	<div class="col s4">
 		<div class="chip">
