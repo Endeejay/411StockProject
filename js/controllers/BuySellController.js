@@ -62,7 +62,7 @@ function getStocksAndCalculateDifference(symbols){
       console.log("calc diff" , data.data);
       for (index in data.data) {
         console.log(index, data.data[index]);
-        //console.log(index, data.data[index]); 
+        //console.log(index, data.data[index]);
         $scope.stocksData.push(data.data[index]);
       }
     })
@@ -71,7 +71,7 @@ function getStocksAndCalculateDifference(symbols){
     YahooService.getMultipleStocks(symbols, today, today).then(function(data){
       $scope.stocksData = [];
       console.log("calc diff" , data);
-      for (var key in data) { 
+      for (var key in data) {
         if(data.hasOwnProperty(key)){
           var diff = data[key][0].close - data[key][0].open;
           var historicStockObj = FactoryService.makeObjectForMarketPage(key,diff);
@@ -82,6 +82,27 @@ function getStocksAndCalculateDifference(symbols){
   }else{
     //throw an error
   }
+      APIService.getMultipleStocks(symbols).then(function (data){
+        //replaces items if it successfully gets it back from api
+        for(var i = 0 ; i<data.data.length; i++){
+          var index = getIndex(data.data[i]);
+          if(index != null){
+             //replaces objects already in collection since regular way threw errors
+             Array.prototype.splice.apply($scope.availableStocks, [index, 1].concat(data.data[i]));
+          }
+        }
+      });
+}
+
+function getIndex(stock){
+  var index = null;
+  for(var i = (($scope.page-1) * 5); i < (($scope.page-1)* 5 + 5); i++){
+    if($scope.availableStocks[i].Symbol == stock.Symbol){
+      index = i;
+      break;
+    }
+  }
+  return index;
 }
 
 function getAvailableStocks(){
@@ -89,15 +110,15 @@ function getAvailableStocks(){
     for (var index in data.data) {
       var stockObj = {
                       Name: " ",
-                      Symbol: data.data[index], 
-                      LastPrice: -1, 
-                      Change: -1, 
-                      ChangePercent: " ", 
-                      Timestamp: " ", 
-                      Volume: -1, 
-                      High: -1, 
-                      Low: -1, 
-                      Open: -1, 
+                      Symbol: data.data[index],
+                      LastPrice: -1,
+                      Change: -1,
+                      ChangePercent: " ",
+                      Timestamp: " ",
+                      Volume: -1,
+                      High: -1,
+                      Low: -1,
+                      Open: -1,
                       Close: -1
                     };
       $scope.availableStocks.push(stockObj);
