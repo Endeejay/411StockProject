@@ -19,6 +19,10 @@ function getAStock (symbol, startDate, endDate, callBackFunction) {
 
 		period: 'd'
 	});
+
+		// period: 'd'
+	}
+>>>>>>> master
 }
 
 function getMultipleStocks (symbols, startDate, endDate, callBackFunction) {

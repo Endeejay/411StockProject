@@ -14,18 +14,28 @@
 	</div>
 	<div class="col s4">
 		<div class="chip">
-		     Price : <a class="red-text">{{currentPrice | currency}}</a> per share
+		     Price : <span class="red-text" ng-bind="currentPrice"></span> per share
 		</div>
 	</div>
 </div>
 <div class="row">
+	<button class="btn waves-effect waves-light" ng-click="setChart(3)">Year
+	</button>
+	<button class="btn waves-effect waves-light" ng-click="setChart(2)">Month
+	</button>
+	<button class="btn waves-effect waves-light" ng-click="setChart(1)">Week
+	</button>	
+</div>
+<div class="row">
 
-<line-chart config='linechart'>
+<line-chart config='lineChart'>
 </line-chart>
 
+</br>
+</br>
   <!-- detailed candlestick chart would be loaded here -->
 
-<stock-chart config='stockchart'>
+<stock-chart config='stockChart'>
 </stock-chart>
 
 </br>

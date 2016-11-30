@@ -6,6 +6,7 @@ stockApp.controller('SliderController', ['$scope', '$state', 'SQLDBService', 'Sl
 	var formattedStartDate = FactoryService.formatDateToMMDDYYYY(startDate);
 	var formattedEndDate = FactoryService.formatDateToMMDDYYYY(endDate);
 
+
 	$scope.currentDateValue = FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-")
 	$scope.startingDate = formattedStartDate;
 	$scope.endingDate = formattedEndDate;

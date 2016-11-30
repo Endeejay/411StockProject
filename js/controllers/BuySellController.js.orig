@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', 'YahooService', 'FactoryService', 'SQLDBService', 'MathService', function BuySellController($scope, BuySellService, $state, APIService, YahooService, FactoryService, SQLDBService, MathService) {
 //getName();
 getAvailableStocks();
@@ -6,11 +7,17 @@ getAvailableStocks();
 //   $location.url('/historic.buy_sell');
 // }
 var state = $state.current.name;
+=======
+stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', 'FactoryService', function BuySellController($scope, BuySellService, $state, APIService, FactoryService) {
+var state = $state.current.name
 var currentStateString = state.substr(0, state.indexOf('.'));
 $scope.availableStocks = [];
 $scope.page = 1;
+getAvailableStocks();
+var state = $state.current.name
+>>>>>>> master
 var currentStateString = state.substr(0, state.indexOf('.'));
-var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
+var currentPortfolio = SQLDBService.getCurrentPortfolio('historic');
 
 //using this to display the proper collection
 if(state === "live.buy_sell"){
@@ -44,7 +51,7 @@ $scope.getStock = function(symbol){
        }
 }
 
-
+<<<<<<< HEAD
 $scope.stocksData = [];
 
 function getStocksForCurrentPage(){
@@ -79,9 +86,21 @@ function getStocksAndCalculateDifference(symbols){
         }
       }
     })
+
   }else{
     //throw an error
   }
+=======
+function getStocksForCurrentPage(){
+      var symbols = []
+      for (var i = (($scope.page-1) * 5); i < (($scope.page-1)* 5 + 5); i++) {
+          symbols.push($scope.availableStocks[i].Symbol);
+      }
+      APIService.getMultipleStocks(symbols).then(function (data){
+        //replaces objects already in collection since regular way threw errors
+        Array.prototype.splice.apply($scope.availableStocks, [($scope.page-1) * 5, data.data.length].concat(data.data));
+      });
+>>>>>>> master
 }
 
 function getAvailableStocks(){

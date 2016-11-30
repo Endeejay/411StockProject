@@ -11,7 +11,7 @@ angular.module('app.directives.makeCharts',[])
         link        : function (scope, element, attrs) {
             var chart = undefined;
             scope.$watch("config", function(newValue, oldValue) {
-                  // if (chart != undefined) chart.destroy()
+                  //if (chart != undefined) chart.destroy()
                   chart = $(element).highcharts(newValue);
             });
         }
@@ -29,7 +29,7 @@ angular.module('app.directives.makeCharts',[])
         link        : function (scope, element, attrs) {
             var chart = undefined;
             scope.$watch("config", function(newValue, oldValue) {
-                  // if (chart != undefined) chart.destroy()
+                  //if (chart != undefined) chart.destroy()
                   chart = $(element).highcharts(newValue);
             });
         }

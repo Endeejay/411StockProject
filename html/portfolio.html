@@ -6,17 +6,18 @@
 </div>
     <ul class="collapsible" data-collapsible="accordion">
       <li ng-repeat="portfolio in userPortfolios">
-        <div id = "{{portfolio.portfolioId}}" ng-Click = "portfolioButton()" class="collapsible-header teal-text"><i class="material-icons">work</i>{{"Portfolio " + portfolio.portfolioId}}</div>
+        <div id = "{{portfolio.portfolioId}}" ng-Click = "portfolioButton()" class="collapsible-header teal-text waves-effect waves-light"><i class="material-icons">work</i>{{"Portfolio " + portfolio.portfolioId}}</div>
         <div class="collapsible-body">
           <table class="white striped">
             <thead>
             <tr>
-              <th>Transactions for Portfolio {{portfolio.portfolioId}}</th>
+              <th colspan="2">Transactions for Portfolio {{portfolio.portfolioId}}</th>
+              <th class="right-align" colspan="5">Portfolio Value {{portfolioValue | currency}}</th>
             </tr>
             <tr>
               <th>Date</th>
               <th>Stock Name</th>
-              <th>Stock Price</th>
+              <th>Bought Price</th>
               <th>Number of Shares</th>
               <th>Total Price</th>
               <th>Balance</th>
@@ -28,7 +29,7 @@
                  <td>{{transaction.symbol}}</td>
                  <td>{{transaction.stockValue | currency}}</td>
                  <td>{{transaction.numberOfShares}}</td>
-                 <td ng-style="transaction.totalPrice < 0 ? { color: 'red' } : {color: 'green'}" ><a style="color: green" ng-show="transaction.totalPrice > 0">+</a>{{transaction.totalPrice | number}}</td>
+                 <td ng-style="transaction.totalPrice < 0 ? { color: 'red' } : {color: 'green'}" ><a style="color: green" ng-show="transaction.totalPrice > 0">+</a>{{transaction.totalPrice | currency}}</td>
                  <td>{{transaction.portfolioBalance | currency}}</td>
               </tr>  
             </tbody>
