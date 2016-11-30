@@ -11,11 +11,11 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
     var stockObj = $stateParams.stockObj;
     $scope.stockObj = stockObj;
     $scope.stockReal = {};
-    $scope.chartData = [];
     var state = $state.current.name
     var isLiveInt = FactoryService.getCurrentStateInt(state);
     var currentStateString = state.substr(0, state.indexOf('.'));
     var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
+    var chartLength = 
 
     $scope.CurrentPortfolioMoney = currentPortfolio[0].currency;
     $scope.Shares = MathService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol);
@@ -34,15 +34,43 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
 
     //candlestick chart code
 
-    
-    makeCharts(stockObj,10);
+    function getStartDate(portfolio, dateLength){
+        if(portfolio[0].isLive == 0){
+            var yearMinusOne = new Date().getFullYear()-1;
+            var month = new Date().getMonth();
+            var day = new Date().getDate();
+
+            var returnDate = FactoryService.formatDateForYahoo(new Date(yearMinusOne, month, day));
+
+            return returnDate;
+
+        }else if(portfolio[0].isHistoric == 1){
+            return portfolio[0].startDate;
+        }else{
+            return "They should not be there"
+        }
+    }
+
+    makeCharts(stockObj, 3);
+
+    $scope.setChart = function(value){
+        switch(value) {
+            case 1:
+                makeCharts(stockObj, value);
+                break;
+            case 2:
+                makeCharts(stockObj, value);
+                break;
+            default:
+                makeCharts(stockObj, value);
+        }
+    }
 
     
-    function makeCharts(stockObj, dataLength) {
+    function makeCharts(stockObj, dateLength) {
         $scope.stockChart = {};
-        var startDate = ChartDateService.getStartDate(currentPortfolio);
+        var startDate = ChartDateService.getStartDate(currentPortfolio, dateLength);
         var endDate = ChartDateService.getEndDate(currentPortfolio);
-        
         
         YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(returningData) {
     
@@ -52,7 +80,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
 
                 /////////////////////////////////////////////////////////////////////////////////////////
 
-                var chartData = setLineChartData(returningData, dataLength);
+                var chartData = setLineChartData(returningData);
 
                 $scope.lineChart = {
                     colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
@@ -223,7 +251,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
                 //Candlestick
 
                 //////////////////////////////////////////////////////////////////////////////////////////
-                var chartData = setStockChartData(returningData, dataLength);
+                var chartData = setStockChartData(returningData);
 
                 $scope.stockChart = {
                     colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
@@ -392,10 +420,9 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
         });
     }
 
-    function setLineChartData(data, dataLength){
+    function setLineChartData(data){
         var DataArray = [];
-        var TotalDataLength = data.length;
-        for (var i = 0; i < dataLength; i += 1) {
+        for (var i = 0; i < data.length; i += 1) {
             DataArray.push([
                 Date.parse(data[i].date), // the date
                 
@@ -406,10 +433,9 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
         return DataArray;
     }
     
-    function setStockChartData(data, dataLength){
+    function setStockChartData(data){
         var DataArray = [];
-        var TotalDataLength = data.length;
-        for (var i = 0; i < dataLength; i += 1) {
+        for (var i = 0; i < data.length; i += 1) {
             DataArray.push([
                 Date.parse(data[i].date), // the date
                 

@@ -12,6 +12,23 @@ this.formatDate = formatDate;
 this.formatDatePickerDate = formatDatePickerDate;
 this.formatDateToMMDDYYYY = formatDateToMMDDYYYY;
 this.formatDateForYahoo = formatDateForYahoo;
+this.getPreviousDay = getPreviousDay;
+
+function getPreviousDay(date){
+  var isoDate = formatDatePickerDate(date, "/", "-");
+  var currentDate = new Date(isoDate).toISOString();
+  var yesterday = new Date(currentDate);
+  var hyesterday = yesterday.toLocaleDateString();
+  hyesterday = formatDateToYYYYMMDD(hyesterday);
+  return hyesterday;
+}
+
+function formatDateToYYYYMMDD(date){
+  var MMDD = date.substring(0,5);
+  var year = date.substring(6,10);
+  var newDate = year + '/' + MMDD;
+  return newDate;
+}
 
 function formatDateToMMDDYYYY(date){
   var year = date.substring(0,4);
@@ -163,4 +180,5 @@ function tryCatchError(message){
   }
   return [errorObject];
 }
+
 }]);

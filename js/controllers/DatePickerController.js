@@ -6,8 +6,9 @@ stockApp.controller('DatePickerController', ['$scope','$state', 'SQLDBService', 
 
 		if(startDate && endDate){
 			if(Date.parse(endDate) > Date.parse(startDate)){
-				startDate = FactoryService.formateDatePickerDate(startDate, "-", "/");
-				endDate = FactoryService.formateDatePickerDate(endDate, "-", "/");
+				debugger;
+				startDate = FactoryService.formatDatePickerDate(startDate, "-", "/");
+				endDate = FactoryService.formatDatePickerDate(endDate, "-", "/");
 
 		    	var portfolio = FactoryService.makePortfolioObject("name", 1, startDate, endDate, startDate, 5000, 1);
 		    	SQLDBService.createPortfolio(portfolio);
