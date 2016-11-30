@@ -16,8 +16,6 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
     var isLiveInt = FactoryService.getCurrentStateInt(state);
     var currentStateString = state.substr(0, state.indexOf('.'));
     var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
-<<<<<<< Updated upstream
-=======
     if(currentPortfolio[0].isLive == 0){
         var currentPrice = MathService.getMostRecentStockPrice(stockObj);
         $scope.currentPrice = currentPrice;
@@ -38,7 +36,6 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
         });
     }
     var currentPrice = $scope.currentPrice;
->>>>>>> Stashed changes
 
     $scope.CurrentPortfolioMoney = currentPortfolio[0].currency;
     $scope.Shares = MathService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol);
@@ -688,7 +685,7 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
             date = new Date() + "";
         }else{
             //figure out date for histoic state
-            date = new Date() + "";
+            date = currentPortfolio[0].currentDate;
         }
 
         var transaction = FactoryService.makeTransactionObject(currentPortfolio[0].portfolioId, stockObj.Symbol, date, currentPrice, totalSharesAfterTransaction, totalSharesAfterTransaction, amountOfShares, buyOrSell, currentPortfolio[0].currency, totalTransactionPrice, newCurrency);

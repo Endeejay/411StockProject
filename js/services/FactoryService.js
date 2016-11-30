@@ -12,8 +12,6 @@ this.formatDate = formatDate;
 this.formatDatePickerDate = formatDatePickerDate;
 this.formatDateToMMDDYYYY = formatDateToMMDDYYYY;
 this.formatDateForYahoo = formatDateForYahoo;
-<<<<<<< Updated upstream
-=======
 this.getPreviousDay = getPreviousDay;
 this.getDateMinusOneDay = getDateMinusOneDay;
 
@@ -32,7 +30,6 @@ function formatDateToYYYYMMDD(date){
   var newDate = year + '/' + MMDD;
   return newDate;
 }
->>>>>>> Stashed changes
 
 function formatDateToMMDDYYYY(date){
   var year = date.substring(0,4);
@@ -184,8 +181,6 @@ function tryCatchError(message){
   }
   return [errorObject];
 }
-<<<<<<< Updated upstream
-=======
 
 function getDateMinusOneDay(date){
 
@@ -198,5 +193,4 @@ function getDateMinusOneDay(date){
   return returnDate;
 }
 
->>>>>>> Stashed changes
 }]);
