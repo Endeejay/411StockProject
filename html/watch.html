@@ -1,7 +1,7 @@
   <h2>My Watchlist</h2>
   <!--Show some content if nothing is watched yet -->
   <div ng-hide="usersWatchedStocks.length>0">
-            <h2 class="orange-text">You aren't watching any stocks.</h2>
+      <h2 class="orange-text">You aren't watching any stocks.</h2>
   </div>
 
   <div class="collection">
@@ -19,10 +19,10 @@
         </div>
         <div class="col s12 m6">
           <p></p>
-          <li ng-show="stock.dateWhenAdded">Added on {{stock.dateWhenAdded.substr(0,15)}}</li>
-          <li ng-show="stock.priceWhenAdded">Price was {{stock.priceWhenAdded | currency}} when added</li>
+          <p ng-show="stock.dateWhenAdded">Added on {{stock.dateWhenAdded.substr(0,15)}}</p>
+          <p ng-show="stock.priceWhenAdded">Price was <span class="orange-text">{{stock.priceWhenAdded | currency}}</span> when added </p>
+          <p ng-if="checkPrice(stock) != 0 && checkPrice(stock)">result: {{ checkPrice(stock) }}  </p>
       <!--example of what would be displayed if the price has changed since adding to watch --> 
-      <!--<li ng-show="priceChange(stock)">Price has changed {{percent}} since adding </li>-->
         </div>
       </div>
     </div>
