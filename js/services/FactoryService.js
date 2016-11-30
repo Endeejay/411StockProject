@@ -12,6 +12,27 @@ this.formatDate = formatDate;
 this.formatDatePickerDate = formatDatePickerDate;
 this.formatDateToMMDDYYYY = formatDateToMMDDYYYY;
 this.formatDateForYahoo = formatDateForYahoo;
+<<<<<<< Updated upstream
+=======
+this.getPreviousDay = getPreviousDay;
+this.getDateMinusOneDay = getDateMinusOneDay;
+
+function getPreviousDay(date){
+  var isoDate = formatDatePickerDate(date, "/", "-");
+  var currentDate = new Date(isoDate).toISOString();
+  var yesterday = new Date(currentDate);
+  var hyesterday = yesterday.toLocaleDateString();
+  hyesterday = formatDateToYYYYMMDD(hyesterday);
+  return hyesterday;
+}
+
+function formatDateToYYYYMMDD(date){
+  var MMDD = date.substring(0,5);
+  var year = date.substring(6,10);
+  var newDate = year + '/' + MMDD;
+  return newDate;
+}
+>>>>>>> Stashed changes
 
 function formatDateToMMDDYYYY(date){
   var year = date.substring(0,4);
@@ -30,7 +51,7 @@ function formatDatePickerDate(date, charToChange, charToChangeTo) {
 
 function formatDate(date){
   var month = date.getUTCMonth() + 1; //months from 1-12
-  var day = date.getUTCDate();
+  var day = date.getUTCDate()-1;
   var year = date.getUTCFullYear();
 
   return year + '/' + month + '/' + day + "";
@@ -38,7 +59,7 @@ function formatDate(date){
 
 function formatDateForYahoo(date){
   var month = date.getUTCMonth() + 1; //months from 1-12
-  var day = date.getUTCDate();
+  var day = date.getUTCDate()-1;
   var year = date.getUTCFullYear();
 
   return year + '-' + month + '-' + day + "";
@@ -163,4 +184,19 @@ function tryCatchError(message){
   }
   return [errorObject];
 }
+<<<<<<< Updated upstream
+=======
+
+function getDateMinusOneDay(date){
+
+  var yearMinusOne = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate()-1;
+
+  var returnDate = yearMinusOne + "-" + month + "-" + day;
+
+  return returnDate;
+}
+
+>>>>>>> Stashed changes
 }]);

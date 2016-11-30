@@ -1,4 +1,4 @@
-stockApp.controller('PortfolioController', ['$scope', '$stateParams', '$state', 'PortfolioService', 'SQLDBService','FactoryService', function PortfolioController($scope, $stateParams, $state, PortfolioService, SQLDBService, FactoryService) {
+stockApp.controller('PortfolioController', ['$scope', '$stateParams', '$state', 'PortfolioService', 'SQLDBService','FactoryService', 'YahooService', 'APIService', function PortfolioController($scope, $stateParams, $state, PortfolioService, SQLDBService, FactoryService, YahooService, APIService) {
 	$scope.userPortfolios = SQLDBService.getPortfolios();
 
 	var state = $state.current.name
@@ -12,6 +12,8 @@ stockApp.controller('PortfolioController', ['$scope', '$stateParams', '$state', 
  	});
 
 	$scope.portfolioButton = function(){
+		$scope.portfolioValue = 0;
+		$scope.currentPriceArray = [];
 		$scope.portfolioTransactions = SQLDBService.getTransactionsByPortfolioId(this.portfolio.portfolioId);
 		//if the transaction was a purchase, we need to display the total as a negative amount.
 	    for(index in $scope.portfolioTransactions){
@@ -20,6 +22,44 @@ stockApp.controller('PortfolioController', ['$scope', '$stateParams', '$state', 
 			}
 			else {
 				$scope.portfolioTransactions[index].totalPrice = "+" + $scope.portfolioTransactions[index].totalPrice;
+			}
+
+			//////////////////////////////////////////////////////////////////
+
+			//calculate portfolio value
+
+			var shares = $scope.portfolioTransactions[index].numberOfShares;
+			var symbol = $scope.portfolioTransactions[index].symbol;
+
+			//Live
+			if($scope.currentPortfolio[0].isLive == 0)
+			{
+				if($scope.portfolioTransactions[index].buyOrSell == 0){
+					APIService.getSingleStock(symbol).then(function(data){
+						var shares = $scope.portfolioTransactions[index].numberOfShares;
+						var currentPrice = data.data[0].LastPrice;
+						setPortfolioValue(shares * currentPrice, index);
+					});
+				}
+			}
+			else if($scope.currentPortfolio[0].isLive == 1){
+
+				if($scope.portfolioTransactions[index].buyOrSell == 0){
+					var getStartDate1 = new Date(FactoryService.formatDatePickerDate($scope.currentPortfolio[0].currentDate, "/", "-"));
+					var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
+
+					var getEndDate1 = new Date(FactoryService.formatDatePickerDate($scope.currentPortfolio[0].currentDate, "/", "-"));
+					var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+
+
+					YahooService.getAStock(symbol, startDate, endDate).then(function(data){
+						$scope.$apply(function() {
+							var shares = $scope.portfolioTransactions[index].numberOfShares;
+							var currentPrice = data[data.length-1].adjClose;
+							setPortfolioValue(shares * currentPrice, index);
+						})
+					});
+				}
 			}
 		}
 	}
@@ -31,6 +71,15 @@ stockApp.controller('PortfolioController', ['$scope', '$stateParams', '$state', 
 		if($state.is('historic.portfolio')){
     		$state.go('datePicker');
     	}
+	}
+
+	function setPortfolioValue(value, index){
+		$scope.portfolioValue += value;
+		if(index == $scope.portfolioTransactions.length-1)
+		{
+
+			$scope.portfolioValue += $scope.portfolioTransactions[index].portfolioBalance
+		}
 	}
 
 }]);

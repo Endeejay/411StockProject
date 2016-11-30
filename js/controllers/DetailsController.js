@@ -16,6 +16,29 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
     var isLiveInt = FactoryService.getCurrentStateInt(state);
     var currentStateString = state.substr(0, state.indexOf('.'));
     var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
+<<<<<<< Updated upstream
+=======
+    if(currentPortfolio[0].isLive == 0){
+        var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+        $scope.currentPrice = currentPrice;
+    }
+    else{
+        var getStartDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
+        var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
+
+        var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
+        var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+
+
+        YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
+            $scope.$apply(function() {
+                var currentPrice = data[data.length-1].adjClose;
+                $scope.currentPrice = currentPrice;
+            })
+        });
+    }
+    var currentPrice = $scope.currentPrice;
+>>>>>>> Stashed changes
 
     $scope.CurrentPortfolioMoney = currentPortfolio[0].currency;
     $scope.Shares = MathService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol);
@@ -429,8 +452,26 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
     getStock();
 
     //get the current price before performing functions so the user knows current price
-    var currentPrice = MathService.getMostRecentStockPrice(stockObj);
-    $scope.currentPrice = currentPrice;
+    if(currentPortfolio[0].isLive == 0){
+        var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+        $scope.currentPrice = currentPrice;
+    }
+    else{
+        var getStartDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
+        var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
+
+        var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
+        var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+
+
+        YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
+            $scope.$apply(function() {
+                var currentPrice = data[data.length-1].adjClose;
+                $scope.currentPrice = currentPrice;
+            })
+        });
+    }
+    var currentPrice = $scope.currentPrice;
 
     function getStock(){
         APIService.getSingleStock(stockObj.Symbol).then(function(data){
@@ -448,7 +489,26 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
         var isLiveInt = FactoryService.getCurrentStateInt(state);
         var currentStateString = state.substr(0, state.indexOf('.'));
         var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
-        var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+        if(currentPortfolio[0].isLive == 0){
+            var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+            $scope.currentPrice = currentPrice;
+        }
+        else{
+            var getStartDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
+            var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
+
+            var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
+            var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+
+
+            YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
+                $scope.$apply(function() {
+                    var currentPrice = data[data.length-1].adjClose;
+                    $scope.currentPrice = currentPrice;
+                })
+            });
+        }
+        var currentPrice = $scope.currentPrice;
 
 
         if(checkTransactionForEnoughCurrency(sharesInput,currentPrice,currentPortfolio[0].currency)){
@@ -486,9 +546,26 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
           var isLiveInt = FactoryService.getCurrentStateInt(state);
           var currentStateString = state.substr(0, state.indexOf('.'));
           var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
-          var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+          if(currentPortfolio[0].isLive == 0){
+                var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+                $scope.currentPrice = currentPrice;
+            }
+            else{
+                var getStartDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
+                var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
 
-          $scope.currentPrice = currentPrice;
+                var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
+                var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+
+
+                YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
+                    $scope.$apply(function() {
+                        var currentPrice = data[data.length-1].adjClose;
+                        $scope.currentPrice = currentPrice;
+                    })
+                });
+            }
+            var currentPrice = $scope.currentPrice;
 
           if(checkIfStockIsBought(currentPortfolio, stockObj.Symbol, sharesInput)){
               if (sharesInput == 1){
@@ -526,13 +603,32 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
 
         if(checkIfStockIsWatched(currentPortfolioId, stockObj.Symbol) === false){
           Materialize.toast("Started watching " + stockObj.Symbol, 4000);
-          var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+          if(currentPortfolio[0].isLive == 0){
+                var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+                $scope.currentPrice = currentPrice;
+            }
+            else{
+                var getStartDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
+                var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
+
+                var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
+                var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+
+
+                YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
+                    $scope.$apply(function() {
+                        var currentPrice = data[data.length-1].adjClose;
+                        $scope.currentPrice = currentPrice;
+                  })
+              });
+          }
+          var currentPrice = $scope.currentPrice;
           var date = "";
           if (isLiveInt == 0){
               date = new Date() + "";
           }else{
               //figure out date for histoic state
-              date = new Date() + "";
+              date = currentPortfolio[0].currentDate;
           }
 
           var watch = FactoryService.makeWatchObject(currentPortfolioId, stockObj.Symbol, currentPrice, date);
@@ -560,7 +656,26 @@ stockApp.controller('DetailsController', function DetailsController($scope, $q, 
         var isLiveInt = FactoryService.getCurrentStateInt(state);
         var currentStateString = state.substr(0, state.indexOf('.'));
         var currentPortfolio = SQLDBService.getCurrentPortfolio(currentStateString);
-        var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+        if(currentPortfolio[0].isLive == 0){
+            var currentPrice = MathService.getMostRecentStockPrice(stockObj);
+            $scope.currentPrice = currentPrice;
+        }
+        else{
+            var getStartDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
+            var startDate = FactoryService.getDateMinusOneDay(getStartDate1);
+
+            var getEndDate1 = new Date(FactoryService.formatDatePickerDate(currentPortfolio[0].currentDate, "/", "-"));
+            var endDate = FactoryService.formatDateForYahoo(getEndDate1);
+
+
+            YahooService.getAStock(stockObj.Symbol, startDate, endDate).then(function(data){
+                $scope.$apply(function() {
+                    var currentPrice = data[data.length-1].adjClose;
+                    $scope.currentPrice = currentPrice;
+                })
+            });
+        }
+        var currentPrice = $scope.currentPrice;
         var totalSharesAtTransaction = MathService.getTotalShares(currentPortfolio[0].portfolioId, stockObj.Symbol);
         var totalSharesAfterTransaction = getTotalSharesAfterTransaction(totalSharesAtTransaction, amountOfShares, buyOrSell);
         var totalTransactionPrice = MathService.totalTransactionPrice(amountOfShares, currentPrice);
