@@ -33,11 +33,6 @@ stockApp.controller('HomeController', ['$scope','$state','SQLDBService', 'Factor
         });
       });
     }
-
-    $(document).ready(function(){
-      $('.carousel').carousel();
-    });
-    
   }
 
   $scope.openPageInBrowser = function(link){

@@ -1,23 +1,20 @@
-stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', 'YahooService', 'FactoryService', function BuySellController($scope, BuySellService, $state, APIService, YahooService, FactoryService) {
-//getName();
+stockApp.controller('BuySellController', ['$scope', 'BuySellService', '$state', 'APIService', 'FactoryService', function BuySellController($scope, BuySellService, $state, APIService, FactoryService) {
+var state = $state.current.name
+var currentStateString = state.substr(0, state.indexOf('.'));
+$scope.availableStocks = [];
+$scope.page = 1;
 getAvailableStocks();
-//getStock();
-// function changeTemplate(){
-//   $location.url('/historic.buy_sell');
-// }
 var state = $state.current.name
 var currentStateString = state.substr(0, state.indexOf('.'));
 
 
-$scope.page = 1;
-$scope.pageSize = 5;
 
 $scope.callback = function(page) {
   // console.log("page = ", page);
   $scope.page = page;
-  getAvailableStocks();
+  console.log($scope.page);
+  getStocksForCurrentPage();
 }
-
 
 $scope.getStock = function(symbol){
          APIService.getSingleStock(symbol).then(function(data){
@@ -27,30 +24,37 @@ $scope.getStock = function(symbol){
         })
 }
 
-$scope.stocksData = [];
-function getStocksAndCalculateDifference(symbols){
-         APIService.getMultipleStocks(symbols).then(function(data){
-          $scope.stocksData = [];
-            console.log("calc diff" , data.data);
-            for (index in data.data) {
-              console.log(index, data.data[index]);
-              //console.log(index, data.data[index]); 
-              $scope.stocksData.push(data.data[index]);
-            }
-        })
+function getStocksForCurrentPage(){
+      var symbols = []
+      for (var i = (($scope.page-1) * 5); i < (($scope.page-1)* 5 + 5); i++) {
+          symbols.push($scope.availableStocks[i].Symbol);
+      }
+      APIService.getMultipleStocks(symbols).then(function (data){
+        //replaces objects already in collection since regular way threw errors
+        Array.prototype.splice.apply($scope.availableStocks, [($scope.page-1) * 5, data.data.length].concat(data.data));
+      });
 }
 
-$scope.stocks = [];
 function getAvailableStocks(){
   APIService.getAllStocks().then(function(data){
-    $scope.stocks = [];
-    data = data.data;
-    $scope.availableStocks = data;
-    for (var i = ($scope.page*5); i < ($scope.page*5 + 5); i++) {
-      $scope.stocks.push($scope.availableStocks[i]);
+    for (var index in data.data) {
+      var stockObj = {
+                      Name: " ",
+                      Symbol: data.data[index], 
+                      LastPrice: -1, 
+                      Change: -1, 
+                      ChangePercent: " ", 
+                      Timestamp: " ", 
+                      Volume: -1, 
+                      High: -1, 
+                      Low: -1, 
+                      Open: -1, 
+                      Close: -1
+                    };
+      $scope.availableStocks.push(stockObj);
     }
+    getStocksForCurrentPage();
     //console.log("$scope.stocks =",$scope.stocks);
-    getStocksAndCalculateDifference($scope.stocks);
   }, function(error){
     console.log(error);
   });
@@ -65,13 +69,6 @@ function getAvailableStocks(){
   }
 }
 
-function getName(){
- BuySellService.getAllStocks().then(function(data){
-   data = data.data;
-   makeChart(data)
-  }, function(error){
-    console.log(error);
-  });
-}
+
 
 }]);

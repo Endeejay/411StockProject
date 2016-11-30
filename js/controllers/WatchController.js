@@ -6,8 +6,6 @@ stockApp.controller('WatchController', ['$scope', '$stateParams', '$state', 'Wat
 
 	$scope.page = 1;
 	getWatchForCurrentPage();
-	//I'm a noob and can't get this function to return the right value >_<
-	// checkIfPriceHasChanged();
 
 
 	$scope.callback = function(page) {
@@ -34,20 +32,17 @@ stockApp.controller('WatchController', ['$scope', '$stateParams', '$state', 'Wat
 		})
 	}
 
-	function checkIfPriceHasChanged(){
-		for (index in $scope.usersWatchedStocks) {
-	 		$scope.currentPrice = getCurrentPriceFromAPI($scope.usersWatchedStocks[index]);
-			if ($scope.usersWatchedStocks[index].priceWhenAdded != $scope.currentPrice) {
-			   console.log("$scope.usersWatchedStocks[index].priceWhenAdded = ", $scope.usersWatchedStocks[index].priceWhenAdded, " currentPrice = ", $scope.currentPrice );
-			   //set a scope variable so the difference can be displayed in front end
-			}
-		}
-	}
-
-	function getCurrentPriceFromAPI(stock){
+	function checkPrice (stock){
+		var difference = 0;
 		APIService.getSingleStock(stock.symbol).then(function(data){
-				return data.data[0].LastPrice;
+			var currentPrice = data.data[0].LastPrice;
+			if (stock.priceWhenAdded != currentPrice && currentPrice)
+				console.log("prices are different  price added = ", stock.priceWhenAdded, "curr price = ", currentPrice);
+				console.log("difference = ", difference);
+				difference = stock.priceWhenAdded - currentPrice;
 		})
+
+		return difference;
 	}
 
 	function getWatchForCurrentPage(){
